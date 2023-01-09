@@ -116,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_SYMBOLS] = LAYOUT_ortho_2x2u(
         _______,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F11,  KC_F12,  KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_NO,
         _______,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_NO, KC_NO,KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  _______,
-       KC_BSPC,  KC_TILD,  KC_GRV, KC_LCBR, KC_LPRN,  KC_LBRC,  KC_NO, KC_NO, KC_RBRC, KC_RPRN,  KC_RCBR, KC_PIPE,KC_BSLS   , KC_NO,
+       _______,  KC_TILD,  KC_GRV, KC_LCBR, KC_LPRN,  KC_LBRC,  KC_NO, KC_NO, KC_RBRC, KC_RPRN,  KC_RCBR, KC_PIPE,KC_BSLS   , KC_NO,
        KC_NO, KC_LT,    KC_NO,  KC_UNDS,    KC_MINS,KC_NO, _______, _______, KC_NO,KC_PLUS, KC_EQL , KC_NO, KC_GT,   _______,
         _______, _______, _______, _______, _______,     _______,          KC_NO,     _______, _______, _______, _______, _______
     ),
@@ -130,8 +130,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ,
     [_NAV] = LAYOUT_ortho_2x2u(
         KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,         KC_NO,   KC_NO,       KC_NO,    KC_NO,    KC_NO,    KC_NO,  KC_NO,  KC_NO,
-       KC_DEL   , KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,  KC_NO,   KC_NO,   KC_NO,    KC_PSCR,    KC_NO,    KC_NO,  KC_NO,  _______,
-       KC_BSPC,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_NO,  KC_NO,   KC_NO,  KC_NO,  KC_RSFT,KC_RCTL,  KC_INS,  KC_NO,  KC_NO,
+       KC_BSPC   , KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,  KC_NO,   KC_NO,   KC_NO,    KC_PSCR,    KC_NO,    KC_NO,  KC_NO,  _______,
+       KC_DEL,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_NO,  KC_NO,   KC_NO,  KC_NO,  KC_RSFT,KC_RCTL,  KC_INS,  KC_NO,  KC_NO,
       _______,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),  KC_NO,   _______,            KC_NO,  KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_NO,  _______,
         KC_NO, KC_NO, KC_NO, _______,    KC_ENT, _______,            _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
     ),

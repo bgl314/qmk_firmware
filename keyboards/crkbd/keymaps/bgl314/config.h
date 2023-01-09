@@ -1,5 +1,6 @@
 /*
-Copyright 2017 Danny Nguyen <danny@keeb.io>
+Copyright 2019 @foostan
+Copyright 2020 Drashna Jaelre <@drashna>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,16 +17,38 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-//#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
-#define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
+
+/* Select hand configuration */
+
+#define EE_HANDS
+
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+//#define MASTER_LEFT
+#define TAPPING_TERM 150
+#define TAPPING_TOGGLE 2
 #define RGBLIGHT_LAYERS
-#define RGB_DI_PIN B7 // pin the DI on the ws2812 is hooked-up to
+#define RGBLIGHT_SLEEP
+
+#define BONGO_ENABLE
+#define BONGO_ENABLE_MINIMAL
+//#define BONGO_ENABLE_WPM
+//#define MYOLED_ENABLE
+
+
+// #define MASTER_RIGHT
+// #define EE_HANDS
+
+#ifdef RGB_MATRIX_ENABLE
+#define RGBLIGHT_SLEEP
+#define RGB_MATRIX_FRAMEBUFFER_EFFECTS
+#define RGBLIGHT_LAYERS
 #define RGBLIGHT_ANIMATIONS // run RGB animations
-#define RGBLED_NUM 14 // number of LEDs
 #define RGBLIGHT_HUE_STEP 12 // units to step when in/decreasing hue
 #define RGBLIGHT_SAT_STEP 25 // units to step when in/decresing saturation
 #define RGBLIGHT_VAL_STEP 12 // units to step when in/decreasing value (brightness)
-#define TAPPING_TOGGLE 2
-#define TAPPING_TERM 150
+#define ENABLE_RGB_MATRIX_TYPING_HEATMAP
+#define RGB_MATRIX_TYPING_HEATMAP_DECREASE_DELAY_MS 50
+#define RGB_MATRIX_TYPING_HEATMAP_SLIM
+#endif
 
-
+#define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
