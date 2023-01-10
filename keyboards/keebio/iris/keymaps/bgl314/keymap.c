@@ -14,7 +14,6 @@
 
 
 enum td_keycodes {
-    SHIFT_CAPS, // Our example key: `lshift` when held, `capslock` when tapped. Add additional keycodes for each tapdance.
     SCLN_ENT, // tap ent, hold shift, doubletap semicolon enter
     ESC_QWERTY // tap backspace, doubletap qwerty
 };
@@ -54,9 +53,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_ESC,   KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                               KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-  TD(SHIFT_CAPS), KC_Z,  KC_X,  KC_C,  KC_V,    KC_B,   KC_DEL,             KC_BSPC,  KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_RSFT,KC_ENT),
+  MT(MOD_LSFT,KC_CAPS), KC_Z,  KC_X,  KC_C,  KC_V,    KC_B,   KC_DEL,             KC_BSPC,  KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_RSFT,KC_ENT),
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                        MT(MOD_LALT,KC_ENT),TT(_NUMBERS),MT(MOD_LCTL,KC_SPC) ,      LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_INS)
+                        MT(MOD_LALT,KC_ENT),TT(_NUMBERS),MT(MOD_LCTL,KC_BSPC) ,      LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_INS)
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -80,9 +79,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                          KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______,  KC_TILD,  KC_GRV, KC_LCBR, KC_LPRN,  KC_LBRC,                            KC_RBRC, KC_RPRN,  KC_RCBR, KC_PIPE,KC_BSLS   , KC_NO,
+     _______,  KC_TILD,  KC_GRV, KC_LCBR, KC_LPRN,  KC_LBRC,                            KC_RBRC, KC_RPRN,  KC_RCBR, KC_PIPE,KC_BSLS   , KC_DEL,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO, KC_LT,    KC_NO,    KC_UNDS, KC_MINUS,KC_NO , _______,             _______, KC_NO,  KC_PLUS, KC_EQL ,KC_NO,    KC_GT,   _______,
+     _______, KC_LT,    KC_NO,    KC_UNDS, KC_MINUS,KC_NO , _______,             _______, KC_NO,  KC_PLUS, KC_EQL ,KC_NO,    KC_GT,   _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______,  _______,                    KC_NO, _______ ,  _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -120,15 +119,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ADJUST] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     QK_REBOOT,    KC_NO,    KC_NO, KC_NO,     KC_NO, KC_NO,                                KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   QK_REBOOT,
+     KC_NO,    KC_NO,    KC_NO, KC_NO,     KC_NO, KC_NO,                                KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   TT(_QWERTY),
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-	   KC_NO,  KC_NO,   KC_NO,    KC_NO,   KC_NO, KC_F11 ,                            KC_F12,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+	   KC_NO,  KC_NO,   KC_NO,    KC_NO,   KC_PSCR, KC_F11 ,                            KC_F12,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
 	   KC_NO,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                             KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
        KC_NO,   RGB_TOG, RGB_RMOD,RGB_MOD , KC_BRIGHTNESS_UP,KC_BRIGHTNESS_DOWN,KC_NO,KC_NO,    KC_VOLU,   KC_VOLD, KC_MUTE,   KC_MSTP,  KC_MPLY, 	KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                      KC_NO,   KC_NO,  KC_NO,                      KC_NO,   KC_NO,   KC_NO
+                                      KC_NO,   _______,  KC_NO,                      KC_NO,   _______,   KC_NO
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   )
 };
@@ -247,42 +246,42 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
 
 
 
-// SHIFT-ENTER-CAPS
-// Handle the possible states for each tapdance keycode you define:
+// // SHIFT-ENTER-CAPS
+// // Handle the possible states for each tapdance keycode you define:
 
-void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data) {
-    td_state = cur_dance(state);
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            // register_code16(KC_ENT);
-            // break;
-        case TD_SINGLE_HOLD:
-            register_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
-            break;
-        case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
-            register_code16(KC_CAPS);
-            break;
-        default:
-            break;
-    }
-}
+// void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data) {
+//     td_state = cur_dance(state);
+//     switch (td_state) {
+//         case TD_SINGLE_TAP:
+//             // register_code16(KC_ENT);
+//             // break;
+//         case TD_SINGLE_HOLD:
+//             register_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
+//             break;
+//         case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
+//             register_code16(KC_CAPS);
+//             break;
+//         default:
+//             break;
+//     }
+// }
 
-void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-        case TD_SINGLE_HOLD:
-        //     unregister_code16(KC_ENT);
-        //     break;
-        // case TD_SINGLE_HOLD:
-            unregister_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_off(_MY_LAYER)` here
-            break;
-        case TD_DOUBLE_SINGLE_TAP:
-            unregister_code16(KC_CAPS);
-            break;
-        default:
-            break;
-    }
-}
+// void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data) {
+//     switch (td_state) {
+//         case TD_SINGLE_TAP:
+//         case TD_SINGLE_HOLD:
+//         //     unregister_code16(KC_ENT);
+//         //     break;
+//         // case TD_SINGLE_HOLD:
+//             unregister_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_off(_MY_LAYER)` here
+//             break;
+//         case TD_DOUBLE_SINGLE_TAP:
+//             unregister_code16(KC_CAPS);
+//             break;
+//         default:
+//             break;
+//     }
+// }
 
 // END SHIFT-ENTER-CAPS
 
@@ -318,11 +317,11 @@ void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
             break;
     }
 }
-// END SHIFT-ENTER-CAPS
+// SHIFT-ENTER-SEMICOLON/ENTER
 
 // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_ent_caps_finished, shift_ent_caps_reset),
+    //[SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_ent_caps_finished, shift_ent_caps_reset),
     [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset),
     [ESC_QWERTY] =ACTION_TAP_DANCE_LAYER_TOGGLE(KC_ESC,_QWERTY)
 };
