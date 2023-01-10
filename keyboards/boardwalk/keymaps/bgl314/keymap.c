@@ -50,8 +50,6 @@ static td_state_t td_state;
 td_state_t cur_dance(qk_tap_dance_state_t *state);
 
 // `finished` and `reset` functions for each tapdance keycode
-void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data);
-void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data);
 
 void shift_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data);
 void shift_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data);
@@ -76,7 +74,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,             KC_Q,    KC_W,     KC_F,    KC_P,    KC_G,   KC_VOLD,  KC_VOLU,      KC_J,   KC_L,    KC_U,    KC_Y,    TD(SCLN_ENT), KC_BSPC,
         KC_ESC,             KC_A,    KC_R,     KC_S,    KC_T,    KC_D,   KC_INS  ,  KC_PSCR,      KC_H,   KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
        KC_LSFT,      KC_Z,    KC_X,     KC_C,    KC_V,    KC_B,   KC_DEL, KC_BSPC,    KC_K,   KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT),
-      KC_CAPS,KC_NO,  KC_NO, MT(MOD_LALT,KC_ENT),TT(_NUMBERS),   MT(MOD_LCTL,KC_SPC), LT(_NAV,KC_SPC),MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI),KC_NO, KC_NO,  TD(CTL_QWERTY)
+      KC_CAPS,KC_NO,  KC_NO, MT(MOD_LALT,KC_ENT),TT(_NUMBERS),   MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI),KC_NO, KC_NO,  KC_NO
 
     ),
     /* Function Layer
@@ -137,9 +135,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
      [_ADJUST] = LAYOUT_ortho_2x2u(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     QK_REBOOT, KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   QK_REBOOT,
+     KC_NO, KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   TT(_QWERTY),
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-	   KC_NO,  KC_NO, KC_NO,    KC_NO,   KC_NO, KC_F11 ,  KC_NO, KC_NO,  KC_F12,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+	   KC_NO,  KC_NO, KC_NO,    KC_NO,   KC_PSCR, KC_F11 ,  KC_NO, KC_NO,  KC_F12,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
 	    KC_NO,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,  KC_NO, KC_NO,             KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -239,43 +237,6 @@ td_state_t cur_dance(qk_tap_dance_state_t *state) {
 
 
 
-// SHIFT-ENTER-CAPS
-// Handle the possible states for each tapdance keycode you define:
-
-void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data) {
-    td_state = cur_dance(state);
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            // register_code16(KC_ENT);
-            // break;
-        case TD_SINGLE_HOLD:
-            register_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
-            break;
-        case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
-            register_code16(KC_CAPS);
-            break;
-        default:
-            break;
-    }
-}
-
-void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-        case TD_SINGLE_HOLD:
-        //     unregister_code16(KC_ENT);
-        //     break;
-        // case TD_SINGLE_HOLD:
-            unregister_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_off(_MY_LAYER)` here
-            break;
-        case TD_DOUBLE_SINGLE_TAP:
-            unregister_code16(KC_CAPS);
-            break;
-        default:
-            break;
-    }
-}
-
 // END SHIFT-ENTER-CAPS
 
 
@@ -314,7 +275,5 @@ void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
 
 // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_ent_caps_finished, shift_ent_caps_reset),
-    [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset),
-    [CTL_QWERTY] =ACTION_TAP_DANCE_LAYER_TOGGLE(KC_RCTL,_QWERTY)
+    [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset)
 };
