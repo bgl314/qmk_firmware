@@ -20,35 +20,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Select hand configuration */
 
-#define EE_HANDS
+//#define EE_HANDS
 
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
-//#define MASTER_LEFT
-#define TAPPING_TERM 150
+#define MASTER_LEFT
+#define TAPPING_TERM 175
 #define TAPPING_TOGGLE 2
+
+#ifdef RGBLIGHT_ENABLE
 #define RGBLIGHT_LAYERS
 #define RGBLIGHT_SLEEP
+#endif
 
-#define BONGO_ENABLE
 #define BONGO_ENABLE_MINIMAL
-//#define BONGO_ENABLE_WPM
 //#define MYOLED_ENABLE
 
 
-// #define MASTER_RIGHT
-// #define EE_HANDS
+#define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_LED_STATE_ENABLE
+//#define SPLIT_MODS_ENABLE
+#define SPLIT_TRANSPORT_MIRROR
+#define SPLIT_OLED_ENABLE
+
+
 
 #ifdef RGB_MATRIX_ENABLE
-#define RGBLIGHT_SLEEP
 #define RGB_MATRIX_FRAMEBUFFER_EFFECTS
-#define RGBLIGHT_LAYERS
-#define RGBLIGHT_ANIMATIONS // run RGB animations
-#define RGBLIGHT_HUE_STEP 12 // units to step when in/decreasing hue
-#define RGBLIGHT_SAT_STEP 25 // units to step when in/decresing saturation
-#define RGBLIGHT_VAL_STEP 12 // units to step when in/decreasing value (brightness)
 #define ENABLE_RGB_MATRIX_TYPING_HEATMAP
+
 #define RGB_MATRIX_TYPING_HEATMAP_DECREASE_DELAY_MS 50
 #define RGB_MATRIX_TYPING_HEATMAP_SLIM
 #endif
 
 #define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
+
+#define NO_ACTION_MACRO
+#define NO_ACTION_FUNCTION

@@ -28,13 +28,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #endif
 
-#ifdef BONGO_ENABLE_MINIMAL
-    #include "bongo.h"
-#endif
+#include "bongo.h"
 
-#ifdef BONGO_ENABLE_WPM
-    #include "bongo.h"
-#endif
+
 
 
 #define _COLEMAK 0
@@ -45,46 +41,46 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define _ADJUST 5
 
 
-enum td_keycodes {
-    SHIFT_CAPS, // Our example key: `lshift` when held, `capslock` when tapped. Add additional keycodes for each tapdance.
-    SCLN_ENT // tap ent, hold shift, doubletap semicolon enter
-};
+// enum td_keycodes {
+//     SHIFT_CAPS, // Our example key: `lshift` when held, `capslock` when tapped. Add additional keycodes for each tapdance.
+//     SCLN_ENT // tap ent, hold shift, doubletap semicolon enter
+// };
 
-// Define a type containing as many tapdance states as you need
-typedef enum {
-    TD_NONE,
-    TD_UNKNOWN,
-    TD_SINGLE_TAP,
-    TD_SINGLE_HOLD,
-    TD_DOUBLE_SINGLE_TAP
-} td_state_t;
-// Create a global instance of the tapdance state type
-static td_state_t td_state;
+// // Define a type containing as many tapdance states as you need
+// typedef enum {
+//     TD_NONE,
+//     TD_UNKNOWN,
+//     TD_SINGLE_TAP,
+//     TD_SINGLE_HOLD,
+//     TD_DOUBLE_SINGLE_TAP
+// } td_state_t;
+// // Create a global instance of the tapdance state type
+// static td_state_t td_state;
 
-// Function to determine the current tapdance state
-td_state_t cur_dance(qk_tap_dance_state_t *state);
+// // Function to determine the current tapdance state
+// td_state_t cur_dance(qk_tap_dance_state_t *state);
 
-// `finished` and `reset` functions for each tapdance keycode
-void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data);
-void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data);
+// // `finished` and `reset` functions for each tapdance keycode
+// void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data);
+// void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data);
 
-void shift_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data);
-void shift_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data);
+// void shift_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data);
+// void shift_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data);
 
-
+//TD(SHIFT_CAPS)
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_COLEMAK] = LAYOUT_split_3x6_3(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    TD(SCLN_ENT),  KC_BSPC,
+     KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN,  KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_ESC,   KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                               KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-  TD(SHIFT_CAPS), KC_Z,  KC_X,  KC_C,  KC_V,    KC_B,                                 KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_RSFT,KC_ENT),
+ MT(MOD_LSFT,KC_CAPS), KC_Z,  KC_X,  KC_C,  KC_V,    KC_B,                                 KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_RSFT,KC_ENT),
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                        MT(MOD_LALT,KC_ENT),TT(_NUMBERS),MT(MOD_LGUI,KC_SPC) ,      LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI)
+                        MT(MOD_LALT,KC_ENT),TT(_NUMBERS),MT(MOD_LCTL,KC_BSPC) ,      LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI)
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -110,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______,  KC_TILD,  KC_GRV, KC_LCBR, KC_LPRN,  KC_LBRC,                            KC_RBRC, KC_RPRN,  KC_RCBR, KC_PIPE,KC_BSLS   , KC_DEL,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO, KC_LT,    KC_NO,    KC_UNDS, KC_MINUS,KC_NO ,                             KC_NO,  KC_PLUS, KC_EQL ,KC_NO,    KC_GT,   _______,
+     _______, KC_LT,    KC_NO,    KC_UNDS, KC_MINUS,KC_NO ,                             KC_NO,  KC_PLUS, KC_EQL ,KC_NO,    KC_GT,   _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______,_______,  _______,                    KC_NO, _______ ,  _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -150,7 +146,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-	   KC_NO, KC_NO,    KC_NO,    KC_NO,   KC_NO, KC_F11 ,                              KC_F12,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   QK_REBOOT,
+	   KC_NO, KC_NO,    KC_NO,    KC_NO,   KC_PSCR, KC_F11 ,                              KC_F12,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   QK_REBOOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
 	   KC_NO,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -163,126 +159,126 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 layer_state_t layer_state_set_user(layer_state_t state) {
      state = update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
 
-    //#ifdef RGBLIGHT_ENABLED
+    #ifdef RGBLIGHT_ENABLED
     rgblight_set_layer_state(0, layer_state_cmp(state, _COLEMAK));
     rgblight_set_layer_state(2, layer_state_cmp(state, _QWERTY));
     rgblight_set_layer_state(3, layer_state_cmp(state, _SYMBOLS));
     rgblight_set_layer_state(4, layer_state_cmp(state, _NUMBERS));
     rgblight_set_layer_state(5, layer_state_cmp(state, _NAV));
     rgblight_set_layer_state(6, layer_state_cmp(state, _ADJUST));
-    //#endif
+    #endif
     return state;
 }
 
 
-//tapdancestuff
+// //tapdancestuff
 
-// Determine the tapdance state to return
-td_state_t cur_dance(qk_tap_dance_state_t *state) {
-    if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
-        else return TD_SINGLE_HOLD;
-    }
+// // Determine the tapdance state to return
+// td_state_t cur_dance(qk_tap_dance_state_t *state) {
+//     if (state->count == 1) {
+//         if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
+//         else return TD_SINGLE_HOLD;
+//     }
 
-    if (state->count == 2) return TD_DOUBLE_SINGLE_TAP;
-    else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
-}
-
-
-
-
-// SHIFT-ENTER-CAPS
-// Handle the possible states for each tapdance keycode you define:
-
-void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data) {
-    td_state = cur_dance(state);
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            // register_code16(KC_ENT);
-            // break;
-        case TD_SINGLE_HOLD:
-            register_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
-            break;
-        case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
-            register_code16(KC_CAPS);
-            break;
-        default:
-            break;
-    }
-}
-
-void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-        case TD_SINGLE_HOLD:
-        //     unregister_code16(KC_ENT);
-        //     break;
-        // case TD_SINGLE_HOLD:
-            unregister_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_off(_MY_LAYER)` here
-            break;
-        case TD_DOUBLE_SINGLE_TAP:
-            unregister_code16(KC_CAPS);
-            break;
-        default:
-            break;
-    }
-}
-
-// END SHIFT-ENTER-CAPS
-
-
-// SHIFT-ENTER-SEMICOLON/ENTER
-// Handle the possible states for each tapdance keycode you define:
-
-void scln_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
-    td_state = cur_dance(state);
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            register_code16(KC_SCLN);
-            break;
-        case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
-            register_code16(KC_SCLN);
-            register_code16(KC_ENT);
-            break;
-        default:
-            break;
-    }
-}
-
-void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            unregister_code16(KC_SCLN);
-            break;
-        case TD_DOUBLE_SINGLE_TAP:
-            unregister_code16(KC_SCLN);
-            unregister_code16(KC_ENT);
-            break;
-        default:
-            break;
-    }
-}
-// END SHIFT-ENTER-CAPS
-
-// Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
-qk_tap_dance_action_t tap_dance_actions[] = {
-    [SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_ent_caps_finished, shift_ent_caps_reset),
-    [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset)
-};
+//     if (state->count == 2) return TD_DOUBLE_SINGLE_TAP;
+//     else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
+// }
 
 
 
 
-#ifdef BONGO_ENABLE
+// // SHIFT-ENTER-CAPS
+// // Handle the possible states for each tapdance keycode you define:
 
-#define CUSTOM_OLED_TIMEOUT 5000
+// void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data) {
+//     td_state = cur_dance(state);
+//     switch (td_state) {
+//         case TD_SINGLE_TAP:
+//             // register_code16(KC_ENT);
+//             // break;
+//         case TD_SINGLE_HOLD:
+//             register_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
+//             break;
+//         case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
+//             register_code16(KC_CAPS);
+//             break;
+//         default:
+//             break;
+//     }
+// }
+
+// void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data) {
+//     switch (td_state) {
+//         case TD_SINGLE_TAP:
+//         case TD_SINGLE_HOLD:
+//         //     unregister_code16(KC_ENT);
+//         //     break;
+//         // case TD_SINGLE_HOLD:
+//             unregister_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_off(_MY_LAYER)` here
+//             break;
+//         case TD_DOUBLE_SINGLE_TAP:
+//             unregister_code16(KC_CAPS);
+//             break;
+//         default:
+//             break;
+//     }
+// }
+
+// // END SHIFT-ENTER-CAPS
+
+
+// // SHIFT-ENTER-SEMICOLON/ENTER
+// // Handle the possible states for each tapdance keycode you define:
+
+// void scln_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
+//     td_state = cur_dance(state);
+//     switch (td_state) {
+//         case TD_SINGLE_TAP:
+//             register_code16(KC_SCLN);
+//             break;
+//         case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
+//             register_code16(KC_SCLN);
+//             register_code16(KC_ENT);
+//             break;
+//         default:
+//             break;
+//     }
+// }
+
+// void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
+//     switch (td_state) {
+//         case TD_SINGLE_TAP:
+//             unregister_code16(KC_SCLN);
+//             break;
+//         case TD_DOUBLE_SINGLE_TAP:
+//             unregister_code16(KC_SCLN);
+//             unregister_code16(KC_ENT);
+//             break;
+//         default:
+//             break;
+//     }
+// }
+// // END SHIFT-ENTER-CAPS
+
+// // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
+// qk_tap_dance_action_t tap_dance_actions[] = {
+//     [SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_ent_caps_finished, shift_ent_caps_reset),
+//     [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset)
+// };
+
+
+
+
+
+#define CUSTOM_OLED_TIMEOUT 10000
+void draw_default(void);
+
 
  bool oled_repaint_requested=true;
  bool oled_wakeup_requested= true;
+
 uint32_t oled_sleep_timer;
 
-
-void draw_default(void);
 
 
 // Request a repaint of the OLED image without resetting the OLED sleep timer.
@@ -298,6 +294,18 @@ void oled_request_repaint(void) {
 // Needs to be called after any activity that should keep the OLED turned on.
 void oled_request_wakeup(void) {
     oled_wakeup_requested = true;
+}
+
+bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
+    oled_request_wakeup();
+    return true;
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+
+        oled_request_wakeup();
+
+    return true;
 }
 
 
@@ -350,7 +358,7 @@ void render_layer_name(void) {
     bool nav = layer_state_is(_NAV);
     bool qwerty= layer_state_is(_QWERTY);
     bool adjust = layer_state_is(_ADJUST);
-
+    oled_set_cursor(0, 0);
     if(number){
         oled_write_P(PSTR("12345"), false);
     } else if(symbol){
@@ -362,39 +370,32 @@ void render_layer_name(void) {
     } else if(qwerty){
         oled_write_P(PSTR("QWERTY"), false);
     } else {
-        oled_write_P(PSTR("CLMAK"), false);
+        oled_write_P(PSTR("COLMAK"), false);
     }
 }
+
+//char wpm[42];
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-   return OLED_ROTATION_0;
-  //return OLED_ROTATION_270;
+    return OLED_ROTATION_0;
 }
+
+
 bool oled_task_kb(void) {
-    //if (!oled_task_user()) { return false; }
+    if (!oled_task_user()) { return false; }
 
-
-
-    if (oled_task_needs_to_repaint()) {
-        oled_clear();
-        #ifdef BONGO_ENABLE_MINIMAL
-        draw_bongo_minimal(true);
-        #endif
-        #ifdef BONGO_ENABLE_WPM
-        draw_bongo_wpm(true);
-        #endif
-
+    if (!oled_task_needs_to_repaint()) {
+            return false;
     }
-    #ifdef BONGO_ENABLE_MINIMAL
     if (is_keyboard_master()) {
+        draw_bongo();
         render_layer_name();
+    }else{
     }
-    #endif
+
     return false;
 }
 
-
-#endif
 
 
 #ifdef MYOLED_ENABLE
@@ -413,7 +414,7 @@ void render_layer_name(void) {
     bool nav = layer_state_is(_NAV);
     bool qwerty= layer_state_is(_QWERTY);
     bool adjust = layer_state_is(_ADJUST);
-
+ oled_set_cursor(0, 0);
     if(number){
         oled_write_P(PSTR("12345"), false);
     } else if(symbol){
@@ -425,70 +426,69 @@ void render_layer_name(void) {
     } else if(qwerty){
         oled_write_P(PSTR("QWERTY"), false);
     } else {
-        oled_write_P(PSTR("CLMAK"), false);
+        oled_write_P(PSTR("COLEMAK"), false);
     }
 }
 
 
-void render_layer_symbol(void) {
-    bool number = layer_state_is(_NUMBERS) & !layer_state_is(_ADJUST);
-    bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
-    bool nav = layer_state_is(_NAV);
-    bool qwerty= layer_state_is(_QWERTY);
-    bool adjust = layer_state_is(_ADJUST);
+void render_layer_symbol(int wpmval) {
 
-    if(number){
+
+    if(wpmval < 10){
         //oled_write_P(PSTR("12345"), false);
         oled_write_raw_P(bitmapsflower, sizeof(bitmapsflower));
-    } else if(symbol){
-        //oled_write_P(PSTR("!@#$^"), false);
-       oled_write_raw_P(bitmapspenta2, sizeof(bitmapspenta2));
-    } else if(adjust){
-        //oled_write_P(PSTR(" ADJ "), false);
-        oled_write_raw_P(bitmapssepta, sizeof(bitmapssepta));
-    } else if(nav){
-        //oled_write_P(PSTR(" NAV "), false);
-        oled_write_raw_P(bitmapspyramid, sizeof(bitmapspyramid));
-    } else if(qwerty){
-        //oled_write_P(PSTR("QWERTY"), false);
-        oled_write_raw_P(bitmapspentagram, sizeof(bitmapspentagram));
-    } else {
-        //oled_write_P(PSTR("CLMAK"), false);
-        oled_write_raw_P(bitmapstriangles, sizeof(bitmapstriangles));
+    } else if(wpmval < 30){
+         oled_write_raw_P(bitmapspyramid, sizeof(bitmapspyramid));
+    } else if(wpmval < 60){
+       oled_write_raw_P(bitmapstriangles, sizeof(bitmapstriangles));
     }
 
 }
 
-void render_layer_name(void) {
 
-    bool number = layer_state_is(_NUMBERS) & !layer_state_is(_ADJUST);
-    bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
-    bool nav = layer_state_is(_NAV);
-    bool qwerty= layer_state_is(_QWERTY);
-    bool adjust = layer_state_is(_ADJUST);
+// void render_layer_symbol(int wpmval) {
+//     bool number = layer_state_is(_NUMBERS) & !layer_state_is(_ADJUST);
+//     bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
+//     bool nav = layer_state_is(_NAV);
+//     bool qwerty= layer_state_is(_QWERTY);
+//     bool adjust = layer_state_is(_ADJUST);
 
-    if(number){
-        oled_write_P(PSTR("12345"), false);
-    } else if(symbol){
-        oled_write_P(PSTR("!@#$^"), false);
-    } else if(adjust){
-        oled_write_P(PSTR(" ADJ "), false);
-    } else if(nav){
-        oled_write_P(PSTR(" NAV "), false);
-    } else if(qwerty){
-        oled_write_P(PSTR("QWERTY"), false);
-    } else {
-        oled_write_P(PSTR("CLMAK"), false);
-    }
-}
+//     if(number){
+//         //oled_write_P(PSTR("12345"), false);
+//         oled_write_raw_P(bitmapsflower, sizeof(bitmapsflower));
+//     } else if(symbol){
+//         //oled_write_P(PSTR("!@#$^"), false);
+//        oled_write_raw_P(bitmapspenta2, sizeof(bitmapspenta2));
+//     } else if(adjust){
+//         //oled_write_P(PSTR(" ADJ "), false);
+//         oled_write_raw_P(bitmapssepta, sizeof(bitmapssepta));
+//     } else if(nav){
+//         //oled_write_P(PSTR(" NAV "), false);
+//         oled_write_raw_P(bitmapspyramid, sizeof(bitmapspyramid));
+//     } else if(qwerty){
+//         //oled_write_P(PSTR("QWERTY"), false);
+//         oled_write_raw_P(bitmapspentagram, sizeof(bitmapspentagram));
+//     } else {
+//         //oled_write_P(PSTR("CLMAK"), false);
+//         oled_write_raw_P(bitmapstriangles, sizeof(bitmapstriangles));
+//     }
+
+// }
 
 
+char wpm[42];
 bool oled_task_user(void) {
+    int wpmval=get_current_wpm();
     if (is_keyboard_master()) {
-        render_layer_symbol();
+
+        render_layer_symbol(wpmval);
         render_layer_name();
+        oled_set_cursor(0, 1);
+        sprintf(wpm, "WPM:%03d", wpmval);
+
+        oled_write(wpm, false);
     } else {
-        render_layer_symbol();
+        render_layer_symbol(wpmval);
     }
 
     return false;
@@ -497,6 +497,101 @@ bool oled_task_user(void) {
 
 
 #endif // OLED_ENABLE
+
+#ifdef RGB_MATRIX_ENABLE
+
+
+bool caps = false;
+
+void led_set_kb(uint8_t usb_led) {
+    if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
+        caps = true;
+    } else {
+        caps = false;
+    }
+}
+
+void keyboard_post_init_user(void) {
+    rgb_matrix_mode(RGB_MATRIX_TYPING_HEATMAP);
+}
+
+RGB rgbDEF = {-1,-1,-1};
+RGB rgbOFF ={RGB_OFF};
+RGB rgbRED ={RGB_RED};
+RGB rgbMAGENTA ={RGB_MAGENTA};
+
+
+RGB rgbP1 = {RGB_CYAN};//{186,89,100};
+RGB rgbP2 = {RGB_PURPLE};//{130,53,92};
+RGB rgbP3 = {RGB_BLUE};//{67, 90, 100};
+RGB rgbP4 = {RGB_GREEN};//{42,91,91};
+RGB rgbP5 = {RGB_MAGENTA};//{17,92,100};
+
+
+
+void set_rgb(uint8_t index, RGB rgb){
+    #if (WS2812_BYTE_ORDER == WS2812_BYTE_ORDER_GRB)
+        rgb_matrix_set_color(index, rgb.g, rgb.r, rgb.b);
+    #elif (WS2812_BYTE_ORDER == WS2812_BYTE_ORDER_RGB)
+       rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
+    #elif (WS2812_BYTE_ORDER == WS2812_BYTE_ORDER_BGR)
+       rgb_matrix_set_color(index, rgb.b, rgb.g, rgb.r);
+    #endif
+}
+
+uint8_t mSize = MATRIX_ROWS * MATRIX_COLS + 12;
+
+
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    //rgb_matrix_enable_noeeprom();
+    uint8_t layer = get_highest_layer(layer_state);
+    for(uint8_t index = 0; index < led_max ; ++index )
+    {
+        //if( HAS_FLAGS(g_led_config.flags[index],LED_FLAG_UNDERGLOW ))  {
+        if( g_led_config.flags[index]==LED_FLAG_UNDERGLOW )  {
+            RGB rgb = rgbDEF;
+            switch(layer){
+                case _QWERTY:
+                    if(caps)
+                        rgb = rgbRED;
+                    else
+                        rgb = rgbP2;
+                    break;
+                case _COLEMAK:
+                    if(caps)
+                        rgb = rgbRED;
+                    break;
+                case _ADJUST:
+                    rgb = rgbP1;
+                    break;
+                case _NAV:
+                    rgb = rgbP5;
+                    break;
+                case _SYMBOLS:
+                    rgb = rgbP3;
+                    break;
+                case _NUMBERS:
+                    rgb = rgbP4;
+                    break;
+                default:
+                    break;
+            }
+            //#ifdef CONSOLE_ENABLE
+            //    uprintf("index %u layer %u r %u g %u b %u\n",index, layer, rgb.r, rgb.g, rgb.b);
+            //#endif
+
+            if(!(rgb.r  == rgbDEF.r && rgb.g==rgbDEF.g && rgb.b==rgbDEF.b)){
+                set_rgb(index, rgb);
+            }else{
+                rgb_matrix_set_color(index, rgbOFF.r, rgbOFF.g, rgbOFF.b);
+            }
+
+        }
+
+    }
+    return true;
+}
+#endif
 
 #ifdef RGBLIGHT_ENABLE
 // Light LEDs 6 to 9 and 12 to 15 red when caps lock is active. Hard to ignore!
