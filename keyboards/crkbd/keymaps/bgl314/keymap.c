@@ -352,7 +352,7 @@ bool oled_task_needs_to_repaint(void) {
 }
 
 void render_layer_name(void) {
-
+    led_t led_state = host_keyboard_led_state();
     bool number = layer_state_is(_NUMBERS) & !layer_state_is(_ADJUST);
     bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
     bool nav = layer_state_is(_NAV);
@@ -360,26 +360,44 @@ void render_layer_name(void) {
     bool adjust = layer_state_is(_ADJUST);
     oled_set_cursor(0, 0);
     if(number){
-        oled_write_P(PSTR("12345"), false);
+        oled_write_P(PSTR("12345"), led_state.caps_lock );
     } else if(symbol){
-        oled_write_P(PSTR("!@#$^"), false);
+        oled_write_P(PSTR("!@#$^"), led_state.caps_lock);
     } else if(adjust){
-        oled_write_P(PSTR(" ADJ "), false);
+        oled_write_P(PSTR(" ADJ "), led_state.caps_lock);
     } else if(nav){
-        oled_write_P(PSTR(" NAV "), false);
+        oled_write_P(PSTR(" NAV "), led_state.caps_lock);
     } else if(qwerty){
-        oled_write_P(PSTR("QWERTY"), false);
+        oled_write_P(PSTR("QWERTY"), led_state.caps_lock);
     } else {
-        oled_write_P(PSTR("COLMAK"), false);
+        oled_write_P(PSTR("COLMAK"), led_state.caps_lock);
     }
+
+    oled_set_cursor(0, 1);
+    uint8_t mod_state = get_mods();
+    if(mod_state & MOD_MASK_SHIFT)
+        oled_write("shift", false);
+
+    oled_set_cursor(0, 2);
+    if(mod_state & MOD_MASK_CTRL)
+        oled_write("ctrl", false);
+
+    oled_set_cursor(0, 3);
+    if(mod_state & MOD_MASK_ALT)
+        oled_write("alt", false);
+
+
+
 }
+
+
+
 
 //char wpm[42];
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
     return OLED_ROTATION_0;
 }
-
 
 bool oled_task_kb(void) {
     if (!oled_task_user()) { return false; }

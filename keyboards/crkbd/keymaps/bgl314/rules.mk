@@ -2,7 +2,7 @@
 MOUSEKEY_ENABLE = no     # Mouse keys
 RGBLIGHT_ENABLE = no    # Enable WS2812 RGB underlight.
 BACKLIGHT_ENABLE= no
-RGB_MATRIX_ENABLE = yes
+RGB_MATRIX_ENABLE = no
 VIA_ENABLE      = no    # Enable VIA
 OLED_ENABLE     = yes
 OLED_DRIVER     = SSD1306
