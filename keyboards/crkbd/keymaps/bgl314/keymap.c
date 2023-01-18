@@ -41,31 +41,31 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define _ADJUST 5
 
 
-// enum td_keycodes {
-//     SHIFT_CAPS, // Our example key: `lshift` when held, `capslock` when tapped. Add additional keycodes for each tapdance.
-//     SCLN_ENT // tap ent, hold shift, doubletap semicolon enter
-// };
+enum td_keycodes {
+    //SHIFT_CAPS, // Our example key: `lshift` when held, `capslock` when tapped. Add additional keycodes for each tapdance.
+    SCLN_ENT // tap ent, hold shift, doubletap semicolon enter
+};
 
-// // Define a type containing as many tapdance states as you need
-// typedef enum {
-//     TD_NONE,
-//     TD_UNKNOWN,
-//     TD_SINGLE_TAP,
-//     TD_SINGLE_HOLD,
-//     TD_DOUBLE_SINGLE_TAP
-// } td_state_t;
-// // Create a global instance of the tapdance state type
-// static td_state_t td_state;
+// Define a type containing as many tapdance states as you need
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_SINGLE_TAP
+} td_state_t;
+// Create a global instance of the tapdance state typerr
+static td_state_t td_state;
 
-// // Function to determine the current tapdance state
-// td_state_t cur_dance(qk_tap_dance_state_t *state);
+// Function to determine the current tapdance state
+td_state_t cur_dance(qk_tap_dance_state_t *state);
 
-// // `finished` and `reset` functions for each tapdance keycode
-// void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data);
-// void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data);
+// `finished` and `reset` functions for each tapdance keycode
+//void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data);
+//void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data);
 
-// void shift_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data);
-// void shift_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data);
+void shift_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data);
+void shift_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data);
 
 //TD(SHIFT_CAPS)
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -74,7 +74,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_CAPS,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN,  KC_BSPC,
+     KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    TD(SCLN_ENT),  KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_ESC,   KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                               KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -150,7 +150,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
 	   KC_NO,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-       KC_NO,   RGB_TOG, RGB_RMOD,RGB_MOD , KC_BRIGHTNESS_UP,KC_BRIGHTNESS_DOWN,           KC_NO,   KC_VOLU,   KC_VOLD, KC_MUTE,   KC_MSTP,  KC_MPLY,
+       KC_CAPS,   RGB_TOG, RGB_RMOD,RGB_MOD , KC_BRIGHTNESS_UP,KC_BRIGHTNESS_DOWN,           KC_NO,   KC_VOLU,   KC_VOLD, KC_MUTE,   KC_MSTP,  KC_MPLY,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                       KC_NO,   KC_NO,  KC_NO,                      KC_NO,   KC_NO,   KC_NO
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -173,16 +173,16 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
 // //tapdancestuff
 
-// // Determine the tapdance state to return
-// td_state_t cur_dance(qk_tap_dance_state_t *state) {
-//     if (state->count == 1) {
-//         if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
-//         else return TD_SINGLE_HOLD;
-//     }
+// Determine the tapdance state to return
+td_state_t cur_dance(qk_tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
+        else return TD_SINGLE_HOLD;
+    }
 
-//     if (state->count == 2) return TD_DOUBLE_SINGLE_TAP;
-//     else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
-// }
+    if (state->count == 2) return TD_DOUBLE_SINGLE_TAP;
+    else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
+}
 
 
 
@@ -227,44 +227,43 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // // END SHIFT-ENTER-CAPS
 
 
-// // SHIFT-ENTER-SEMICOLON/ENTER
-// // Handle the possible states for each tapdance keycode you define:
+// SHIFT-ENTER-SEMICOLON/ENTER
+// Handle the possible states for each tapdance keycode you define:
+void scln_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
+    td_state = cur_dance(state);
+    switch (td_state) {
+        case TD_SINGLE_TAP:
+            register_code16(KC_SCLN);
+            break;
+        case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
+            register_code16(KC_SCLN);
+            register_code16(KC_ENT);
+            break;
+        default:
+            break;
+    }
+}
 
-// void scln_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
-//     td_state = cur_dance(state);
-//     switch (td_state) {
-//         case TD_SINGLE_TAP:
-//             register_code16(KC_SCLN);
-//             break;
-//         case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
-//             register_code16(KC_SCLN);
-//             register_code16(KC_ENT);
-//             break;
-//         default:
-//             break;
-//     }
-// }
+void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
+    switch (td_state) {
+        case TD_SINGLE_TAP:
+            unregister_code16(KC_SCLN);
+            break;
+        case TD_DOUBLE_SINGLE_TAP:
+            unregister_code16(KC_SCLN);
+            unregister_code16(KC_ENT);
+            break;
+        default:
+            break;
+    }
+}
+// END SHIFT-ENTER-CAPS
 
-// void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
-//     switch (td_state) {
-//         case TD_SINGLE_TAP:
-//             unregister_code16(KC_SCLN);
-//             break;
-//         case TD_DOUBLE_SINGLE_TAP:
-//             unregister_code16(KC_SCLN);
-//             unregister_code16(KC_ENT);
-//             break;
-//         default:
-//             break;
-//     }
-// }
-// // END SHIFT-ENTER-CAPS
-
-// // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
-// qk_tap_dance_action_t tap_dance_actions[] = {
-//     [SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_ent_caps_finished, shift_ent_caps_reset),
-//     [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset)
-// };
+// Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
+qk_tap_dance_action_t tap_dance_actions[] = {
+//    [SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_ent_caps_finished, shift_ent_caps_reset),
+    [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset)
+};
 
 
 
