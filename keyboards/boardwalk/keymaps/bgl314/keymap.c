@@ -21,38 +21,33 @@
 enum layer_names {
     _COLEMAK,
     _QWERTY,
+      _REAPER,
     _SYMBOLS,
      _NUMBERS,
       _NAV,
       _ADJUST
 };
 
+#define SHT_O MT(MOD_RSFT, KC_O)
+#define SHT_GRV MT(MOD_LSFT, KC_GRV)
+#define SHT_BSLS MT(MOD_RSFT, KC_BSLS)
+#define SHT_A MT(MOD_LSFT, KC_A)
+#define CTRL_T MT(MOD_LCTL, KC_T)
+#define CTL_N MT(MOD_RCTL, KC_N)
+#define CTL_MPLY MT(MOD_RCTL, KC_MPLY)
+#define SHT_MNXT MT(MOD_RSFT, KC_MNXT)
 
 enum td_keycodes {
-    SHIFT_CAPS, // Our example key: `lshift` when held, `capslock` when tapped. Add additional keycodes for each tapdance.
-    SCLN_ENT, // tap ent, hold shift, doubletap semicolon enter
-    CTL_QWERTY // tap backspace, doubletap qwerty
+    DOT_ENT,
+    Q_ESC,
+    D_DELETE,
+    P_SPACE,
+    S_ALT_S,
+    T_TAKE,
+    SLASH_ENT,
+    Z_ENT,
+    SCLN_ENT // tap ent, hold shift, doubletap semicolon enter
 };
-
-
-// Define a type containing as many tapdance states as you need
-typedef enum {
-    TD_NONE,
-    TD_UNKNOWN,
-    TD_SINGLE_TAP,
-    TD_SINGLE_HOLD,
-    TD_DOUBLE_SINGLE_TAP
-} td_state_t;
-// Create a global instance of the tapdance state type
-static td_state_t td_state;
-
-// Function to determine the current tapdance state
-td_state_t cur_dance(qk_tap_dance_state_t *state);
-
-// `finished` and `reset` functions for each tapdance keycode
-
-void shift_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data);
-void shift_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -71,10 +66,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      */
     [_COLEMAK] = LAYOUT_ortho_2x2u(
        KC_NO,             KC_1,    KC_2,     KC_3,    KC_4,    KC_5,   KC_NO,  KC_NO,      KC_6,   KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
-        KC_NO,             KC_Q,    KC_W,     KC_F,    KC_P,    KC_G,   KC_VOLD,  KC_VOLU,      KC_J,   KC_L,    KC_U,    KC_Y,    TD(SCLN_ENT), KC_NO,
-        KC_ESC,             KC_A,    KC_R,     KC_S,    KC_T,    KC_D,   KC_INS  ,  KC_PSCR,      KC_H,   KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
-       MT(MOD_LSFT,KC_TAB),      KC_Z,    KC_X,     KC_C,    KC_V,    KC_B,   KC_DEL, KC_BSPC,    KC_K,   KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT_T(KC_ENT),
-      CW_TOGG,KC_NO,  KC_NO, MT(MOD_LALT,KC_ENT),TT(_NUMBERS),   MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI),KC_NO, KC_NO,  KC_NO
+        KC_NO,  TD(Q_ESC),    KC_W,     KC_F,    KC_P,    KC_G,   KC_NO,  KC_NO,      KC_J,   KC_L,    KC_U,    KC_Y,  KC_QUOT  , KC_NO,
+        KC_NO,   SHT_A,    KC_R,    KC_S,    CTRL_T,    KC_D,    KC_NO  ,  KC_NO,      KC_H,    CTL_N,    KC_E,    KC_I,    SHT_O,    KC_NO,
+       KC_NO,   TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,   KC_NO, KC_NO,     KC_K,     KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), KC_NO,
+      KC_NO,KC_NO,  KC_NO,MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI),KC_NO, KC_NO,  KC_NO
 
     ),
     /* Function Layer
@@ -95,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,  _______, _______,  KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSLS,
         KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,  _______, _______,  KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENTER,
         KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,  _______, _______,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-        KC_LCTL, _______, _______, KC_LALT, _______, KC_SPC,                 KC_SPC, _______,   KC_RALT, _______,_______, _______
+        KC_LCTL, _______, _______, KC_LALT, TT(_NUMBERS), KC_SPC,                 KC_SPC, _______,   KC_RALT, _______,_______, _______
     ),
 
     /* Raise Layer
@@ -114,39 +109,64 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_SYMBOLS] = LAYOUT_ortho_2x2u(
         _______,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F11,  KC_F12,  KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_NO,
         _______,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_NO, KC_NO,KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  _______,
-      KC_DEL,  KC_TILD,   KC_LCBR, KC_LPRN,  KC_LBRC,  KC_LT,  KC_NO, KC_NO, KC_GT, KC_RBRC, KC_RPRN,  KC_RCBR, KC_PIPE , KC_DEL,
-        KC_SPC, KC_GRV,    KC_NO,    KC_UNDS, KC_MINUS,KC_NO , _______, _______, KC_NO,  KC_PLUS, KC_EQL ,KC_NO,    KC_BSLS,   _______,
+         KC_NO,  SHT_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,   KC_NO, KC_NO,KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, TD(SCLN_ENT) , KC_NO,
+        KC_NO, KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_BSLS ,  _______, _______, KC_NO, KC_PLUS, KC_EQL ,RSFT(KC_SCLN), KC_SLSH,KC_NO,
         _______, _______, _______, _______, _______,     _______,          KC_NO,     _______, _______, _______, _______, _______
     ),
     [_NUMBERS] = LAYOUT_ortho_2x2u(
-        _______, KC_F1,  KC_F2,  KC_F3,  KC_F4,   KC_F5,   KC_F11,   KC_F12,     KC_F6,   KC_F7, KC_F8,  KC_F9,   KC_F10,  KC_NO,
-        KC_BSPC, KC_PSLS,  KC_7,   KC_8,   KC_9,    KC_MINS,   KC_NO,    KC_NO,      KC_MINS,   KC_7,  KC_8,   KC_9,    KC_PSLS,   _______,
-        KC_DEL, KC_PAST,KC_4,   KC_5,   KC_6,    KC_PLUS, KC_NO,    _______,    KC_PLUS, KC_4,  KC_5,   KC_6,    KC_PAST, KC_DEL,
-        KC_SPC,    KC_DOT,  KC_1,   KC_2,   KC_3,    KC_EQL, KC_NO,    _______,    KC_EQL, KC_1,  KC_2,   KC_3,    KC_DOT, _______,
-        KC_NO,    KC_NO,   KC_NO, _______,  _______, KC_0,   KC_0,     _______,    _______, KC_NO, KC_NO, KC_NO
+        KC_NO, KC_F1,  KC_F2,  KC_F3,  KC_F4,   KC_F5,   KC_F11,   KC_F12,     KC_F6,   KC_F7, KC_F8,  KC_F9,   KC_F10,  KC_NO,
+        KC_NO, KC_PSLS,  KC_7,   KC_8,   KC_9,    KC_MINS,   KC_NO,    KC_NO,      KC_MINS,   KC_7,  KC_8,   KC_9,    KC_PSLS,   KC_NO,
+        KC_NO, KC_PAST,KC_4,   KC_5,   KC_6,    KC_PLUS, KC_NO,    KC_NO,    KC_PLUS, KC_4,  KC_5,   KC_6,    KC_PAST, KC_NO,
+        KC_NO, TD(DOT_ENT),  KC_1,   KC_2,   KC_3,    KC_SPC, KC_NO,    KC_NO,    KC_EQL, KC_1,  KC_2,   KC_3,    TD(DOT_ENT), KC_NO,
+        KC_NO,    KC_NO,   KC_NO, KC_0,  _______, KC_DEL,   KC_0,     _______,    _______, KC_NO, KC_NO, KC_NO
     )
 ,
     [_NAV] = LAYOUT_ortho_2x2u(
         KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,         KC_NO,   KC_NO,       KC_NO,    KC_NO,    KC_NO,    KC_NO,  KC_NO,  KC_NO,
-       KC_BSPC   , KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,  KC_NO,   KC_NO,   KC_NO,    KC_PSCR,    KC_NO,    KC_NO,  KC_NO,  _______,
-       KC_DEL,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_NO,  KC_NO,   KC_NO,  KC_NO,  KC_RSFT,KC_RCTL,  KC_INS,  KC_NO,  KC_NO,
-      _______,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),  KC_NO,   _______,            KC_NO,  KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_NO,  _______,
-        KC_NO, KC_NO, KC_NO, _______,    KC_ENT, _______,            _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+       KC_NO   , KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,  KC_NO,   KC_NO,    KC_NO,    KC_PSCR,    KC_NO,    KC_NO,  KC_NO,  _______,
+       KC_NO,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,   KC_NO,  KC_NO,  KC_RALT,  KC_RCTL, KC_RSFT,  KC_INS,  KC_RSFT,  KC_NO,
+      KC_NO,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),  KC_NO,   _______,            KC_NO, KC_NO,  KC_NO,    KC_NO,    KC_NO,  _______,  _______,
+        KC_NO, KC_NO, KC_NO, _______,    _______, KC_DEL,            _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
     ),
      [_ADJUST] = LAYOUT_ortho_2x2u(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-     KC_NO, KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   TT(_QWERTY),
+     KC_NO, KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-	   KC_NO,  KC_NO, KC_NO,    KC_NO,   KC_PSCR, KC_F11 ,  KC_NO, KC_NO,  KC_F12,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   TT(_QWERTY),
+	   KC_NO,  KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO ,  KC_NO, KC_NO,              RGB_TOG,  KC_BRIGHTNESS_UP,   KC_BRIGHTNESS_DOWN,   TG(_REAPER), TG(_QWERTY),   KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-	    KC_NO,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,  KC_NO, KC_NO,             KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_NO,
+	    KC_NO,  KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_NO,     KC_NO, KC_NO,             KC_RALT,  CTL_MPLY, KC_MSTP, KC_MPRV,  SHT_MNXT,KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-       KC_CAPS,KC_MSTP, KC_MPRV, KC_MNXT , KC_BRIGHTNESS_UP,KC_BRIGHTNESS_DOWN,RGB_TOG,    KC_NO,KC_NO,   KC_VOLU,   KC_VOLD, KC_MUTE,   KC_MPLY,  KC_NO,
+       KC_NO, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_NO,   KC_NO,             KC_NO,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_CAPS, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-        KC_NO, KC_NO,  KC_NO,                              KC_NO,   KC_NO,  KC_NO,                      KC_NO,   KC_NO,   KC_NO,  KC_NO,   KC_NO,   KC_NO
+        KC_NO, KC_NO,  KC_NO,          _______,   _______,  _______,                       _______,   _______,  _______,  KC_NO,   KC_NO,   KC_NO
+                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
+  ),
+     [_REAPER] = LAYOUT_ortho_2x2u(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
+     KC_NO, KC_NO,    KC_NO, KC_NO, KC_NO, KC_NO,     KC_NO, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+	   _______, _______,  _______, _______, TD(P_SPACE), _______, KC_NO ,  KC_NO, _______, _______, _______, _______, _______,  _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+	   _______, _______,  _______, TD(S_ALT_S), TD(T_TAKE), TD(D_DELETE),     KC_NO, KC_NO,     _______,        _______, _______, _______, _______, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+       _______,_______, _______, _______ , _______,_______,_______,    _______, _______, _______,  _______, _______, _______, _______,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+        KC_NO, KC_NO,  KC_NO,                              _______,   _______,  _______,                      _______,   _______,   _______,  KC_NO,   KC_NO,   KC_NO
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   )
 };
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+         case SHT_O:
+         case SHT_A:
+         case CTL_N:
+         case CTRL_T:
+            return 200;
+        default:
+            return TAPPING_TERM;
+    }
+}
 
 // Light LEDs 6 to 9 and 12 to 15 red when caps lock is active. Hard to ignore!
 const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
@@ -168,6 +188,9 @@ const rgblight_segment_t PROGMEM my_number_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t PROGMEM my_adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, 14, HSV_CYAN}
 );
+const rgblight_segment_t PROGMEM my_reaper_layer[] = RGBLIGHT_LAYER_SEGMENTS(
+    {0, 14, HSV_ORANGE}
+);
 
 const rgblight_segment_t PROGMEM my_nav_layer[] = RGBLIGHT_LAYER_SEGMENTS(
    {0, 14, HSV_MAGENTA}       // Light 4 LEDs, starting with LED 6
@@ -184,10 +207,13 @@ const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
 
     my_qwerty_layer,    // Overrides caps lock layer
     my_capslock_layer,
+    my_reaper_layer,
+
     my_symbol_layer,
     my_number_layer,    // Overrides other layers
     my_nav_layer,     // Overrides other layers
-     my_adjust_layer
+     my_adjust_layer,
+     my_reaper_layer
 );
 
 void keyboard_post_init_user(void) {
@@ -195,8 +221,62 @@ void keyboard_post_init_user(void) {
     rgblight_layers = my_rgb_layers;
 }
 
+
+void caps_word_set_user(bool active) {
+    if (active) {
+        rgblight_set_layer_state(2, true);
+    } else {
+       rgblight_set_layer_state(0, layer_state_is( _COLEMAK));
+       rgblight_set_layer_state(1, layer_state_is( _QWERTY));
+       rgblight_set_layer_state(2, false);
+        rgblight_set_layer_state(3, layer_state_is( _REAPER));
+       rgblight_set_layer_state(4, layer_state_is( _SYMBOLS));
+       rgblight_set_layer_state(5, layer_state_is( _NUMBERS));
+       rgblight_set_layer_state(6, layer_state_is( _NAV));
+       rgblight_set_layer_state(7, layer_state_is( _ADJUST));
+
+
+    }
+}
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_Z:
+        case KC_MINS:
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case KC_UNDS:
+            return true;
+        case TD(Q_ESC):
+        case TD(Z_ENT):
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+
+        default:
+            return false;  // Deactivate Caps Word.
+    }
+}
+
 bool led_update_user(led_t led_state) {
-    rgblight_set_layer_state(2, led_state.caps_lock);
+    if (led_state.caps_lock) {
+        rgblight_set_layer_state(2, true);
+    } else {
+       rgblight_set_layer_state(0, layer_state_is( _COLEMAK));
+       rgblight_set_layer_state(1, layer_state_is( _QWERTY));
+       rgblight_set_layer_state(2, false);
+        rgblight_set_layer_state(3, layer_state_is( _REAPER));
+       rgblight_set_layer_state(4, layer_state_is( _SYMBOLS));
+       rgblight_set_layer_state(5, layer_state_is( _NUMBERS));
+       rgblight_set_layer_state(6, layer_state_is( _NAV));
+       rgblight_set_layer_state(7, layer_state_is( _ADJUST));
+
+
+    }
     return true;
 }
 
@@ -207,73 +287,52 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
 
-     state = update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
-    rgblight_set_layer_state(1, layer_state_cmp(state, _QWERTY));
-    rgblight_set_layer_state(3, layer_state_cmp(state, _SYMBOLS));
-    rgblight_set_layer_state(4, layer_state_cmp(state, _NUMBERS));
-    rgblight_set_layer_state(5, layer_state_cmp(state, _NAV));
-    rgblight_set_layer_state(6, layer_state_cmp(state, _ADJUST));
+    state = update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
+         rgblight_set_layer_state(0, layer_state_is( _COLEMAK));
+
+
+        rgblight_set_layer_state(3, layer_state_is( _REAPER));
+       rgblight_set_layer_state(4, layer_state_is( _SYMBOLS));
+       rgblight_set_layer_state(5, layer_state_is( _NUMBERS));
+       rgblight_set_layer_state(6, layer_state_is( _NAV));
+       rgblight_set_layer_state(7, layer_state_is( _ADJUST));
     return state;
 }
 
 
-// layer_state_t layer_state_set_user(layer_state_t state) {
-//   return update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
-// }
-
-//tapdancestuff
-
-// Determine the tapdance state to return
-td_state_t cur_dance(qk_tap_dance_state_t *state) {
-    if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
-        else return TD_SINGLE_HOLD;
-    }
-
-    if (state->count == 2) return TD_DOUBLE_SINGLE_TAP;
-    else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
-}
-
-
-
-
-// END SHIFT-ENTER-CAPS
-
-
-// SHIFT-ENTER-SEMICOLON/ENTER
-// Handle the possible states for each tapdance keycode you define:
-
 void scln_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
-    td_state = cur_dance(state);
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            register_code16(KC_SCLN);
-            break;
-        case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
-            register_code16(KC_SCLN);
-            register_code16(KC_ENT);
-            break;
-        default:
-            break;
-    }
+     if(state->count == 1){
+        register_code16(KC_SCLN);
+
+     }else {
+        register_code16(KC_SCLN);
+        register_code16(KC_ENT);
+     }
+
 }
 
 void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (td_state) {
-        case TD_SINGLE_TAP:
+     if(state->count == 1){
+         unregister_code16(KC_SCLN);
+
+     }else {
             unregister_code16(KC_SCLN);
-            break;
-        case TD_DOUBLE_SINGLE_TAP:
-            unregister_code16(KC_SCLN);
-            unregister_code16(KC_ENT);
-            break;
-        default:
-            break;
-    }
+             unregister_code16(KC_ENT);
+     }
+
 }
 // END SHIFT-ENTER-CAPS
 
 // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 qk_tap_dance_action_t tap_dance_actions[] = {
+
+     [Q_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_ESC),
+     [DOT_ENT]= ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_ENT),
+    [SLASH_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_ENT),
+     [Z_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_ENT),
+    [D_DELETE] = ACTION_TAP_DANCE_DOUBLE(KC_D, KC_DEL),
+    [P_SPACE] = ACTION_TAP_DANCE_DOUBLE(KC_P, KC_SPACE),
+    [S_ALT_S] = ACTION_TAP_DANCE_DOUBLE(KC_S, LALT(KC_S)),
+    [T_TAKE] = ACTION_TAP_DANCE_DOUBLE(KC_T, LALT(LSFT(KC_T))),
     [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset)
 };

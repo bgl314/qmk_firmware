@@ -18,54 +18,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
-
-#ifdef RGBLIGHT_ENABLE
-    #include "color.h"
-#endif
-
-#ifdef MYOLED_ENABLE
-    #include "oled.h"
-
-#endif
-
+#ifdef OLED_ENABLE
 #include "bongo.h"
-
-
-
+#endif
 
 #define _COLEMAK 0
 #define _QWERTY 1
-#define _SYMBOLS 2
-#define _NUMBERS 3
-#define _NAV 4
-#define _ADJUST 5
+#define _REAPER 2
+#define _SYMBOLS 3
+#define _NUMBERS 4
+#define _NAV 5
+#define _ADJUST 6
 
+
+
+#define SHT_O MT(MOD_RSFT, KC_O)
+#define SHT_GRV MT(MOD_LSFT, KC_GRV)
+#define SHT_BSLS MT(MOD_RSFT, KC_BSLS)
+#define SHT_A MT(MOD_LSFT, KC_A)
+#define CTL_N MT(MOD_RCTL, KC_N)
+#define CTRL_T MT(MOD_LCTL, KC_T)
+#define CTL_MPLY MT(MOD_RCTL, KC_MPLY)
+#define SHT_MNXT MT(MOD_RSFT, KC_MNXT)
 
 enum td_keycodes {
-    //SHIFT_CAPS, // Our example key: `lshift` when held, `capslock` when tapped. Add additional keycodes for each tapdance.
+    DOT_ENT,
+    Q_ESC,
+    Z_ENT,
+    D_DELETE,
+    P_SPACE,
+    S_ALT_S,
+    T_TAKE,
+    SLASH_ENT,
     SCLN_ENT // tap ent, hold shift, doubletap semicolon enter
 };
 
 // Define a type containing as many tapdance states as you need
-typedef enum {
-    TD_NONE,
-    TD_UNKNOWN,
-    TD_SINGLE_TAP,
-    TD_SINGLE_HOLD,
-    TD_DOUBLE_SINGLE_TAP
-} td_state_t;
-// Create a global instance of the tapdance state typerr
-static td_state_t td_state;
 
-// Function to determine the current tapdance state
-td_state_t cur_dance(qk_tap_dance_state_t *state);
-
-// `finished` and `reset` functions for each tapdance keycode
-//void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data);
-//void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data);
-
-void shift_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data);
-void shift_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data);
 
 //TD(SHIFT_CAPS)
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -74,41 +63,53 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    TD(SCLN_ENT),  KC_NO,
+     KC_NO, TD(Q_ESC),    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_ESC,   KC_A,    KC_R,    KC_S,    KC_T,    KC_D,                               KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
+     KC_NO,   SHT_A,    KC_R,    KC_S,    CTRL_T,    KC_D,                              KC_H,    CTL_N,    KC_E,    KC_I,    SHT_O,    KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
- MT(MOD_LSFT,KC_TAB), KC_Z,  KC_X,  KC_C,  KC_V,    KC_B,                                 KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, MT(MOD_RSFT,KC_ENT),
+     KC_NO, TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,                               KC_K, KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), TD(SCLN_ENT),
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                        MT(MOD_LALT,KC_ENT),TT(_NUMBERS),MT(MOD_LCTL,KC_BSPC) ,      LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI)
+                MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC) , LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI)
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
   [_QWERTY] = LAYOUT_split_3x6_3(
-  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                      ?    ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_CAPS, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, _______,
+     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                                KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, RSFT(KC_ENT),
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     KC_LALT, _______, KC_LCTL,                    _______,  _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
+   [_REAPER] = LAYOUT_split_3x6_3(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+    _______, _______,  _______, _______, TD(P_SPACE), _______,                            _______, _______, _______, _______, _______,  _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, _______,  _______, TD(S_ALT_S), TD(T_TAKE), TD(D_DELETE),                            _______, _______, _______, _______, _______,  _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______, _______,  _______, _______, _______, _______,                           _______, _______,  _______, _______, _______, _______,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+                                     KC_SPC,_______,_______ ,                    _______,  _______,_______
+                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
+  ),
   [_SYMBOLS] = LAYOUT_split_3x6_3(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                          KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  _______,
+     KC_NO,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                          KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_DEL,  KC_TILD,   KC_LCBR, KC_LPRN,  KC_LBRC,  KC_LT,                           KC_GT, KC_RBRC, KC_RPRN,  KC_RCBR, KC_PIPE , KC_DEL,
+     KC_NO,  SHT_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,                           KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, TD(SCLN_ENT) , KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_SPC, KC_GRV,    KC_NO,    KC_UNDS, KC_MINUS,KC_NO ,                             KC_NO,  KC_PLUS, KC_EQL ,KC_NO,    KC_BSLS,   _______,
+     KC_NO, KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_BSLS ,                          KC_NO,  KC_PLUS, KC_EQL ,RSFT(KC_SCLN), KC_SLSH, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______,_______,  _______,                    KC_NO, _______ ,  _______
+                                    _______,_______,  _______,                    _______, _______ ,  _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -117,13 +118,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
   //   KC_F12,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_BSPC , KC_PSLS,KC_7,    KC_8,    KC_9,    KC_MINUS,                            KC_MINUS, KC_7,    KC_8,    KC_9,    KC_PSLS,   _______,
+     KC_NO , KC_PSLS,KC_7,    KC_8,    KC_9,    KC_MINUS,                            KC_MINUS, KC_7,    KC_8,    KC_9,    KC_PSLS,   KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_DEL,  KC_PAST,    KC_4,    KC_5,  KC_6,    KC_PLUS,                            KC_PLUS,    KC_4,    KC_5,  KC_6,    KC_PAST,  KC_DEL,
+     KC_NO,  KC_PAST,    KC_4,    KC_5,  KC_6,    KC_PLUS,                            KC_PLUS,    KC_4,    KC_5,  KC_6,    KC_PAST,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_SPC,    KC_DOT,   KC_1,  KC_2,   KC_3,   KC_EQL,                               KC_EQL,   KC_1,     KC_2,     KC_3,   KC_DOT, _______,
+     KC_NO, TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_SPC,                               KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT), KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______,    _______, KC_0,                    KC_0, _______, _______
+                                    KC_0,    _______, KC_DEL,                    KC_0, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -131,13 +132,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_BSPC   , KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,                              KC_NO,    KC_PSCR,    KC_NO,    KC_NO,  KC_NO,  KC_NO,
+     _______   , KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,                              KC_NO,    KC_PSCR,    KC_NO,    KC_NO,  KC_NO,  _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_DEL,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_NO,                            KC_NO,  KC_RSFT,KC_RCTL,  KC_INS,  KC_NO,  KC_NO,
+     KC_NO,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_NO,                            KC_RALT,  KC_RCTL, KC_RSFT,  KC_INS,  KC_RSFT,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),                         KC_NO,  KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_NO,  _______,
+     KC_NO,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),KC_NO,                     KC_NO,  KC_NO,    KC_NO,    KC_NO,  _______,  _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______,    KC_ENT, _______,                   _______, KC_NO, KC_NO
+                                    _______,  _______, KC_DEL,                   _______, KC_NO, KC_NO
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -145,130 +146,101 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ADJUST] = LAYOUT_split_3x6_3(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼──────
+      KC_NO,  KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO ,                             RGB_TOG,  KC_BRIGHTNESS_UP,   KC_BRIGHTNESS_DOWN,   TG(_REAPER), TG(_QWERTY),   KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-	   KC_NO, KC_NO,    KC_NO,    KC_NO,   KC_PSCR, KC_F11 ,                              KC_F12,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   TT(_QWERTY),
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-	   KC_ESC,  KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                              KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_NO,
+	   KC_NO,  KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_NO,                               KC_RALT,  CTL_MPLY, KC_MSTP, KC_MPRV,  SHT_MNXT,KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-       KC_CAPS,KC_MSTP, KC_MPRV, KC_MNXT , KC_BRIGHTNESS_UP,KC_BRIGHTNESS_DOWN,           KC_NO,   KC_VOLU,   KC_VOLD, KC_MUTE,   KC_MPLY,  KC_NO,
+        KC_NO, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_NO,                             KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_CAPS, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                      KC_NO,   KC_NO,  KC_NO,                      KC_NO,   KC_NO,   KC_NO
+                                      _______,   _______,  _______,                      _______,   _______,   _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   )
 };
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case SHT_O:
+         case SHT_A:
+         case CTL_N:
+         case CTRL_T:
+            return 100;
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+
 layer_state_t layer_state_set_user(layer_state_t state) {
      state = update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
-
-    #ifdef RGBLIGHT_ENABLED
-    rgblight_set_layer_state(0, layer_state_cmp(state, _COLEMAK));
-    rgblight_set_layer_state(2, layer_state_cmp(state, _QWERTY));
-    rgblight_set_layer_state(3, layer_state_cmp(state, _SYMBOLS));
-    rgblight_set_layer_state(4, layer_state_cmp(state, _NUMBERS));
-    rgblight_set_layer_state(5, layer_state_cmp(state, _NAV));
-    rgblight_set_layer_state(6, layer_state_cmp(state, _ADJUST));
-    #endif
     return state;
 }
-
-
-// //tapdancestuff
-
-// Determine the tapdance state to return
-td_state_t cur_dance(qk_tap_dance_state_t *state) {
-    if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return TD_SINGLE_TAP;
-        else return TD_SINGLE_HOLD;
-    }
-
-    if (state->count == 2) return TD_DOUBLE_SINGLE_TAP;
-    else return TD_UNKNOWN; // Any number higher than the maximum state value you return above
-}
-
-
-
-
-// // SHIFT-ENTER-CAPS
-// // Handle the possible states for each tapdance keycode you define:
-
-// void shift_ent_caps_finished(qk_tap_dance_state_t *state, void *user_data) {
-//     td_state = cur_dance(state);
-//     switch (td_state) {
-//         case TD_SINGLE_TAP:
-//             // register_code16(KC_ENT);
-//             // break;
-//         case TD_SINGLE_HOLD:
-//             register_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_on(_MY_LAYER)` here
-//             break;
-//         case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
-//             register_code16(KC_CAPS);
-//             break;
-//         default:
-//             break;
-//     }
-// }
-
-// void shift_ent_caps_reset(qk_tap_dance_state_t *state, void *user_data) {
-//     switch (td_state) {
-//         case TD_SINGLE_TAP:
-//         case TD_SINGLE_HOLD:
-//         //     unregister_code16(KC_ENT);
-//         //     break;
-//         // case TD_SINGLE_HOLD:
-//             unregister_mods(MOD_BIT(KC_LSFT)); // For a layer-tap key, use `layer_off(_MY_LAYER)` here
-//             break;
-//         case TD_DOUBLE_SINGLE_TAP:
-//             unregister_code16(KC_CAPS);
-//             break;
-//         default:
-//             break;
-//     }
-// }
-
-// // END SHIFT-ENTER-CAPS
 
 
 // SHIFT-ENTER-SEMICOLON/ENTER
 // Handle the possible states for each tapdance keycode you define:
 void scln_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
-    td_state = cur_dance(state);
-    switch (td_state) {
-        case TD_SINGLE_TAP:
-            register_code16(KC_SCLN);
-            break;
-        case TD_DOUBLE_SINGLE_TAP: // Allow nesting of 2 parens `((` within tapping term
-            register_code16(KC_SCLN);
-            register_code16(KC_ENT);
-            break;
-        default:
-            break;
-    }
+     if(state->count == 1){
+        register_code16(KC_SCLN);
+
+     }else {
+        register_code16(KC_SCLN);
+        register_code16(KC_ENT);
+     }
+
 }
 
 void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (td_state) {
-        case TD_SINGLE_TAP:
+     if(state->count == 1){
+         unregister_code16(KC_SCLN);
+
+     }else {
             unregister_code16(KC_SCLN);
-            break;
-        case TD_DOUBLE_SINGLE_TAP:
-            unregister_code16(KC_SCLN);
-            unregister_code16(KC_ENT);
-            break;
-        default:
-            break;
-    }
+             unregister_code16(KC_ENT);
+     }
+
 }
 // END SHIFT-ENTER-CAPS
 
 // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 qk_tap_dance_action_t tap_dance_actions[] = {
-//    [SHIFT_CAPS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_ent_caps_finished, shift_ent_caps_reset),
+    [Q_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_ESC),
+     [DOT_ENT]= ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_ENT),
+    [SLASH_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_ENT),
+     [Z_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_ENT),
+    [D_DELETE] = ACTION_TAP_DANCE_DOUBLE(KC_D, KC_DEL),
+    [P_SPACE] = ACTION_TAP_DANCE_DOUBLE(KC_P, KC_SPACE),
+    [S_ALT_S] = ACTION_TAP_DANCE_DOUBLE(KC_S, LALT(KC_S)),
+    [T_TAKE] = ACTION_TAP_DANCE_DOUBLE(KC_T, LALT(LSFT(KC_T))),
     [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset)
 };
 
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_Z:
+        case KC_MINS:
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case KC_UNDS:
+            return true;
+        case TD(Q_ESC):
+        case TD(Z_ENT):
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+
+        default:
+            return false;  // Deactivate Caps Word.
+    }
+}
 
 
-
-
+#ifdef OLED_ENABLE
 #define CUSTOM_OLED_TIMEOUT 10000
 void draw_default(void);
 
@@ -356,6 +328,7 @@ void render_layer_name(void) {
     bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
     bool nav = layer_state_is(_NAV);
     bool qwerty= layer_state_is(_QWERTY);
+    bool reaper= layer_state_is(_REAPER);
     bool adjust = layer_state_is(_ADJUST);
     oled_set_cursor(0, 0);
     if(number){
@@ -368,6 +341,8 @@ void render_layer_name(void) {
         oled_write_P(PSTR(" NAV "), led_state.caps_lock);
     } else if(qwerty){
         oled_write_P(PSTR("QWERTY"), led_state.caps_lock);
+    } else if(reaper){
+        oled_write_P(PSTR("REAPER"), led_state.caps_lock);
     } else {
         oled_write_P(PSTR("COLMAK"), led_state.caps_lock);
     }
@@ -384,6 +359,12 @@ void render_layer_name(void) {
     oled_set_cursor(0, 3);
     if(mod_state & MOD_MASK_ALT)
         oled_write("alt", false);
+    else{
+        // // tapping term
+        // char snum[5];
+        // itoa(TAPPING_TERM , snum,10);
+        // oled_write(snum, false);
+    }
 
 
 
@@ -413,257 +394,64 @@ bool oled_task_kb(void) {
     return false;
 }
 
+#endif
 
 
-#ifdef MYOLED_ENABLE
-#include <stdio.h>
-
-oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-   return OLED_ROTATION_0;
-  //return OLED_ROTATION_270;
-}
-
-
-void render_layer_name(void) {
-
-    bool number = layer_state_is(_NUMBERS) & !layer_state_is(_ADJUST);
-    bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
-    bool nav = layer_state_is(_NAV);
-    bool qwerty= layer_state_is(_QWERTY);
-    bool adjust = layer_state_is(_ADJUST);
- oled_set_cursor(0, 0);
-    if(number){
-        oled_write_P(PSTR("12345"), false);
-    } else if(symbol){
-        oled_write_P(PSTR("!@#$^"), false);
-    } else if(adjust){
-        oled_write_P(PSTR(" ADJ "), false);
-    } else if(nav){
-        oled_write_P(PSTR(" NAV "), false);
-    } else if(qwerty){
-        oled_write_P(PSTR("QWERTY"), false);
-    } else {
-        oled_write_P(PSTR("COLEMAK"), false);
-    }
-}
-
-
-void render_layer_symbol(int wpmval) {
-
-
-    if(wpmval < 10){
-        //oled_write_P(PSTR("12345"), false);
-        oled_write_raw_P(bitmapsflower, sizeof(bitmapsflower));
-    } else if(wpmval < 30){
-         oled_write_raw_P(bitmapspyramid, sizeof(bitmapspyramid));
-    } else if(wpmval < 60){
-       oled_write_raw_P(bitmapstriangles, sizeof(bitmapstriangles));
-    }
-
-}
-
-
-// void render_layer_symbol(int wpmval) {
-//     bool number = layer_state_is(_NUMBERS) & !layer_state_is(_ADJUST);
-//     bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
-//     bool nav = layer_state_is(_NAV);
-//     bool qwerty= layer_state_is(_QWERTY);
-//     bool adjust = layer_state_is(_ADJUST);
-
-//     if(number){
-//         //oled_write_P(PSTR("12345"), false);
-//         oled_write_raw_P(bitmapsflower, sizeof(bitmapsflower));
-//     } else if(symbol){
-//         //oled_write_P(PSTR("!@#$^"), false);
-//        oled_write_raw_P(bitmapspenta2, sizeof(bitmapspenta2));
-//     } else if(adjust){
-//         //oled_write_P(PSTR(" ADJ "), false);
-//         oled_write_raw_P(bitmapssepta, sizeof(bitmapssepta));
-//     } else if(nav){
-//         //oled_write_P(PSTR(" NAV "), false);
-//         oled_write_raw_P(bitmapspyramid, sizeof(bitmapspyramid));
-//     } else if(qwerty){
-//         //oled_write_P(PSTR("QWERTY"), false);
-//         oled_write_raw_P(bitmapspentagram, sizeof(bitmapspentagram));
-//     } else {
-//         //oled_write_P(PSTR("CLMAK"), false);
-//         oled_write_raw_P(bitmapstriangles, sizeof(bitmapstriangles));
-//     }
-
-// }
-
-
-char wpm[42];
-bool oled_task_user(void) {
-    int wpmval=get_current_wpm();
-    if (is_keyboard_master()) {
-
-        render_layer_symbol(wpmval);
-        render_layer_name();
-        oled_set_cursor(0, 1);
-        sprintf(wpm, "WPM:%03d", wpmval);
-
-        oled_write(wpm, false);
-    } else {
-        render_layer_symbol(wpmval);
-    }
-
-    return false;
-}
-
-
-
-#endif // OLED_ENABLE
 
 #ifdef RGB_MATRIX_ENABLE
 
 
 bool caps = false;
+enum rgb_matrix_effects priormode= RGB_MATRIX_TYPING_HEATMAP;
 
-void led_set_kb(uint8_t usb_led) {
-    if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
-        caps = true;
-    } else {
-        caps = false;
-    }
-}
-
-void keyboard_post_init_user(void) {
-    rgb_matrix_mode(RGB_MATRIX_TYPING_HEATMAP);
-}
-
-RGB rgbDEF = {-1,-1,-1};
-RGB rgbOFF ={RGB_OFF};
-RGB rgbRED ={RGB_RED};
-RGB rgbMAGENTA ={RGB_MAGENTA};
-
-
-RGB rgbP1 = {RGB_CYAN};//{186,89,100};
-RGB rgbP2 = {RGB_PURPLE};//{130,53,92};
-RGB rgbP3 = {RGB_BLUE};//{67, 90, 100};
-RGB rgbP4 = {RGB_GREEN};//{42,91,91};
-RGB rgbP5 = {RGB_MAGENTA};//{17,92,100};
-
-
-
-void set_rgb(uint8_t index, RGB rgb){
-    #if (WS2812_BYTE_ORDER == WS2812_BYTE_ORDER_GRB)
-        rgb_matrix_set_color(index, rgb.g, rgb.r, rgb.b);
-    #elif (WS2812_BYTE_ORDER == WS2812_BYTE_ORDER_RGB)
-       rgb_matrix_set_color(index, rgb.r, rgb.g, rgb.b);
-    #elif (WS2812_BYTE_ORDER == WS2812_BYTE_ORDER_BGR)
-       rgb_matrix_set_color(index, rgb.b, rgb.g, rgb.r);
-    #endif
-}
-
-uint8_t mSize = MATRIX_ROWS * MATRIX_COLS + 12;
-
-
-bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    //rgb_matrix_enable_noeeprom();
-    uint8_t layer = get_highest_layer(layer_state);
-    for(uint8_t index = 0; index < led_max ; ++index )
-    {
-        //if( HAS_FLAGS(g_led_config.flags[index],LED_FLAG_UNDERGLOW ))  {
-        if( g_led_config.flags[index]==LED_FLAG_UNDERGLOW )  {
-            RGB rgb = rgbDEF;
-            switch(layer){
-                case _QWERTY:
-                    if(caps)
-                        rgb = rgbRED;
-                    else
-                        rgb = rgbP2;
-                    break;
-                case _COLEMAK:
-                    if(caps)
-                        rgb = rgbRED;
-                    break;
-                case _ADJUST:
-                    rgb = rgbP1;
-                    break;
-                case _NAV:
-                    rgb = rgbP5;
-                    break;
-                case _SYMBOLS:
-                    rgb = rgbP3;
-                    break;
-                case _NUMBERS:
-                    rgb = rgbP4;
-                    break;
-                default:
-                    break;
-            }
-            //#ifdef CONSOLE_ENABLE
-            //    uprintf("index %u layer %u r %u g %u b %u\n",index, layer, rgb.r, rgb.g, rgb.b);
-            //#endif
-
-            if(!(rgb.r  == rgbDEF.r && rgb.g==rgbDEF.g && rgb.b==rgbDEF.b)){
-                set_rgb(index, rgb);
-            }else{
-                rgb_matrix_set_color(index, rgbOFF.r, rgbOFF.g, rgbOFF.b);
-            }
-
-        }
-
-    }
-    return true;
-}
-#endif
-
-#ifdef RGBLIGHT_ENABLE
-// Light LEDs 6 to 9 and 12 to 15 red when caps lock is active. Hard to ignore!
-const rgblight_segment_t PROGMEM my_capslock_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_RED}
-);
-const rgblight_segment_t PROGMEM my_default_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    { 0, 12, HSV_WHITE}       // Light 4 LEDs, starting with LED 12
-);
-
-const rgblight_segment_t PROGMEM my_qwerty_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_PURPLE}       // Light 4 LEDs, starting with LED 12
-);
-const rgblight_segment_t PROGMEM my_number_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_GREEN}       // Light 4 LEDs, starting with LED 12
-);
-const rgblight_segment_t PROGMEM my_adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 12, HSV_CYAN}
-);
-
-const rgblight_segment_t PROGMEM my_nav_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-   {0, 12, HSV_MAGENTA}       // Light 4 LEDs, starting with LED 6
-);
-
-// Light LEDs 13 & 14 in green when keyboard layer 3 is active
-const rgblight_segment_t PROGMEM my_symbol_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-   {0, 12, HSV_BLUE}       // Light 4 LEDs, starting with LED 6
-);
-
-const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
-
-    my_default_layer,
-    my_capslock_layer,
-    my_qwerty_layer,    // Overrides caps lock layer
-    my_symbol_layer,
-    my_number_layer,    // Overrides other layers
-    my_nav_layer,     // Overrides other layers
-     my_adjust_layer
-);
-
+// void led_set_kb(uint8_t usb_led) {
+//     if(usb_led & (1<<USB_LED_CAPS_LOCK)){
+//         priormode=rgb_matrix_get_mode();
+//         rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR );
+//     }else{
+//         rgb_matrix_mode_noeeprom(priormode);
+//     }
+//     caps=usb_led & (1<<USB_LED_CAPS_LOCK);
+// }
 
 void keyboard_post_init_user(void) {
-    // Enable the LED layers
-    rgblight_layers = my_rgb_layers;
+    priormode=RGB_MATRIX_TYPING_HEATMAP;
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_TYPING_HEATMAP);
+}
+
+
+void caps_word_set_user(bool active) {
+    if(active){
+        priormode=rgb_matrix_get_mode();
+        // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR );
+    }else if(!caps){
+        // rgb_matrix_mode_noeeprom(priormode);
+    }
 }
 
 bool led_update_user(led_t led_state) {
-    rgblight_set_layer_state(1, led_state.caps_lock);
+    if(led_state.caps_lock){
+        priormode=rgb_matrix_get_mode();
+        // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR );
+
+    }else if(!is_caps_word_on()){
+        // rgb_matrix_mode_noeeprom(priormode);
+    }
+    caps=led_state.caps_lock;
+    return true;
+}
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (is_caps_word_on() || caps) {
+        for (uint8_t i = led_min; i <= led_max; i++) {
+            if (!(g_led_config.flags[i] & LED_FLAG_KEYLIGHT) && g_led_config.flags[i]!=LED_FLAG_UNDERGLOW) {
+                rgb_matrix_set_color(i, RGB_MAGENTA);
+            }else{
+                // rgb_matrix_set_color(i, 0,0,0);
+            }
+        }
+    }
     return true;
 }
 
-layer_state_t default_layer_state_set_user(layer_state_t state) {
-    rgblight_set_layer_state(0, layer_state_cmp(state, _COLEMAK));
-    return state;
-}
-
-
 #endif
+

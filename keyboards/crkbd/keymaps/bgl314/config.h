@@ -24,17 +24,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 #define MASTER_LEFT
-#define TAPPING_TERM 175
+
+#define TAPPING_TERM 170
+
+// Prevent normal rollover on alphas from accidentally triggering mods.
+#define IGNORE_MOD_TAP_INTERRUPT
+
 #define TAPPING_TOGGLE 2
-
-#ifdef RGBLIGHT_ENABLE
-#define RGBLIGHT_LAYERS
-#define RGBLIGHT_SLEEP
-#endif
-
-#define BONGO_ENABLE_MINIMAL
-//#define MYOLED_ENABLE
-
 
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_LED_STATE_ENABLE
@@ -47,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef RGB_MATRIX_ENABLE
 #define RGB_MATRIX_FRAMEBUFFER_EFFECTS
 #define ENABLE_RGB_MATRIX_TYPING_HEATMAP
-
+#define ENABLE_RGB_MATRIX_RAINBOW_MOVING_CHEVRON
 #define RGB_MATRIX_TYPING_HEATMAP_DECREASE_DELAY_MS 50
 #define RGB_MATRIX_TYPING_HEATMAP_SLIM
 #endif
