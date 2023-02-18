@@ -21,16 +21,24 @@
 #include <stdio.h>
 #include <string.h>
 #include "klor.h"
+#include "print.h"
 #ifdef HAPTIC_ENABLE
 #include "drivers/haptic/DRV2605L.h"
 #endif //HAPTIC ENABLE
 #ifdef OLED_ENABLE
     #include "bongo.h"
+    void oled_request_wakeup(void);
 #endif
+
+#ifdef AUDIO_ENABLE
+#include "lib/klounds.h"
+#endif //AUDIO ENABLE
 
 #ifdef RGB_MATRIX_ENABLE
 #include "color.h"
 #endif
+
+
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 // │ D E F I N I T I O N S                                                                                                                      │
@@ -44,6 +52,7 @@
 enum klor_layers {
     /* _M_XYZ = Mac Os, _W_XYZ = Win/Linux */
     _COLEMAK,
+    _MOUSE,
     _QWERTY,
     _REAPER,
     _SYMBOLS,
@@ -63,6 +72,7 @@ enum klor_layers {
 #define SHT_MNXT MT(MOD_RSFT, KC_MNXT)
 
 enum td_keycodes {
+    SCROLL,
     DOT_ENT,
     Q_ESC,
     Z_ENT,
@@ -137,17 +147,6 @@ bool caps_word_press_user(uint16_t keycode) {
 }
 
 
-// ┌───────────────────────────────────────────────────────────┐
-// │ d e f i n e   s o u n d s                                 │
-// └───────────────────────────────────────────────────────────┘
-
-#ifdef AUDIO_ENABLE
-  #define WINXP_SOUND W__NOTE(_DS6), Q__NOTE(_DS5), H__NOTE(_AS5), H__NOTE(_GS5), H__NOTE(_DS5), H__NOTE(_DS6), H__NOTE(_AS5)
-  #define MAC_SOUND S__NOTE(_CS5), B__NOTE(_C5)
-
-  float winxp_song[][2] = SONG(WINXP_SOUND);
-  float mac_song[][2] = SONG(MAC_SOUND);
-#endif // AUDIO_ENABLE
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 // │ K E Y M A P S                                                                                                                              │
@@ -177,6 +176,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      KC_NO, TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,      KC_K, KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), TD(SCLN_ENT),
          MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI)
  ),
+   [_MOUSE] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
+    _______,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
+    _______,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,_______,                      _______,  _______,  _______,  _______,  _______,
+    _______,  _______,  SCROLL,   _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,  _______,
+                        _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______
+),
  /*
    ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
 
@@ -337,35 +343,24 @@ layer_state_t layer_state_set_user(layer_state_t state) {
      state = update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
       #ifdef HAPTIC_ENABLE
      switch (get_highest_layer(state)) {
-        case _COLEMAK:
-           DRV_pulse(transition_hum);
-            break;
-        case _QWERTY:
-           DRV_pulse(transition_hum);
-            break;
-        case _SYMBOLS:
-           DRV_pulse(transition_hum);
-            break;
-        case _NUMBERS:
-           DRV_pulse(transition_hum);
-            break;
-        case _NAV:
-           DRV_pulse(transition_hum);
-            break;
+
         case _REAPER:
            DRV_pulse(transition_hum);
             break;
-        case _ADJUST:
-           DRV_pulse(transition_hum);
-            break;
         default: //  for any other layers, or the default layer
-            DRV_pulse(transition_hum);
+            //DRV_pulse(transition_hum);
             break;
     }
     #endif // HAPTIC_ENABLE
-#ifdef AUDIO_ENABLE
-                   PLAY_SONG(mac_song);
-                  #endif // AUDIO_ENABLE
+    #ifdef AUDIO_ENABLE
+        switch (get_highest_layer(state)) {
+            case _REAPER:
+            PLAY_SONG(mac_song);
+                break;
+            default: //  for any other layers, or the default layer
+                break;
+    }
+    #endif // AUDIO_ENABLE
 
     return state;
 }
@@ -376,35 +371,30 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 bool caps = false;
 enum rgb_matrix_effects priormode= RGB_MATRIX_TYPING_HEATMAP;
 
-// void led_set_kb(uint8_t usb_led) {
-//     if(usb_led & (1<<USB_LED_CAPS_LOCK)){
-//         priormode=rgb_matrix_get_mode();
-//         rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR );
-//     }else{
-//         rgb_matrix_mode_noeeprom(priormode);
-//     }
-//     caps=usb_led & (1<<USB_LED_CAPS_LOCK);
-// }
-
-
-
-
 void caps_word_set_user(bool active) {
     if(active){
-        priormode=rgb_matrix_get_mode();
-        // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR );
+         #ifdef HAPTIC_ENABLE
+           DRV_pulse(sharp_click);
+        #endif // HAPTIC_ENABLE
+         #ifdef AUDIO_ENABLE
+           PLAY_SONG(capson_song);
+        #endif // HAPTIC_ENABLE
     }else if(!caps){
-        // rgb_matrix_mode_noeeprom(priormode);
+        #ifdef HAPTIC_ENABLE
+           DRV_pulse(soft_bump);
+        #endif // HAPTIC_ENABLE
+         #ifdef AUDIO_ENABLE
+            PLAY_SONG(capsoff_song);
+        #endif // HAPTIC_ENABLE
     }
 }
 
 bool led_update_user(led_t led_state) {
     if(led_state.caps_lock){
         priormode=rgb_matrix_get_mode();
-        // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR );
 
     }else if(!is_caps_word_on()){
-        // rgb_matrix_mode_noeeprom(priormode);
+
     }
     caps=led_state.caps_lock;
     return true;
@@ -430,25 +420,50 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 // ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
 
 #ifdef POINTING_DEVICE_ENABLE
-
+static bool scrolling_mode = false;
 void pointing_device_init_user(void) {
     set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
     set_auto_mouse_enable(true);  // always required before the auto mouse feature will work
 }
 
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-    if (scrolling_mode) {
-        mouse_report.h = mouse_report.x;
-        mouse_report.v = mouse_report.y;
-        mouse_report.x = 0;
-        mouse_report.y = 0;
-    }
+    #ifdef CONSOLE_ENABLE
+    uprintf("mouse col: %u, row: %u\n",mouse_report.h, mouse_report.v);
+#endif
+    // if (scrolling_mode) {
+    //     mouse_report.h = mouse_report.x;
+    //     mouse_report.v = mouse_report.y;
+    //     mouse_report.x = 0;
+    //     mouse_report.y = 0;
+    // }
     return mouse_report;
 }
 
 #endif //POINTING_DEVICE_ENABLE
 
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+//     #ifdef CONSOLE_ENABLE
+//     uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
+// #endif
+
+    #ifdef OLED_ENABLE
+        oled_request_wakeup();
+    #endif
+
+    switch (keycode) {
+
+      case KC_MPLY:
+        if (record->event.pressed) {
+          #ifdef HAPTIC_ENABLE
+                  DRV_pulse(sharp_click);
+          #endif // HAPTIC_ENABL
+        }
+        break;
+    }
+
+    return true;
+}
 
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -467,6 +482,9 @@ void keyboard_post_init_user(void) {
     rgb_matrix_mode_noeeprom(RGB_MATRIX_TYPING_HEATMAP);
     //rgblight_sethsv_noeeprom(35, 255, 255); // set default RGB color to yellow
   #endif //RGB_MATRIX_ENABLE
+  debug_enable=true;
+  debug_mouse=true;
+  uprintf("keeb init");
 }
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -506,23 +524,6 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
-        oled_request_wakeup();
-
-    switch (keycode) {
-
-      case KC_MPLY:
-        if (record->event.pressed) {
-          #ifdef HAPTIC_ENABLE
-                  DRV_pulse(sharp_click);
-          #endif // HAPTIC_ENABL
-        }
-        break;
-    }
-
-    return true;
-}
 
 
 // Check whether oled_task_user() needs to repaint the OLED image.  This
@@ -674,17 +675,17 @@ bool oled_task_kb(void) {
 #endif // OLED_ENABLE
 
 
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case SHT_O:
-         case SHT_A:
-         case CTL_N:
-         case CTRL_T:
-            return 100;
-        default:
-            return TAPPING_TERM;
-    }
-}
+// uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+//     switch (keycode) {
+//         case SHT_O:
+//          case SHT_A:
+//          case CTL_N:
+//          case CTRL_T:
+//             return 100;
+//         default:
+//             return TAPPING_TERM;
+//     }
+// }
 
 
 

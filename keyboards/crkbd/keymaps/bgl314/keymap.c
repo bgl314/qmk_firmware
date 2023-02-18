@@ -36,6 +36,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SHT_GRV MT(MOD_LSFT, KC_GRV)
 #define SHT_BSLS MT(MOD_RSFT, KC_BSLS)
 #define SHT_A MT(MOD_LSFT, KC_A)
+#define SHT_B MT(MOD_LSFT, KC_B)
+#define SHT_A MT(MOD_LSFT, KC_A)
+#define ALT_D MT(MOD_LALT, KC_D)
+#define ALT_H MT(MOD_RALT, KC_H)
 #define CTL_N MT(MOD_RCTL, KC_N)
 #define CTRL_T MT(MOD_LCTL, KC_T)
 #define CTL_MPLY MT(MOD_RCTL, KC_MPLY)
@@ -65,16 +69,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_NO, TD(Q_ESC),    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,   SHT_A,    KC_R,    KC_S,    CTRL_T,    KC_D,                              KC_H,    CTL_N,    KC_E,    KC_I,    SHT_O,    KC_NO,
+     KC_NO,   SHT_A,    KC_R,    KC_S,    CTRL_T,    ALT_D,                              ALT_H,    CTL_N,    KC_E,    KC_I,    SHT_O,    KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO, TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,                               KC_K, KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), TD(SCLN_ENT),
+     KC_NO, TD(Z_ENT),    KC_X,   KC_C,    KC_V,    SHT_B,                               KC_K, KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), TD(SCLN_ENT),
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                 MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC) , LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI)
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
   [_QWERTY] = LAYOUT_split_3x6_3(
-  //┌────────┬────────┬────────┬────────┬────────┬────────┐                      ?    ┌────────┬────────┬────────┬────────┬────────┬────────┐
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
@@ -96,7 +100,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      _______, _______,  _______, _______, _______, _______,                           _______, _______,  _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     KC_SPC,_______,_______ ,                    _______,  _______,_______
+                                     _______,_______,_______ ,                    _______,  _______,_______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
   [_SYMBOLS] = LAYOUT_split_3x6_3(
@@ -124,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_NO, TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_SPC,                               KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT), KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    KC_0,    _______, KC_DEL,                    KC_0, _______, _______
+                                    KC_0,    _______, _______,                    KC_0, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -136,9 +140,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_NO,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_NO,                            KC_RALT,  KC_RCTL, KC_RSFT,  KC_INS,  KC_RSFT,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),KC_NO,                     KC_NO,  KC_NO,    KC_NO,    KC_NO,  _______,  _______,
+     KC_NO,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),KC_DEL,                     KC_NO,  KC_NO,    KC_NO,    KC_NO,  _______,  _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                    _______,  _______, KC_DEL,                   _______, KC_NO, KC_NO
+                                    _______,  _______, _______,                   _______, KC_NO, KC_NO
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -162,9 +166,12 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case SHT_O:
          case SHT_A:
+         case SHT_B:
+         case ALT_D:
+         case ALT_H:
          case CTL_N:
          case CTRL_T:
-            return 100;
+            return TAPPING_TERM;
         default:
             return TAPPING_TERM;
     }

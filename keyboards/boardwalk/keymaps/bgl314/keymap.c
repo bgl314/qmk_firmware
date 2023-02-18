@@ -32,8 +32,12 @@ enum layer_names {
 #define SHT_GRV MT(MOD_LSFT, KC_GRV)
 #define SHT_BSLS MT(MOD_RSFT, KC_BSLS)
 #define SHT_A MT(MOD_LSFT, KC_A)
-#define CTRL_T MT(MOD_LCTL, KC_T)
+#define SHT_B MT(MOD_LSFT, KC_B)
+#define SHT_A MT(MOD_LSFT, KC_A)
+#define ALT_D MT(MOD_LALT, KC_D)
+#define ALT_H MT(MOD_RALT, KC_H)
 #define CTL_N MT(MOD_RCTL, KC_N)
+#define CTRL_T MT(MOD_LCTL, KC_T)
 #define CTL_MPLY MT(MOD_RCTL, KC_MPLY)
 #define SHT_MNXT MT(MOD_RSFT, KC_MNXT)
 
@@ -67,8 +71,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_COLEMAK] = LAYOUT_ortho_2x2u(
        KC_NO,             KC_1,    KC_2,     KC_3,    KC_4,    KC_5,   KC_NO,  KC_NO,      KC_6,   KC_7,    KC_8,    KC_9,    KC_0,    KC_NO,
         KC_NO,  TD(Q_ESC),    KC_W,     KC_F,    KC_P,    KC_G,   KC_NO,  KC_NO,      KC_J,   KC_L,    KC_U,    KC_Y,  KC_QUOT  , KC_NO,
-        KC_NO,   SHT_A,    KC_R,    KC_S,    CTRL_T,    KC_D,    KC_NO  ,  KC_NO,      KC_H,    CTL_N,    KC_E,    KC_I,    SHT_O,    KC_NO,
-       KC_NO,   TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,   KC_NO, KC_NO,     KC_K,     KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), KC_NO,
+        KC_NO,   SHT_A,    KC_R,    KC_S,    CTRL_T,    ALT_D,    KC_NO  ,  KC_NO,      ALT_H,    CTL_N,    KC_E,    KC_I,    SHT_O,    KC_NO,
+       KC_NO,   TD(Z_ENT),    KC_X,   KC_C,    KC_V,    SHT_B,   KC_NO, KC_NO,     KC_K,     KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), KC_NO,
       KC_NO,KC_NO,  KC_NO,MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI),KC_NO, KC_NO,  KC_NO
 
     ),
@@ -117,16 +121,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO, KC_F1,  KC_F2,  KC_F3,  KC_F4,   KC_F5,   KC_F11,   KC_F12,     KC_F6,   KC_F7, KC_F8,  KC_F9,   KC_F10,  KC_NO,
         KC_NO, KC_PSLS,  KC_7,   KC_8,   KC_9,    KC_MINS,   KC_NO,    KC_NO,      KC_MINS,   KC_7,  KC_8,   KC_9,    KC_PSLS,   KC_NO,
         KC_NO, KC_PAST,KC_4,   KC_5,   KC_6,    KC_PLUS, KC_NO,    KC_NO,    KC_PLUS, KC_4,  KC_5,   KC_6,    KC_PAST, KC_NO,
-        KC_NO, TD(DOT_ENT),  KC_1,   KC_2,   KC_3,    KC_SPC, KC_NO,    KC_NO,    KC_EQL, KC_1,  KC_2,   KC_3,    TD(DOT_ENT), KC_NO,
-        KC_NO,    KC_NO,   KC_NO, KC_0,  _______, KC_DEL,   KC_0,     _______,    _______, KC_NO, KC_NO, KC_NO
+        KC_NO, TD(DOT_ENT),  KC_1,   KC_2,   KC_3,    KC_DEL, KC_NO,    KC_NO,    KC_EQL, KC_1,  KC_2,   KC_3,    TD(DOT_ENT), KC_NO,
+        KC_NO,    KC_NO,   KC_NO, KC_0,  _______, _______,   KC_0,     _______,    _______, KC_NO, KC_NO, KC_NO
     )
 ,
     [_NAV] = LAYOUT_ortho_2x2u(
         KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,         KC_NO,   KC_NO,       KC_NO,    KC_NO,    KC_NO,    KC_NO,  KC_NO,  KC_NO,
        KC_NO   , KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,  KC_NO,   KC_NO,    KC_NO,    KC_PSCR,    KC_NO,    KC_NO,  KC_NO,  _______,
        KC_NO,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,   KC_NO,  KC_NO,  KC_RALT,  KC_RCTL, KC_RSFT,  KC_INS,  KC_RSFT,  KC_NO,
-      KC_NO,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),  KC_NO,   _______,            KC_NO, KC_NO,  KC_NO,    KC_NO,    KC_NO,  _______,  _______,
-        KC_NO, KC_NO, KC_NO, _______,    _______, KC_DEL,            _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+      KC_NO,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),  KC_DEL,   _______,            KC_NO, KC_NO,  KC_NO,    KC_NO,    KC_NO,  _______,  _______,
+        KC_NO, KC_NO, KC_NO, _______,    _______, _______,            _______, KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
     ),
      [_ADJUST] = LAYOUT_ortho_2x2u(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
@@ -158,11 +162,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-         case SHT_O:
+          case SHT_O:
          case SHT_A:
+         case SHT_B:
+         case ALT_D:
+         case ALT_H:
          case CTL_N:
          case CTRL_T:
-            return 200;
+            return 50;
         default:
             return TAPPING_TERM;
     }

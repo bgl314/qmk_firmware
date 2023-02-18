@@ -8,6 +8,7 @@ for more options.
 #define MASTER_LEFT
 // #define MASTER_RIGHT
 
+#define BLOK_MCU
 
 //#define TAPPING_TERM 170
 #define TAPPING_TERM 170
@@ -43,9 +44,24 @@ for more options.
 
 #ifdef POINTING_DEVICE_ENABLE
 //#    define POINTING_DEVICE_ROTATION_90
-#    define SPLIT_POINTING_ENABLE
-#    define POINTING_DEVICE_RIGHT
-#    define POINTING_DEVICE_ROTATION_270
+#define POINTING_DEVICE_DEBUG
+#define SPLIT_POINTING_ENABLE
+//#    define POINTING_DEVICE_RIGHT
+//#    define POINTING_DEVICE_ROTATION_270
+// Pointing device is on the right split.
+#define POINTING_DEVICE_RIGHT
+
+// Limits the frequency that the sensor is polled for motion.
+#define POINTING_DEVICE_TASK_THROTTLE_MS 10
+
+// Adjust trackpad rotation.
+#define POINTING_DEVICE_ROTATION_270
+
+// Configure for the Cirque model used on the Dilemma.
+#define CIRQUE_PINNACLE_DIAMETER_MM 35
+// #define CIRQUE_PINNACLE_CURVED_OVERLAY
+// #define CIRQUE_PINNACLE_TAP_ENABLE
+// #define POINTING_DEVICE_GESTURES_SCROLL_ENABLE // Circular scroll.
 #endif
 
 // RGB matrix support
@@ -59,5 +75,4 @@ for more options.
 #define RGB_MATRIX_STARTUP_MODE RGB_MATRIX_HEATMAP
 
 #endif
-
 

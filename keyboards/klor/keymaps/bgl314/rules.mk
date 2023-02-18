@@ -18,3 +18,17 @@ MUSIC_ENABLE = yes
 
 TAP_DANCE_ENABLE = yes
 CAPS_WORD_ENABLE = yes
+
+
+POINTING_DEVICE_ENABLE = yes
+POINTING_DEVICE_DRIVER = cirque_pinnacle_i2c
+
+
+MOUSEKEY_ENABLE = yes
+CONSOLE_ENABLE = yes
+
+
+
+
+
+
