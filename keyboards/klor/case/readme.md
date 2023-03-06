@@ -5,6 +5,7 @@ I used a Cirque 35mm trackpad [You can get from Mouser in the USA](https://www.m
 
 ![Blok pull up resistors](/keyboards/klor/case/images/pullups.jpg)
 
+
 Here are the acrylic parts:
 ![Acrylic template](/keyboards/klor/case/images/trackpad-acrylics.svg)
 
