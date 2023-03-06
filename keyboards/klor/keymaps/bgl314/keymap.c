@@ -365,29 +365,24 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-#ifdef RGB_MATRIX_ENABLE
-
-
 bool caps = false;
-enum rgb_matrix_effects priormode= RGB_MATRIX_TYPING_HEATMAP;
 
 void caps_word_set_user(bool active) {
     if(active){
          #ifdef HAPTIC_ENABLE
            DRV_pulse(sharp_click);
         #endif // HAPTIC_ENABLE
-         #ifdef AUDIO_ENABLE
-           PLAY_SONG(capson_song);
-        #endif // HAPTIC_ENABLE
     }else if(!caps){
         #ifdef HAPTIC_ENABLE
            DRV_pulse(soft_bump);
         #endif // HAPTIC_ENABLE
-         #ifdef AUDIO_ENABLE
-            PLAY_SONG(capsoff_song);
-        #endif // HAPTIC_ENABLE
     }
 }
+
+#ifdef RGB_MATRIX_ENABLE
+
+
+enum rgb_matrix_effects priormode= RGB_MATRIX_TYPING_HEATMAP;
 
 bool led_update_user(led_t led_state) {
     if(led_state.caps_lock){
@@ -402,11 +397,11 @@ bool led_update_user(led_t led_state) {
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (is_caps_word_on() || caps) {
         for (uint8_t i = led_min; i <= led_max; i++) {
-            if (!(g_led_config.flags[i] & LED_FLAG_KEYLIGHT) && g_led_config.flags[i]!=LED_FLAG_UNDERGLOW) {
+    //if (!(g_led_config.flags[i] & LED_FLAG_KEYLIGHT) && g_led_config.flags[i]!=LED_FLAG_UNDERGLOW) {
                 rgb_matrix_set_color(i, RGB_MAGENTA);
-            }else{
+     //       }else{
                 // rgb_matrix_set_color(i, 0,0,0);
-            }
+      //      }
         }
     }
     return true;
@@ -427,39 +422,86 @@ void pointing_device_init_user(void) {
 }
 
 report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-    #ifdef CONSOLE_ENABLE
-    uprintf("mouse col: %u, row: %u\n",mouse_report.h, mouse_report.v);
-#endif
-    // if (scrolling_mode) {
-    //     mouse_report.h = mouse_report.x;
-    //     mouse_report.v = mouse_report.y;
-    //     mouse_report.x = 0;
-    //     mouse_report.y = 0;
-    // }
+//     #ifdef CONSOLE_ENABLE
+//     uprintf("mouse col: %u, row: %u\n",mouse_report.h, mouse_report.v);
+// #endif
+    if (scrolling_mode) {
+        mouse_report.h = mouse_report.x;
+        mouse_report.v = mouse_report.y;
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
     return mouse_report;
+}
+
+void i2c_init(void) {
+    static bool is_initialised = false;
+    if (!is_initialised) {
+        is_initialised = true;
+        // Try releasing special pins for a short time
+        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_INPUT);
+        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_INPUT);
+        chThdSleepMilliseconds(10);
+        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
+        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
+    }
 }
 
 #endif //POINTING_DEVICE_ENABLE
 
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-//     #ifdef CONSOLE_ENABLE
-//     uprintf("KL: kc: 0x%04X, col: %u, row: %u, pressed: %b, time: %u, interrupt: %b, count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.pressed, record->event.time, record->tap.interrupted, record->tap.count);
-// #endif
+    #ifdef CONSOLE_ENABLE
+    if(record->event.key.col!=0 ||record->event.key.row !=0)
+        uprintf("KL: kc: 0x%04X, col: %u, row: %u, time: %u,  count: %u\n", keycode, record->event.key.col, record->event.key.row, record->event.time, record->tap.count);
+#endif
 
     #ifdef OLED_ENABLE
         oled_request_wakeup();
     #endif
 
     switch (keycode) {
+// ┌─────────────────────────────────────────────────┐
+// │ m o u s e                                       │
+// └─────────────────────────────────────────────────┘
 
+     case SCROLL:
+        #ifdef HAPTIC_ENABLE
+            DRV_pulse(transition_hum);
+        #endif // HAPTIC
+        if (record->event.pressed) {
+            scrolling_mode = true;
+            pointing_device_set_cpi(50);
+        } else {
+            scrolling_mode = false;
+            pointing_device_set_cpi(500);
+        }
+        return false;
       case KC_MPLY:
         if (record->event.pressed) {
           #ifdef HAPTIC_ENABLE
                   DRV_pulse(sharp_click);
-          #endif // HAPTIC_ENABL
+          #endif // HAPTIC_ENABLE
         }
         break;
+
+      case KC_CAPS:
+        if (record->event.pressed) {
+          #ifdef HAPTIC_ENABLE
+                  DRV_pulse(medium_click1);
+          #endif // HAPTIC_ENABLE
+          #ifdef AUDIO_ENABLE
+              led_t led_usb_state = host_keyboard_led_state();
+              if (led_usb_state.caps_lock) {
+                  PLAY_SONG(capson_song);
+              }
+              else {
+                  PLAY_SONG(capsoff_song);
+              }
+          #endif // AUDIO_ENABLE
+        }
+        break;
+
     }
 
     return true;
@@ -531,7 +573,6 @@ bool process_record_keymap(uint16_t keycode, keyrecord_t *record) {
 // the OLED sleep timer and the OLED_OFF mode.
 bool oled_task_needs_to_repaint(void) {
 
-
     // If OLED wakeup was requested, reset the sleep timer and do a repaint.
     if (oled_wakeup_requested) {
         oled_wakeup_requested = false;
@@ -584,6 +625,7 @@ void render_layer_name(void) {
     led_t led_state = host_keyboard_led_state();
     bool number = layer_state_is(_NUMBERS) & !layer_state_is(_ADJUST);
     bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
+    bool mouse = layer_state_is(_MOUSE);
     bool nav = layer_state_is(_NAV);
     bool qwerty= layer_state_is(_QWERTY);
     bool adjust = layer_state_is(_ADJUST);
@@ -592,6 +634,8 @@ void render_layer_name(void) {
         oled_write_P(PSTR("12345"), led_state.caps_lock );
     } else if(symbol){
         oled_write_P(PSTR("!@#$^"), led_state.caps_lock);
+    } else if(mouse){
+        oled_write_P(PSTR("MOUSE"), led_state.caps_lock);
     } else if(adjust){
         oled_write_P(PSTR(" ADJ "), led_state.caps_lock);
     } else if(nav){
@@ -661,11 +705,11 @@ bool oled_task_kb(void) {
     if (!oled_task_needs_to_repaint()) {
             return false;
     }
-    if (is_keyboard_master()) {
+   // if (is_keyboard_master()) {
         draw_bongo();
         render_layer_name();
-    }else{
-    }
+    //}else{
+    //}
 
     return false;
 }
@@ -674,18 +718,6 @@ bool oled_task_kb(void) {
 
 #endif // OLED_ENABLE
 
-
-// uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-//     switch (keycode) {
-//         case SHT_O:
-//          case SHT_A:
-//          case CTL_N:
-//          case CTRL_T:
-//             return 100;
-//         default:
-//             return TAPPING_TERM;
-//     }
-// }
 
 
 

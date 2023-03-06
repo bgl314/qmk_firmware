@@ -34,10 +34,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define SHT_O MT(MOD_RSFT, KC_O)
 #define SHT_GRV MT(MOD_LSFT, KC_GRV)
-#define SHT_BSLS MT(MOD_RSFT, KC_BSLS)
 #define SHT_A MT(MOD_LSFT, KC_A)
 #define SHT_B MT(MOD_LSFT, KC_B)
-#define SHT_A MT(MOD_LSFT, KC_A)
 #define ALT_D MT(MOD_LALT, KC_D)
 #define ALT_H MT(MOD_RALT, KC_H)
 #define CTL_N MT(MOD_RCTL, KC_N)
@@ -54,6 +52,10 @@ enum td_keycodes {
     S_ALT_S,
     T_TAKE,
     SLASH_ENT,
+    DBL_PAREN,
+    DBL_BRACKET,
+    DBL_BRACE,
+    DBL_GT,
     SCLN_ENT // tap ent, hold shift, doubletap semicolon enter
 };
 
@@ -69,11 +71,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_NO, TD(Q_ESC),    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,   SHT_A,    KC_R,    KC_S,    CTRL_T,    ALT_D,                              ALT_H,    CTL_N,    KC_E,    KC_I,    SHT_O,    KC_NO,
+     KC_NO,   SHT_A,    KC_R,    KC_S,    CTRL_T,    ALT_D,                              ALT_H,    CTL_N,    KC_E,    KC_I,  SHT_O,    KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO, TD(Z_ENT),    KC_X,   KC_C,    KC_V,    SHT_B,                               KC_K, KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), TD(SCLN_ENT),
+     KC_NO, TD(Z_ENT),KC_X,   KC_C,    KC_V,    KC_B,                       KC_K, KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), TD(SCLN_ENT),
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC) , LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI)
+                MT(MOD_LALT,KC_LGUI),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC) , LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI)
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 
@@ -109,7 +111,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_NO,  KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                          KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_NO,  SHT_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,                           KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, TD(SCLN_ENT) , KC_NO,
+     KC_NO, SHT_GRV,TD(DBL_BRACKET),TD(DBL_BRACE), TD(DBL_PAREN), TD(DBL_GT),          KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, TD(SCLN_ENT) , KC_NO,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      KC_NO, KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_BSLS ,                          KC_NO,  KC_PLUS, KC_EQL ,RSFT(KC_SCLN), KC_SLSH, KC_NO,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
@@ -165,13 +167,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case SHT_O:
-         case SHT_A:
-         case SHT_B:
-         case ALT_D:
-         case ALT_H:
-         case CTL_N:
-         case CTRL_T:
-            return TAPPING_TERM;
+            return TAPPING_TERM + 50;
         default:
             return TAPPING_TERM;
     }
@@ -208,7 +204,86 @@ void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
 
 }
 // END SHIFT-ENTER-CAPS
+void dbl_paren_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+        register_code16(KC_LPRN);
+     }else {
+        register_code16(KC_LPRN);
+        register_code16(KC_RPRN);
+        register_code16(KC_LEFT);
+     }
+}
 
+void dbl_paren_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+        unregister_code16(KC_LPRN);
+     }else {
+        unregister_code16(KC_LPRN);
+        unregister_code16(KC_RPRN);
+        unregister_code16(KC_LEFT);
+     }
+}
+
+void dbl_brace_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+        register_code16(KC_LCBR);
+     }else {
+        register_code16(KC_LCBR);
+        register_code16(KC_RCBR);
+        register_code16(KC_LEFT);
+     }
+}
+
+void dbl_brace_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+        unregister_code16(KC_LCBR);
+     }else {
+        unregister_code16(KC_LCBR);
+        unregister_code16(KC_RCBR);
+        unregister_code16(KC_LEFT);
+     }
+}
+
+
+void dbl_bracket_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+        register_code16(KC_LBRC);
+     }else {
+        register_code16(KC_LBRC);
+        register_code16(KC_RBRC);
+        register_code16(KC_LEFT);
+     }
+}
+
+void dbl_bracket_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+        unregister_code16(KC_LBRC);
+     }else {
+        unregister_code16(KC_LBRC);
+        unregister_code16(KC_RBRC);
+        unregister_code16(KC_LEFT);
+     }
+}
+
+void dbl_gt_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+        register_code16(KC_LT);
+     }else {
+        register_code16(KC_LT);
+        register_code16(KC_GT);
+        register_code16(KC_LEFT);
+     }
+}
+
+void dbl_gt_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+        unregister_code16(KC_LT);
+     }else {
+        unregister_code16(KC_LT);
+        unregister_code16(KC_GT);
+        unregister_code16(KC_LEFT);
+     }
+}
 // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
 qk_tap_dance_action_t tap_dance_actions[] = {
     [Q_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_ESC),
@@ -219,7 +294,11 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [P_SPACE] = ACTION_TAP_DANCE_DOUBLE(KC_P, KC_SPACE),
     [S_ALT_S] = ACTION_TAP_DANCE_DOUBLE(KC_S, LALT(KC_S)),
     [T_TAKE] = ACTION_TAP_DANCE_DOUBLE(KC_T, LALT(LSFT(KC_T))),
-    [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset)
+    [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset),
+    [DBL_PAREN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_paren_sent_finished, dbl_paren_sent_reset),
+    [DBL_BRACKET] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_bracket_sent_finished, dbl_bracket_sent_reset),
+    [DBL_BRACE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_brace_sent_finished, dbl_brace_sent_reset),
+    [DBL_GT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_gt_sent_finished, dbl_gt_sent_reset)
 };
 
 bool caps_word_press_user(uint16_t keycode) {
