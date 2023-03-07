@@ -17,14 +17,15 @@
                                         │ ┐├─╴│└─┐│
                                         └─┘└─╴╵╶─┘╵
 */
+
 #include QMK_KEYBOARD_H
 #include <stdio.h>
 #include <string.h>
 #include "klor.h"
 #include "print.h"
-#ifdef HAPTIC_ENABLE
-#include "drivers/haptic/DRV2605L.h"
-#endif //HAPTIC ENABLE
+//#ifdef HAPTIC_ENABLE
+//#include "drivers/haptic/DRV2605L.h"
+//#endif //HAPTIC ENABLE
 #ifdef OLED_ENABLE
     #include "bongo.h"
     void oled_request_wakeup(void);
@@ -71,10 +72,9 @@ enum klor_layers {
 #define CTL_MPLY MT(MOD_RCTL, KC_MPLY)
 #define SHT_MNXT MT(MOD_RSFT, KC_MNXT)
 
-enum td_keycodes {
+enum custom_keycodes{
     SCROLL,
     DOT_ENT,
-    Q_ESC,
     Z_ENT,
     D_DELETE,
     P_SPACE,
@@ -111,7 +111,6 @@ void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
 
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [Q_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_ESC),
      [DOT_ENT]= ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_ENT),
     [SLASH_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_ENT),
      [Z_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_ENT),
