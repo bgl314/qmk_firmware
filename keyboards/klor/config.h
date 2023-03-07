@@ -16,12 +16,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#include "config_common.h"
 
 
 // ┌─────────────────────────────────────────────────┐
 // │ k e y   m a t r i x                             │
-// └─────────────────────────────────────────────────┘ 
+// └─────────────────────────────────────────────────┘
 
 #define MATRIX_ROW_PINS { C6, D7, E6, B4 }
 #define MATRIX_COL_PINS { F6, F7, B1, B3, B2, B6 }
@@ -33,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // ┌─────────────────────────────────────────────────┐
 // │ s p l i t   c o m m u n i c a t i o n           │
-// └─────────────────────────────────────────────────┘ 
+// └─────────────────────────────────────────────────┘
 
 #define USE_SERIAL
 #define SOFT_SERIAL_PIN D2
@@ -44,7 +43,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // ┌─────────────────────────────────────────────────┐
 // │ e n c o d e r s                                 │
-// └─────────────────────────────────────────────────┘ 
+// └─────────────────────────────────────────────────┘
 
 #define ENCODERS_PAD_A       { F5 }
 #define ENCODERS_PAD_B       { F4 }
@@ -66,7 +65,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // ┌─────────────────────────────────────────────────┐
 // │ r g b   l e d s                                 │
-// └─────────────────────────────────────────────────┘ 
+// └─────────────────────────────────────────────────┘
 
 #define RGB_DI_PIN D3
 #define RGBLED_NUM 42
@@ -82,20 +81,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGB_MATRIX_STARTUP_VAL RGB_MATRIX_MAXIMUM_BRIGHTNESS
 #    define RGB_DISABLE_WHEN_USB_SUSPENDED
 #    define RGB_MATRIX_KEYPRESSES
-#endif 
+#endif
 
 
 
 // ┌─────────────────────────────────────────────────┐
 // │ a u d i o                                       │
-// └─────────────────────────────────────────────────┘ 
+// └─────────────────────────────────────────────────┘
 
 #define AUDIO_PIN B5
 #define AUDIO_VOICES
 #define AUDIO_DAC_SAMPLE_MAX 4095U
 #define AUDIO_VOICE_DEFAULT butts_fader
 
-#ifdef AUDIO_ENABLE     
+#ifdef AUDIO_ENABLE
 #    define KLOR_SOUND W__NOTE(_DS0), W__NOTE(_DS1), H__NOTE(_DS2), H__NOTE(_DS3), Q__NOTE(_DS4), Q__NOTE(_DS5), E__NOTE(_DS6), E__NOTE(_DS7), S__NOTE(_DS8), Q__NOTE(_GS0)
 #    define STARTUP_SONG SONG(KLOR_SOUND)
 #    define BYE_SOUND H__NOTE(_DS4), H__NOTE(_DS3), W__NOTE(_DS1)
@@ -103,28 +102,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define DEFAULT_LAYER_SONGS \
         { SONG(QWERTY_SOUND), SONG(COLEMAK_SOUND) }
 
-#endif 
+#endif
 
 
 // ┌─────────────────────────────────────────────────┐
 // │ h a p t i c   f e e d b a c k                   │
-// └─────────────────────────────────────────────────┘ 
+// └─────────────────────────────────────────────────┘
 
 #ifdef HAPTIC_ENABLE
 #    define FB_ERM_LRA 1
-#    define FB_BRAKEFACTOR 3 // For 1x:0, 2x:1, 3x:2, 4x:3, 6x:4, 8x:5, 16x:6, Disable Braking:7 
-#    define FB_LOOPGAIN 1 // For  Low:0, Medium:1, High:2, Very High:3 
+#    define FB_BRAKEFACTOR 3 // For 1x:0, 2x:1, 3x:2, 4x:3, 6x:4, 8x:5, 16x:6, Disable Braking:7
+#    define FB_LOOPGAIN 1 // For  Low:0, Medium:1, High:2, Very High:3
 #    define RATED_VOLTAGE 2
 #    define V_PEAK 2.8
-#    define V_RMS 2.0 
-#    define F_LRA 150 // resonance freq 
+#    define V_RMS 2.0
+#    define F_LRA 150 // resonance freq
 #    define DRV_GREETING       alert_750ms
 #endif
 
 
 // ┌─────────────────────────────────────────────────┐
 // │ t r a c k b a l l                               │
-// └─────────────────────────────────────────────────┘ 
+// └─────────────────────────────────────────────────┘
 
 #ifdef POINTING_DEVICE_ENABLE
 #    define PAW3204_SCLK_PIN D0

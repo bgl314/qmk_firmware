@@ -112,7 +112,7 @@ combo_t key_combos[COMBO_COUNT] = {
 
 // SHIFT-ENTER-SEMICOLON/ENTER
 // Handle the possible states for each tapdance keycode you define:
-void scln_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
+void scln_ent_sent_finished(tap_dance_state_t *state, void *user_data) {
      if(state->count == 1){
         register_code16(KC_SCLN);
 
@@ -123,7 +123,7 @@ void scln_ent_sent_finished(qk_tap_dance_state_t *state, void *user_data) {
 
 }
 
-void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
+void scln_ent_sent_reset(tap_dance_state_t *state, void *user_data) {
      if(state->count == 1){
          unregister_code16(KC_SCLN);
 
@@ -135,7 +135,7 @@ void scln_ent_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
      [DOT_ENT]= ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_ENT),
     [SLASH_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_ENT),
      [Z_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_ENT),
@@ -194,10 +194,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
    [_COLEMAK] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-              KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                         KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
-       KP_A,    ALT_R,    CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    KP_O,
-      TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,      KC_K, KC_M,    KC_COMM, KC_DOT, KC_SLSH,
-         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS),
+                KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                               KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
+                KC_A,    ALT_R,    CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    KC_O,
+            TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,         KC_K, KC_M,    KC_COMM, KC_DOT, KC_SLSH,
+         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
  ),
    [_MOUSE] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -263,7 +263,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    [_SYMBOLS] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
               KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                          KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
-    SHT_GRV,  ALT_LBRC, CTL_LCBR, SHT_LPRN,    KC_LT,                           KC_GT,  SHT_RPRN,  CTL_RCBR,ALT_RBRC, TD(SCLN_ENT) ,
+    KC_GRV,  ALT_LBRC, CTL_LCBR, SHT_LPRN,    KC_LT,                           KC_GT,  SHT_RPRN,  CTL_RCBR,ALT_RBRC, TD(SCLN_ENT) ,
     KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_BSLS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_PLUS, KC_EQL ,RSFT(KC_SCLN), KC_SLSH,
                                   _______,_______,  _______,    _______,   _______,  _______,  _______,  _______
  ),
@@ -331,7 +331,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
    [_ADJUST] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_F9, KC_F10,    KC_F11,   KC_F12, RGB_TOG ,                            RGB_TOG, AU_TOG,   HPT_TOG,    TG(_REAPER), TG(_GAMES),
+             KC_F9, KC_F10,    KC_F11,   KC_F12, RGB_TOG ,                            RGB_TOG, AU_TOGG,   HF_TOGG,    TG(_REAPER), TG(_GAMES),
             KC_F5, KC_F6,    KC_F7,   KC_F8,  RGB_MOD,                              KC_RALT,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  SHT_MNXT,
             KC_F1,   KC_F2,   KC_F3,   KC_F4,   RGB_RMOD,           KC_MUTE, KC_MPLY,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
                                  _______,   _______,  _______,     _______,   _______, _______,   _______,   _______

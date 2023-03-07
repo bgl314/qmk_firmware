@@ -23,9 +23,9 @@ oled_rotation_t oled_init_kb(oled_rotation_t rotation) {
 }
 #endif
 
-//#ifdef HAPTIC_ENABLE
-//#include "drivers/haptic/DRV2605L.h"
-//#endif //HAPTIC ENABLE
+#ifdef HAPTIC_ENABLE
+#include "drivers/haptic/DRV2605L.h"
+#endif //HAPTIC ENABLE
 
 
 #ifdef SWAP_HANDS_ENABLE

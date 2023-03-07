@@ -41,6 +41,10 @@ for more options.
 
 //#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
+#ifdef HAPTIC_ENABLE
+#define SPLIT_HAPTIC_ENABLE
+#endif
+
 
 #ifdef POINTING_DEVICE_ENABLE
 //#    define POINTING_DEVICE_ROTATION_90
