@@ -23,9 +23,9 @@
 #include <string.h>
 #include "klor.h"
 #include "print.h"
-//#ifdef HAPTIC_ENABLE
-//#include "drivers/haptic/DRV2605L.h"
-//#endif //HAPTIC ENABLE
+#ifdef HAPTIC_ENABLE
+#include "drivers/haptic/DRV2605L.h"
+#endif //HAPTIC ENABLE
 #ifdef OLED_ENABLE
     #include "bongo.h"
     void oled_request_wakeup(void);
@@ -53,22 +53,34 @@
 enum klor_layers {
     /* _M_XYZ = Mac Os, _W_XYZ = Win/Linux */
     _COLEMAK,
-    _MOUSE,
-    _QWERTY,
+    _GAMES,
     _REAPER,
+    _MOUSE,
     _SYMBOLS,
     _NUMBERS,
     _NAV,
     _ADJUST,
 };
 
+#define SHT_T MT(MOD_LSFT, KC_T)
+#define CTL_S MT(MOD_LCTL, KC_S)
+#define ALT_R MT(MOD_LALT, KC_R)
+#define SHT_N MT(MOD_RSFT, KC_N)
+#define CTL_E MT(MOD_RCTL, KC_E)
+#define ALT_I MT(MOD_RALT, KC_I)
 
-#define SHT_O MT(MOD_RSFT, KC_O)
-#define SHT_GRV MT(MOD_LSFT, KC_GRV)
-#define SHT_BSLS MT(MOD_RSFT, KC_BSLS)
-#define SHT_A MT(MOD_LSFT, KC_A)
-#define CTL_N MT(MOD_RCTL, KC_N)
-#define CTRL_T MT(MOD_LCTL, KC_T)
+#define SHT_LPRN MT(MOD_LSFT, KC_LPRN)
+#define CTL_LCBR MT(MOD_LCTL, KC_LCBR)
+#define ALT_LBRC MT(MOD_LALT, KC_LBRC)
+
+#define SHT_RPRN MT(MOD_RSFT, KC_RPRN)
+#define CTL_RCBR MT(MOD_RCTL, KC_RCBR)
+#define ALT_RBRC MT(MOD_RALT, KC_RBRC)
+
+#define SHT_MPLY MT(MOD_RSFT, KC_MPLY)
+#define CTL_MSTP MT(MOD_RCTL, KC_MSTP)
+#define ALT_MPRV MT(MOD_RALT, KC_MPRV)
+
 #define CTL_MPLY MT(MOD_RCTL, KC_MPLY)
 #define SHT_MNXT MT(MOD_RSFT, KC_MNXT)
 
@@ -82,6 +94,19 @@ enum custom_keycodes{
     T_TAKE,
     SLASH_ENT,
     SCLN_ENT // tap ent, hold shift, doubletap semicolon enter
+};
+
+const key_override_t cw_override = ko_make_basic(MOD_MASK_SHIFT, KC_RSFT, QK_CAPS_WORD_TOGGLE);
+
+// This globally defines all key overrides to be used
+const key_override_t **key_overrides = (const key_override_t *[]){
+    &cw_override,
+    NULL // Null terminate the array of overrides!
+};
+
+const uint16_t PROGMEM test_combo1[] = {KC_SLSH, KC_SPC, COMBO_END};
+combo_t key_combos[COMBO_COUNT] = {
+    COMBO(test_combo1, KC_ENT)
 };
 
 
@@ -135,7 +160,6 @@ bool caps_word_press_user(uint16_t keycode) {
         case KC_DEL:
         case KC_UNDS:
             return true;
-        case TD(Q_ESC):
         case TD(Z_ENT):
             add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
             return true;
@@ -168,12 +192,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  │  CTRL   │  LOWER  │  SPACE  │   ALT   ││ CMD/WIN │  ENTER  │  RAISE  │  BSPCE  │
                                  └─────────┴─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┴─────────┘ */
 
-   [_COLEMAK] = LAYOUT_polydactyl(
+   [_COLEMAK] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-              TD(Q_ESC),    KC_W,    KC_F,    KC_P,    KC_G,                         KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
-    KC_NO,   SHT_A,    KC_R,    KC_S,    CTRL_T,    KC_D,                            KC_H,    CTL_N,    KC_E,    KC_I,    SHT_O,    KC_NO,
-     KC_NO, TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,      KC_K, KC_M,    KC_COMM, KC_DOT, TD(SLASH_ENT), TD(SCLN_ENT),
-         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),  MO(_SYMBOLS),MT(MOD_RALT,KC_RGUI)
+              KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,                         KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
+       KP_A,    ALT_R,    CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    KP_O,
+      TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,      KC_K, KC_M,    KC_COMM, KC_DOT, KC_SLSH,
+         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS),
  ),
    [_MOUSE] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -198,23 +222,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  │  CTRL   │  LOWER  │  SPACE  │   ALT   ││ CMD/WIN │  ENTER  │  RAISE  │ BSPACE  │
                                  └─────────┴─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┴─────────┘ */
 
-   [_QWERTY] = LAYOUT_polydactyl(
+   [_GAMES] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-              KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,                          KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,
-    KC_TAB,   KC_A,     KC_S,     KC_D,     KC_F,     KC_G,                          KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  _______,
-    KC_DEL,   KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_LSFT,   KC_MPLY,  KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,  _______,
-                                  KC_LALT, _______, KC_LCTL,   KC_LALT,   KC_LGUI,   _______,  _______, _______
+    _______,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
+    KC_A,     KC_R,     KC_S,     KC_T,     KC_D,                          KC_H,     KC_N,     KC_E,     KC_I,     KC_O,
+    _______,  _______,  _______,  _______,  _______,    _______,   _______,  _______,  _______,  _______,  _______,  _______,
+                        KC_LALT, _______, KC_LCTL,   _______,   _______,   _______,  _______, _______
  ),
 
-   [_REAPER] = LAYOUT_polydactyl(
+   [_REAPER] = LAYOUT_yubitsume(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
 
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-               _______,  _______, _______, TD(P_SPACE), _______,                            _______, _______, _______, _______, _______,
+       _______,  _______, _______, TD(P_SPACE), _______,                            _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______,  _______, TD(S_ALT_S), TD(T_TAKE), TD(D_DELETE),                            _______, _______, _______, _______, _______,  _______,
+     _______,  _______, TD(S_ALT_S), TD(T_TAKE), TD(D_DELETE),                         _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______,  _______, _______, _______, _______,   _______, _______,        _______, _______,  _______, _______, _______, _______,
+     _______,  _______, _______, _______, _______,   _______,                   _______, _______,  _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                      KC_SPC,_______,_______ , _______ ,          _______ ,_______,  _______,_______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -236,11 +260,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  │    ▼    │    ▼    │    ▼    │    ▼    ││    ▼    │    ▼    │ ADJUST  │    0    │
                                  └─────────┴─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┴─────────┘ */
 
-   [_SYMBOLS] = LAYOUT_polydactyl(
+   [_SYMBOLS] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
               KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                          KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
-    KC_NO,  SHT_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,                           KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, TD(SCLN_ENT) , KC_NO,
-    KC_NO, KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_BSLS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_PLUS, KC_EQL ,RSFT(KC_SCLN), KC_SLSH, KC_NO,
+    SHT_GRV,  ALT_LBRC, CTL_LCBR, SHT_LPRN,    KC_LT,                           KC_GT,  SHT_RPRN,  CTL_RCBR,ALT_RBRC, TD(SCLN_ENT) ,
+    KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_BSLS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_PLUS, KC_EQL ,RSFT(KC_SCLN), KC_SLSH,
                                   _______,_______,  _______,    _______,   _______,  _______,  _______,  _______
  ),
  /*
@@ -259,11 +283,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  │  GIPHY  │ ADJUST  │    ▼    │    ▼    ││    ▼    │    ▼    │    ▼    │    ▼    │
                                  └─────────┴─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┴─────────┘ */
 
-   [_NUMBERS] = LAYOUT_polydactyl(
+   [_NUMBERS] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
               KC_PSLS,KC_7,    KC_8,    KC_9,    KC_MINUS,                            KC_MINUS, KC_7,    KC_8,    KC_9,    KC_PSLS,
-    KC_NO,  KC_PAST,    KC_4,    KC_5,  KC_6,    KC_PLUS,                            KC_PLUS,    KC_4,    KC_5,  KC_6,    KC_PAST,  KC_NO,
-    KC_NO, TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_SPC,    KC_MPLY,        KC_MPLY,  KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT), KC_NO,
+            KC_PAST,    KC_4,    KC_5,  KC_6,    KC_PLUS,                            KC_PLUS,    KC_4,    KC_5,  KC_6,    KC_PAST,
+            TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_SPC,    KC_MPLY,        KC_MPLY,  KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT),
                                   KC_0,    _______, KC_DEL,   _______,   _______,  KC_0, _______, _______
  ),
   /*
@@ -282,12 +306,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  │  GIPHY  │ ADJUST  │    ▼    │    ▼    ││    ▼    │    ▼    │    ▼    │    ▼    │
                                  └─────────┴─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┴─────────┘ */
 
-   [_NAV] = LAYOUT_polydactyl(
+   [_NAV] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,                              KC_NO,    KC_PSCR,    KC_NO,    KC_NO,  KC_NO,
-    KC_NO,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_NO,                            KC_RALT,  KC_RCTL, KC_RSFT,  KC_INS,  KC_RSFT,  KC_NO,
-    KC_NO,    RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),KC_NO,  KC_MUTE,   KC_MPLY,    KC_NO,  KC_NO,    KC_NO,    KC_NO,  _______,  _______,
-                                  _______,  _______, KC_DEL,    RGB_MOD,   RGB_MOD,   _______, KC_NO, KC_NO
+             KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,                              KC_NO,    KC_PSCR,    KC_INS,    KC_NO,  KC_NO,
+           KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_CAPS,                            QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
+            RCTL(KC_Z),RCTL(KC_X),RCTL(KC_C),RCTL(KC_V),KC_DEL,  KC_MUTE,   KC_MPLY,    KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_ENT,
+                                  _______,  KC_TAB,_______ ,    _______,   _______,   _______, KC_NO, KC_NO
  ),
  /*
    ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
@@ -305,11 +329,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  │    ▼    │    ▼    │    ▼    │    ▼    ││    ▼    │    ▼    │    ▼    │    ▼    │
                                  └─────────┴─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┴─────────┘ */
 
-   [_ADJUST] = LAYOUT_polydactyl(
+   [_ADJUST] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_F9, KC_F10,    KC_F11,   KC_F12, RGB_TOG ,                            RGB_TOG, AU_TOG,   HPT_TOG,    TG(_REAPER), TG(_QWERTY),
-     KC_NO,  KC_F5, KC_F6,    KC_F7,   KC_F8,  RGB_MOD,                              KC_RALT,  CTL_MPLY, KC_MSTP, KC_MPRV,  SHT_MNXT,KC_NO,
-   KC_NO, KC_F1,   KC_F2,   KC_F3,   KC_F4,   RGB_RMOD,           KC_MUTE, KC_MPLY,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_CAPS, KC_NO,
+             KC_F9, KC_F10,    KC_F11,   KC_F12, RGB_TOG ,                            RGB_TOG, AU_TOG,   HPT_TOG,    TG(_REAPER), TG(_GAMES),
+            KC_F5, KC_F6,    KC_F7,   KC_F8,  RGB_MOD,                              KC_RALT,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  SHT_MNXT,
+            KC_F1,   KC_F2,   KC_F3,   KC_F4,   RGB_RMOD,           KC_MUTE, KC_MPLY,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
                                  _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
  )
 
@@ -626,7 +650,7 @@ void render_layer_name(void) {
     bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
     bool mouse = layer_state_is(_MOUSE);
     bool nav = layer_state_is(_NAV);
-    bool qwerty= layer_state_is(_QWERTY);
+    bool qwerty= layer_state_is(_GAMES);
     bool adjust = layer_state_is(_ADJUST);
     oled_set_cursor(0, 0);
     if(number){
