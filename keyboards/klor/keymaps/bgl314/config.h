@@ -31,13 +31,12 @@ for more options.
 
 #undef LOCKING_SUPPORT_ENABLE
 #undef LOCKING_RESYNC_ENABLE
-#define NO_ACTION_ONESHOT
 //#define NO_ACTION_TAPPING
 //#define NO_MUSIC_MODE
 
 
 
-#define COMBO_COUNT 1
+#define COMBO_COUNT 3
 
 //#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
