@@ -64,20 +64,21 @@ enum klor_layers {
 // ┌───────────────────────────────────────────────────────────┐
 // │ d e f i n e   h o m e r o w   m o d s                     │
 // └───────────────────────────────────────────────────────────┘
-
+#define GUI_A MT(MOD_LGUI, KC_A)
 #define SHT_T MT(MOD_LSFT, KC_T)
 #define CTL_S MT(MOD_LCTL, KC_S)
 #define ALT_R MT(MOD_LALT, KC_R)
 #define SHT_N MT(MOD_RSFT, KC_N)
 #define CTL_E MT(MOD_RCTL, KC_E)
 #define ALT_I MT(MOD_RALT, KC_I)
+#define GUI_O MT(MOD_RGUI, KC_O)
 
-#define SHT_LPRN MT(MOD_LSFT, KC_LPRN)
-#define CTL_LCBR MT(MOD_LCTL, KC_LCBR)
+#define SHT_LPRN MT(MOD_LSFT, LSFT(KC_9))
+#define CTL_LCBR MT(MOD_LCTL, LSFT(KC_LBRC))
 #define ALT_LBRC MT(MOD_LALT, KC_LBRC)
 
-#define SHT_RPRN MT(MOD_RSFT, KC_RPRN)
-#define CTL_RCBR MT(MOD_RCTL, KC_RCBR)
+#define SHT_RPRN MT(MOD_RSFT, KC_0)
+#define CTL_RCBR MT(MOD_RCTL, RSFT(KC_RBRC))
 #define ALT_RBRC MT(MOD_RALT, KC_RBRC)
 
 #define SHT_MPLY MT(MOD_RSFT, KC_MPLY)
@@ -85,7 +86,7 @@ enum klor_layers {
 #define ALT_MPRV MT(MOD_RALT, KC_MPRV)
 
 #define CTL_MPLY MT(MOD_RCTL, KC_MPLY)
-#define SHT_MNXT MT(MOD_RSFT, KC_MNXT)
+#define GUI_MNXT MT(MOD_RGUI, KC_MNXT)
 
 enum custom_keycodes{
     SCROLL,
@@ -102,58 +103,25 @@ enum custom_keycodes{
 // ┌───────────────────────────────────────────────────────────┐
 // │ d e f i n e   o v e r r i d e s                           │
 // └───────────────────────────────────────────────────────────┘
-
-const key_override_t cw_override = ko_make_basic(MOD_MASK_SHIFT, KC_RSFT, QK_CAPS_WORD_TOGGLE);
-
-// This globally defines all key overrides to be used
-const key_override_t **key_overrides = (const key_override_t *[]){
-    &cw_override,
-    NULL // Null terminate the array of overrides!
-};
+const key_override_t cw_override = ko_make_basic(MOD_MASK_SHIFT, OSM(MOD_RSFT), QK_CAPS_WORD_TOGGLE);
 
 // ┌───────────────────────────────────────────────────────────┐
 // │ d e f i n e   c o m b o s                                 │
 // └───────────────────────────────────────────────────────────┘
 const uint16_t PROGMEM slash_nav_combo[] = {KC_SLSH, LT(_NAV,KC_SPC), COMBO_END};
-const uint16_t PROGMEM o_nav_combo[] = {KC_O, LT(_NAV,KC_SPC), COMBO_END};
-const uint16_t PROGMEM r_thumb_combo[] = {OSM(MOD_RSFT), LT(_NAV,KC_SPC), COMBO_END};
-combo_t key_combos[COMBO_COUNT] = {
-   COMBO(slash_nav_combo, KC_ENT),
-    COMBO(o_nav_combo, KC_ENT),
-   COMBO(r_thumb_combo, MO(_SYMBOLS))
-};
+const uint16_t PROGMEM o_nav_combo[] = {GUI_O, LT(_NAV,KC_SPC), COMBO_END};
+const uint16_t PROGMEM a_bksp_combo[] = {MT(MOD_LCTL,KC_BSPC), GUI_A, COMBO_END};
+const uint16_t PROGMEM rh_combo[] = {LT(_NAV,KC_SPC),OSM(MOD_RSFT), COMBO_END};
 
 // ┌───────────────────────────────────────────────────────────┐
 // │ d e f i n e   t a p d a n c e                             │
 // └───────────────────────────────────────────────────────────┘
-// SHIFT-ENTER-SEMICOLON/ENTER
-// Handle the possible states for each tapdance keycode you define:
-void scln_ent_sent_finished(tap_dance_state_t *state, void *user_data) {
-     if(state->count == 1){
-        register_code16(KC_SCLN);
-
-     }else {
-        register_code16(KC_SCLN);
-        register_code16(KC_ENT);
-     }
-
-}
-
-void scln_ent_sent_reset(tap_dance_state_t *state, void *user_data) {
-     if(state->count == 1){
-         unregister_code16(KC_SCLN);
-
-     }else {
-            unregister_code16(KC_SCLN);
-             unregister_code16(KC_ENT);
-     }
-
-}
-
+void scln_ent_sent_finished(tap_dance_state_t *state, void *user_data);
+void scln_ent_sent_reset(tap_dance_state_t *state, void *user_data);
 tap_dance_action_t tap_dance_actions[] = {
-     [DOT_ENT]= ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_ENT),
+    [DOT_ENT]= ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_ENT),
     [SLASH_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_ENT),
-     [Z_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_ENT),
+    [Z_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_ENT),
     [D_DELETE] = ACTION_TAP_DANCE_DOUBLE(KC_D, KC_DEL),
     [P_SPACE] = ACTION_TAP_DANCE_DOUBLE(KC_P, KC_SPACE),
     [S_ALT_S] = ACTION_TAP_DANCE_DOUBLE(KC_S, LALT(KC_S)),
@@ -161,8 +129,52 @@ tap_dance_action_t tap_dance_actions[] = {
     [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset)
 };
 
+
+// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+// │ B E H A V I O U R S                                                                                                            │
+// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
 // ┌───────────────────────────────────────────────────────────┐
-// │ d e f i n e   c a p s w o r d                             │
+// │ t a p d a n c e                                           │
+// └───────────────────────────────────────────────────────────┘
+// SHIFT-ENTER-SEMICOLON/ENTER
+// Handle the possible states for each tapdance keycode you define:
+void scln_ent_sent_finished(tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+        register_code16(KC_SCLN);
+     }else {
+        register_code16(KC_SCLN);
+        register_code16(KC_ENT);
+     }
+}
+void scln_ent_sent_reset(tap_dance_state_t *state, void *user_data) {
+     if(state->count == 1){
+         unregister_code16(KC_SCLN);
+     }else {
+            unregister_code16(KC_SCLN);
+             unregister_code16(KC_ENT);
+     }
+}
+// ┌───────────────────────────────────────────────────────────┐
+// │ c o m b o s                                               │
+// └───────────────────────────────────────────────────────────┘
+combo_t key_combos[COMBO_COUNT] = {
+    COMBO(slash_nav_combo, KC_ENT),
+    COMBO(o_nav_combo, KC_ENT),
+    COMBO(rh_combo, MO(_ADJUST)),
+    COMBO(a_bksp_combo, KC_ENT)
+};
+// ┌───────────────────────────────────────────────────────────┐
+// │ o v e r r i d e s                                         │
+// └───────────────────────────────────────────────────────────┘
+// This globally defines all key overrides to be used
+const key_override_t **key_overrides = (const key_override_t *[]){
+    &cw_override,
+    NULL // Null terminate the array of overrides!
+};
+
+// ┌───────────────────────────────────────────────────────────┐
+// │ c a p s w o r d                                           │
 // └───────────────────────────────────────────────────────────┘
 bool caps_word_press_user(uint16_t keycode) {
     switch (keycode) {
@@ -184,107 +196,29 @@ bool caps_word_press_user(uint16_t keycode) {
             return false;  // Deactivate Caps Word.
     }
 }
-
-
-
-// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-// │ K E Y M A P S                                                                                                                              │
-// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
-
-const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-
-/*
-   ┌───────────────────────────────────────────────────────────┐
-   │ c o l e m a k                                             │
-   └───────────────────────────────────────────────────────────┘
-             ┌─────────┬─────────┬─────────┬─────────┬─────────┐                    ┌─────────┬─────────┬─────────┬─────────┬─────────┐
-             │    Q    │    W    │    F    │    P    │    G    │ ╭╮╭╮╭╮╭╮╭╮╭╮╭╮╭╮╭╮ │    J    │    L    │    U    │    Y    │    ;    │
-   ┌─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤ │╰╯╰╯╰╯╰╯╰╯╰╯╰╯╰╯│ ├─────────┼─────────┼─────────┼─────────┼─────────┼─────────┐
-   │   TAB   │    A    │    R    │    S    │    T    │    D    ├─╯                ╰─┤    H    │    N    │    E    │    I    │    O    │    "    │
-   ├─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤╭────────╮╭────────╮├─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤
-   │   DEL   │    Z    │    X    │    C    │    V    │    B    ││ SHIFT  ││PLY/PSE ││    K    │    M    │    ,    │    .    │    /    │  SHIFT  │
-   └─────────┴─────────┴─────────┼─────────┼─────────┼─────────┼╰────────╯╰────────╯┼─────────┼─────────┼─────────┼─────────┴─────────┴─────────┘
-                                 │  CTRL   │  LOWER  │  SPACE  │   ALT   ││ CMD/WIN │  ENTER  │  RAISE  │  BSPCE  │
-                                 └─────────┴─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┴─────────┘ */
-
-   [_COLEMAK] = LAYOUT_yubitsume(
- //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-                KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,                            KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
-                KC_A,    ALT_R,     CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    KC_O,
-            TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,          KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,
-         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_ADJUST)
- ),
-   [_MOUSE] = LAYOUT_yubitsume(
- //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-    _______,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
-    SCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,_______,                      _______,  _______,  _______,  _______,  _______,
-    LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V), _______ ,  _______,   _______,  _______,  _______,  _______,  _______,  _______,
-                        _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______
-),
-
-   [_GAMES] = LAYOUT_yubitsume(
- //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-    _______,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
-    KC_A,     KC_R,     KC_S,     KC_T,     KC_D,                          KC_H,     KC_N,     KC_E,     KC_I,     KC_O,
-    _______,  _______,  _______,  _______,  _______,    _______,   _______,  _______,  _______,  _______,  _______,  _______,
-                        KC_LALT, _______, KC_LCTL,   _______,   _______,   _______,  _______, _______
- ),
-
-   [_REAPER] = LAYOUT_yubitsume(
-  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-       _______,  _______, _______, TD(P_SPACE), _______,                            _______, _______, _______, _______, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______,  _______, TD(S_ALT_S), TD(T_TAKE), TD(D_DELETE),                         _______, _______, _______, _______, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     _______,  _______, _______, _______, _______,   _______,                   _______, _______,  _______, _______, _______, _______,
-  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                                     KC_SPC,_______,_______ , _______ ,          _______ ,_______,  _______,_______
-                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-  ),
-
-   [_SYMBOLS] = LAYOUT_yubitsume(
- //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-              KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                          KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
-    KC_GRV,  ALT_LBRC, CTL_LCBR, SHT_LPRN,    KC_LT,                           KC_GT,  SHT_RPRN,  CTL_RCBR,ALT_RBRC, TD(SCLN_ENT) ,
-    KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_BSLS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_PLUS, KC_EQL ,RSFT(KC_SCLN), KC_SLSH,
-                                  _______,_______,  _______,    _______,   _______,  _______,  _______,  _______
- ),
-
-   [_NUMBERS] = LAYOUT_yubitsume(
- //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-              KC_PSLS,KC_7,    KC_8,    KC_9,    KC_MINUS,                            KC_MINUS, KC_7,    KC_8,    KC_9,    KC_PSLS,
-            KC_PAST,    KC_4,    KC_5,  KC_6,    KC_PLUS,                            KC_PLUS,    KC_4,    KC_5,  KC_6,    KC_PAST,
-            TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_SPC,    KC_MPLY,        KC_MPLY,  KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT),
-                                  KC_0,    _______, KC_DEL,   _______,   _______,  KC_0, _______, _______
- ),
-
-   [_NAV] = LAYOUT_yubitsume(
- //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_PGUP, KC_HOME, KC_UP, KC_END,    KC_NO,                              KC_NO,    KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
-           KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_CAPS,                 QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
-            LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V),KC_DEL,  KC_MUTE,   KC_MPLY,    KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_ENT,
-                                  _______,  KC_TAB,_______ ,    _______,   _______,   _______, KC_NO, KC_NO
- ),
-
-   [_ADJUST] = LAYOUT_yubitsume(
- //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_F9, KC_F10,    KC_F11,   KC_F12, RGB_TOG ,                            RGB_TOG, AU_TOGG,   HF_TOGG,    TG(_REAPER), TG(_GAMES),
-            KC_F5, KC_F6,    KC_F7,   KC_F8,  RGB_MOD,                              KC_RALT,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  SHT_MNXT,
-            KC_F1,   KC_F2,   KC_F3,   KC_F4,   RGB_RMOD,           KC_MUTE, KC_MPLY,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
-                                 _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
- )
-
-};
-
+bool caps = false;
+void caps_word_set_user(bool active) {
+    if(active){
+         #ifdef HAPTIC_ENABLE
+           DRV_pulse(sharp_click);
+        #endif // HAPTIC_ENABLE
+    }else if(!caps){
+        #ifdef HAPTIC_ENABLE
+           DRV_pulse(soft_bump);
+        #endif // HAPTIC_ENABLE
+    }
+}
+// ┌───────────────────────────────────────────────────────────┐
+// │ l a y e r   s w i t c h i n g                             │
+// └───────────────────────────────────────────────────────────┘
 layer_state_t layer_state_set_user(layer_state_t state) {
-     state = update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
+     //state = update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
       #ifdef HAPTIC_ENABLE
      switch (get_highest_layer(state)) {
-
         case _REAPER:
+           DRV_pulse(transition_hum);
+            break;
+        case _GAMES:
            DRV_pulse(transition_hum);
             break;
         default: //  for any other layers, or the default layer
@@ -297,104 +231,21 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             case _REAPER:
             PLAY_SONG(mac_song);
                 break;
+            case _GAMES:
+            PLAY_SONG(mac_song);
+                break;
             default: //  for any other layers, or the default layer
                 break;
     }
     #endif // AUDIO_ENABLE
-
     return state;
 }
 
-bool caps = false;
-
-void caps_word_set_user(bool active) {
-    if(active){
-         #ifdef HAPTIC_ENABLE
-           DRV_pulse(sharp_click);
-        #endif // HAPTIC_ENABLE
-    }else if(!caps){
-        #ifdef HAPTIC_ENABLE
-           DRV_pulse(soft_bump);
-        #endif // HAPTIC_ENABLE
-    }
-}
-
-#ifdef RGB_MATRIX_ENABLE
-
-
-enum rgb_matrix_effects priormode= RGB_MATRIX_TYPING_HEATMAP;
-
-bool led_update_user(led_t led_state) {
-    if(led_state.caps_lock){
-        priormode=rgb_matrix_get_mode();
-
-    }else if(!is_caps_word_on()){
-
-    }
-    caps=led_state.caps_lock;
-    return true;
-}
-bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    if (is_caps_word_on() || caps) {
-        for (uint8_t i = led_min; i <= led_max; i++) {
-    //if (!(g_led_config.flags[i] & LED_FLAG_KEYLIGHT) && g_led_config.flags[i]!=LED_FLAG_UNDERGLOW) {
-                rgb_matrix_set_color(i, RGB_MAGENTA);
-     //       }else{
-                // rgb_matrix_set_color(i, 0,0,0);
-      //      }
-        }
-    }
-    return true;
-}
-
-#endif
-
-// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-// │ T R A C K B A L L                                                                                                                          │
-// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
-
-#ifdef POINTING_DEVICE_ENABLE
-static bool scrolling_mode = false;
-void pointing_device_init_user(void) {
-    set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
-    set_auto_mouse_enable(true);  // always required before the auto mouse feature will work
-}
-
-report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-//     #ifdef CONSOLE_ENABLE
-//     uprintf("mouse col: %u, row: %u\n",mouse_report.h, mouse_report.v);
-// #endif
-    if (scrolling_mode) {
-        mouse_report.h = mouse_report.x;
-        mouse_report.v = mouse_report.y;
-        mouse_report.x = 0;
-        mouse_report.y = 0;
-    }
-    return mouse_report;
-}
-
-void i2c_init(void) {
-    static bool is_initialised = false;
-    if (!is_initialised) {
-        is_initialised = true;
-        // Try releasing special pins for a short time
-        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_INPUT);
-        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_INPUT);
-        chThdSleepMilliseconds(10);
-        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
-        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
-    }
-}
-
-#endif //POINTING_DEVICE_ENABLE
-
-// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-// │ P E R - K E Y    A C T I O N S                                                                                                             │
-// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
-
+// ┌───────────────────────────────────────────────────────────┐
+// │ p e r - k e y  a c t i o n s                              │
+// └───────────────────────────────────────────────────────────┘
 uint8_t mod_state;
+static bool scrolling_mode = false;
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     #ifdef CONSOLE_ENABLE
     if(record->event.key.col!=0 ||record->event.key.row !=0)
@@ -486,6 +337,76 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     return true;
 }
+
+
+#ifdef RGB_MATRIX_ENABLE
+
+enum rgb_matrix_effects priormode= RGB_MATRIX_TYPING_HEATMAP;
+
+bool led_update_user(led_t led_state) {
+    if(led_state.caps_lock){
+        priormode=rgb_matrix_get_mode();
+
+    }else if(!is_caps_word_on()){
+
+    }
+    caps=led_state.caps_lock;
+    return true;
+}
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (is_caps_word_on() || caps) {
+        for (uint8_t i = led_min; i <= led_max; i++) {
+    //if (!(g_led_config.flags[i] & LED_FLAG_KEYLIGHT) && g_led_config.flags[i]!=LED_FLAG_UNDERGLOW) {
+                rgb_matrix_set_color(i, RGB_MAGENTA);
+     //       }else{
+                // rgb_matrix_set_color(i, 0,0,0);
+      //      }
+        }
+    }
+    return true;
+}
+
+#endif
+
+// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+// │ T R A C K P A D                                                                                                                            │
+// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
+#ifdef POINTING_DEVICE_ENABLE
+
+void pointing_device_init_user(void) {
+    set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_enable(true);  // always required before the auto mouse feature will work
+}
+
+report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
+//     #ifdef CONSOLE_ENABLE
+//     uprintf("mouse col: %u, row: %u\n",mouse_report.h, mouse_report.v);
+// #endif
+    if (scrolling_mode) {
+        mouse_report.h = mouse_report.x;
+        mouse_report.v = mouse_report.y;
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }
+    return mouse_report;
+}
+/*
+void i2c_init(void) {
+    static bool is_initialised = false;
+    if (!is_initialised) {
+        is_initialised = true;
+        // Try releasing special pins for a short time
+        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_INPUT);
+        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_INPUT);
+        chThdSleepMilliseconds(10);
+        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
+        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
+    }
+}
+*/
+#endif //POINTING_DEVICE_ENABLE
+
 
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -693,13 +614,7 @@ bool oled_task_kb(void) {
 
     return false;
 }
-
-
-
 #endif // OLED_ENABLE
-
-
-
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 // │ E N C O D E R                                                                                                                              │
@@ -741,6 +656,92 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
 #endif // ENCODER_ENABLE
 
 
+
+// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+// │ K E Y M A P S                                                                                                                              │
+// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
+
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
+/*
+   ┌───────────────────────────────────────────────────────────┐
+   │ c o l e m a k                                             │
+   └───────────────────────────────────────────────────────────┘
+             ┌─────────┬─────────┬─────────┬─────────┬─────────┐                    ┌─────────┬─────────┬─────────┬─────────┬─────────┐
+             │    Q    │    W    │    F    │    P    │    G    │ ╭╮╭╮╭╮╭╮╭╮╭╮╭╮╭╮╭╮ │    J    │    L    │    U    │    Y    │    ;    │
+   ┌─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤ │╰╯╰╯╰╯╰╯╰╯╰╯╰╯╰╯│ ├─────────┼─────────┼─────────┼─────────┼─────────┼─────────┐
+   │   TAB   │    A    │    R    │    S    │    T    │    D    ├─╯                ╰─┤    H    │    N    │    E    │    I    │    O    │    "    │
+   ├─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤╭────────╮╭────────╮├─────────┼─────────┼─────────┼─────────┼─────────┼─────────┤
+   │   DEL   │    Z    │    X    │    C    │    V    │    B    ││ SHIFT  ││PLY/PSE ││    K    │    M    │    ,    │    .    │    /    │  SHIFT  │
+   └─────────┴─────────┴─────────┼─────────┼─────────┼─────────┼╰────────╯╰────────╯┼─────────┼─────────┼─────────┼─────────┴─────────┴─────────┘
+                                 │  CTRL   │  LOWER  │  SPACE  │   ALT   ││ CMD/WIN │  ENTER  │  RAISE  │  BSPCE  │
+                                 └─────────┴─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┴─────────┘ */
+
+    [_COLEMAK] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+                KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,                            KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
+                GUI_A,    ALT_R,     CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    GUI_O,
+            TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,          KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,
+         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
+    ),
+    [_MOUSE] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
+    _______,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
+    SCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,_______,                      _______,  _______,  _______,  _______,  _______,
+    LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V), _______ ,  _______,   _______,  _______,  _______,  _______,  _______,  _______,
+                        _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______
+    ),
+    [_GAMES] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+    _______,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
+    KC_A,     KC_R,     KC_S,     KC_T,     KC_D,                          KC_H,     KC_N,     KC_E,     KC_I,     KC_O,
+    _______,  _______,  _______,  _______,  _______,    _______,   _______,  _______,  _______,  _______,  _______,  _______,
+                        KC_LALT, _______, KC_LCTL,   _______,   _______,   _______,  _______, _______
+    ),
+    [_REAPER] = LAYOUT_yubitsume(
+  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
+
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+       _______,  _______, _______, TD(P_SPACE), _______,                            _______, _______, _______, _______, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
+     _______,  _______, TD(S_ALT_S), TD(T_TAKE), TD(D_DELETE),                         _______, _______, _______, _______, _______,
+  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+     _______,  _______, _______, _______, _______,   _______,                   _______, _______,  _______, _______, _______, _______,
+  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
+                                     KC_SPC,_______,_______ , _______ ,          _______ ,_______,  _______,_______
+                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
+    ),
+    [_SYMBOLS] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+            KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
+            KC_GRV,  ALT_LBRC, CTL_LCBR, SHT_LPRN,    KC_LT,                         KC_GT,  SHT_RPRN,  CTL_RCBR,ALT_RBRC, KC_BSLS,
+            KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_PLUS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_EQL, RSFT(KC_SCLN) ,TD(SCLN_ENT), KC_SLSH,
+                                  _______,_______,  _______,    _______,   _______,  _______,  _______,  _______
+    ),
+    [_NUMBERS] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+              KC_PSLS,KC_7,    KC_8,    KC_9,    KC_MINUS,                            KC_MINUS, KC_7,    KC_8,    KC_9,    KC_PSLS,
+            KC_PAST,    KC_4,    KC_5,  KC_6,    KC_PLUS,                            KC_PLUS,    KC_4,    KC_5,  KC_6,    KC_PAST,
+            TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_SPC,    KC_MPLY,        KC_MPLY,  KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT),
+                                  KC_0,    _______, KC_DEL,   _______,   _______,  KC_0, _______, _______
+    ),
+    [_NAV] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+             KC_PGUP, KC_LEFT, KC_UP, KC_RGHT,    KC_NO,                              KC_NUM_LOCK,    KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
+           KC_PGDN, KC_HOME, KC_DOWN,KC_END ,   KC_CAPS,                 QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
+            LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V),KC_DEL,  KC_MUTE,   KC_MPLY,    KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_ENT,
+                                  _______,  KC_TAB,_______ ,    _______,   _______,   _______, KC_NO, KC_NO
+    ),
+    [_ADJUST] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+             KC_F9, KC_F10,    KC_F11,   KC_F12, RGB_TOG ,                            RGB_TOG, AU_TOGG,   HF_TOGG,    TG(_REAPER), TG(_GAMES),
+            KC_F5, KC_F6,    KC_F7,   KC_F8,  RGB_MOD,                              KC_RALT,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,
+            KC_F1,   KC_F2,   KC_F3,   KC_F4,   RGB_RMOD,           KC_MUTE, KC_MPLY,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
+                                 _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
+    )
+
+};
 
 
 /*

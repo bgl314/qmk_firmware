@@ -18,25 +18,26 @@ for more options.
 // Enable rapid switch from tap to hold, disables double tap hold auto-repeat.
 //#define TAPPING_FORCE_HOLD
 
-#define TAPPING_TOGGLE 2
+#define TAPPING_TOGGLE 4
 
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_LED_STATE_ENABLE
 #define SPLIT_USB_DETECT
+#define SPLIT_MODS_ENABLE
+#define SPLIT_TRANSPORT_MIRROR
 
 // Auto Shift
 //#define NO_AUTO_SHIFT_ALPHA
 //#define AUTO_SHIFT_TIMEOUT TAPPING_TERM
 //#define AUTO_SHIFT_NO_SETUP
-
-#undef LOCKING_SUPPORT_ENABLE
-#undef LOCKING_RESYNC_ENABLE
+//#undef LOCKING_SUPPORT_ENABLE
+//#undef LOCKING_RESYNC_ENABLE
 //#define NO_ACTION_TAPPING
 //#define NO_MUSIC_MODE
 
 
 
-#define COMBO_COUNT 3
+#define COMBO_COUNT 4
 
 //#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
@@ -48,7 +49,7 @@ for more options.
 #ifdef POINTING_DEVICE_ENABLE
 //#    define POINTING_DEVICE_ROTATION_90
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
-#define POINTING_DEVICE_DEBUG
+//#define POINTING_DEVICE_DEBUG
 #define SPLIT_POINTING_ENABLE
 //#    define POINTING_DEVICE_RIGHT
 //#    define POINTING_DEVICE_ROTATION_270
