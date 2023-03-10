@@ -168,6 +168,8 @@ combo_t key_combos[COMBO_COUNT] = {
     COMBO(rmb3_combo, TD(SCLN_ENT)),
     COMBO(rtm4_combo, KC_DQUO),
     // middle / top combos
+     KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,
+     KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
     COMBO(lmb4_combo, KC_EXLM),
     COMBO(lmb3_combo, KC_AT),
     COMBO(lmb2_combo, KC_HASH),
