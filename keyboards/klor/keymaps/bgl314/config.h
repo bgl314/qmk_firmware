@@ -39,7 +39,7 @@ for more options.
 
 #define COMBO_COUNT 4
 
-//#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
 #ifdef HAPTIC_ENABLE
 #define SPLIT_HAPTIC_ENABLE

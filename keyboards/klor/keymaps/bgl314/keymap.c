@@ -68,7 +68,7 @@ enum klor_layers {
 #define SHT_T MT(MOD_LSFT, KC_T)
 #define CTL_S MT(MOD_LCTL, KC_S)
 #define ALT_R MT(MOD_LALT, KC_R)
-#define SHT_N MT(MOD_RSFT, KC_N)
+#define SHT_N MT(MOD_LSFT, KC_N)
 #define CTL_E MT(MOD_RCTL, KC_E)
 #define ALT_I MT(MOD_RALT, KC_I)
 #define GUI_O MT(MOD_RGUI, KC_O)
@@ -77,7 +77,7 @@ enum klor_layers {
 #define CTL_LCBR MT(MOD_LCTL, LSFT(KC_LBRC))
 #define ALT_LBRC MT(MOD_LALT, KC_LBRC)
 
-#define SHT_RPRN MT(MOD_RSFT, KC_0)
+#define SHT_RPRN MT(MOD_RSFT, RSFT(KC_0))
 #define CTL_RCBR MT(MOD_RCTL, RSFT(KC_RBRC))
 #define ALT_RBRC MT(MOD_RALT, KC_RBRC)
 
@@ -266,7 +266,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             scrolling_mode = true;
             pointing_device_set_cpi(50);
             #ifdef HAPTIC_ENABLE
-            DRV_pulse(transition_hum);
+            DRV_pulse(sharp_click);
             #endif // HAPTIC
         } else {
             scrolling_mode = false;
@@ -530,21 +530,23 @@ void render_layer_name(void) {
     bool nav = layer_state_is(_NAV);
     bool qwerty= layer_state_is(_GAMES);
     bool adjust = layer_state_is(_ADJUST);
+    bool capsword=is_caps_word_on();
+
     oled_set_cursor(0, 0);
     if(number){
-        oled_write_P(PSTR("12345"), led_state.caps_lock );
+        oled_write_P(PSTR("12345"), led_state.caps_lock ||capsword);
     } else if(symbol){
-        oled_write_P(PSTR("!@#$^"), led_state.caps_lock);
+        oled_write_P(PSTR("!@#$^"), led_state.caps_lock||capsword);
     } else if(mouse){
-        oled_write_P(PSTR("MOUSE"), led_state.caps_lock);
+        oled_write_P(PSTR("MOUSE"), led_state.caps_lock||capsword);
     } else if(adjust){
-        oled_write_P(PSTR(" ADJ "), led_state.caps_lock);
+        oled_write_P(PSTR(" ADJ "), led_state.caps_lock||capsword);
     } else if(nav){
-        oled_write_P(PSTR(" NAV "), led_state.caps_lock);
+        oled_write_P(PSTR(" NAV "), led_state.caps_lock||capsword);
     } else if(qwerty){
-        oled_write_P(PSTR("QWERTY"), led_state.caps_lock);
+        oled_write_P(PSTR("GAMES"), led_state.caps_lock||capsword);
     } else {
-        oled_write_P(PSTR("COLMAK"), led_state.caps_lock);
+        oled_write_P(PSTR("COLMAK"), led_state.caps_lock||capsword);
     }
 
     oled_set_cursor(0, 1);
@@ -567,10 +569,15 @@ void render_layer_name(void) {
     } else {
         oled_write_P(b_lock, false);
     }
+
     if (led_usb_state.caps_lock) {
         oled_write_P(c_lock, false); // ─── CAPSLOCK
     } else {
-        oled_write_P(b_lock, false);
+        if(capsword){
+            oled_write_P(c_lock, false);
+        }else{
+            oled_write_P(b_lock, false);
+        }
     }
     oled_write_P(sep_h2, false);
 
@@ -690,7 +697,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
     SCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,_______,                      _______,  _______,  _______,  _______,  _______,
     LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V), _______ ,  _______,   _______,  _______,  _______,  _______,  _______,  _______,
-                        _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______
+                        KC_RALT,  KC_RSFT,  _______,  _______,   _______,  _______,  _______,  _______
     ),
     [_GAMES] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -715,9 +722,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_SYMBOLS] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
             KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
-            KC_GRV,  ALT_LBRC, CTL_LCBR, SHT_LPRN,    KC_LT,                         KC_GT,  SHT_RPRN,  CTL_RCBR,ALT_RBRC, KC_BSLS,
+            KC_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,                         KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, KC_BSLS,
             KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_PLUS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_EQL, RSFT(KC_SCLN) ,TD(SCLN_ENT), KC_SLSH,
-                                  _______,_______,  _______,    _______,   _______,  _______,  _______,  _______
+                                  _______,KC_LALT,  _______,    _______,   _______,  _______,  _______,  _______
     ),
     [_NUMBERS] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -728,9 +735,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_NAV] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_PGUP, KC_LEFT, KC_UP, KC_RGHT,    KC_NO,                              KC_NUM_LOCK,    KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
-           KC_PGDN, KC_HOME, KC_DOWN,KC_END ,   KC_CAPS,                 QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
-            LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V),KC_DEL,  KC_MUTE,   KC_MPLY,    KC_NO,  KC_NO,    KC_NO,    KC_NO,  KC_ENT,
+           KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,                            KC_NO,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
+           KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,                       QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
+        LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,   KC_CAPS,   KC_NO,   KC_NO,    KC_NO,  KC_ENT,
                                   _______,  KC_TAB,_______ ,    _______,   _______,   _______, KC_NO, KC_NO
     ),
     [_ADJUST] = LAYOUT_yubitsume(
