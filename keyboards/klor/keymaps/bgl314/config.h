@@ -37,7 +37,7 @@ for more options.
 
 
 
-#define COMBO_COUNT 4
+#define COMBO_COUNT 17
 
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 

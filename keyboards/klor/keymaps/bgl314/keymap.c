@@ -90,6 +90,9 @@ enum klor_layers {
 
 enum custom_keycodes{
     SCROLL,
+    DBL_PRN,
+    DBL_BRC,
+    DBL_CBR,
     DOT_ENT,
     Z_ENT,
     D_DELETE,
@@ -112,6 +115,46 @@ const uint16_t PROGMEM slash_nav_combo[] = {KC_SLSH, LT(_NAV,KC_SPC), COMBO_END}
 const uint16_t PROGMEM o_nav_combo[] = {GUI_O, LT(_NAV,KC_SPC), COMBO_END};
 const uint16_t PROGMEM a_bksp_combo[] = {MT(MOD_LCTL,KC_BSPC), GUI_A, COMBO_END};
 const uint16_t PROGMEM rh_combo[] = {LT(_NAV,KC_SPC),OSM(MOD_RSFT), COMBO_END};
+
+const uint16_t PROGMEM lmb4_combo[] = {  GUI_A,KC_Z, COMBO_END};
+const uint16_t PROGMEM lmb3_combo[] = {  ALT_R, KC_X, COMBO_END};
+const uint16_t PROGMEM lmb2_combo[] = {  CTL_S, KC_C, COMBO_END};
+const uint16_t PROGMEM lmb1_combo[] = {  SHT_T, KC_V, COMBO_END};
+const uint16_t PROGMEM lmb0_combo[] = {  KC_D, KC_B, COMBO_END};
+const uint16_t PROGMEM rmb0_combo[] = {  KC_H, KC_K, COMBO_END};
+const uint16_t PROGMEM rmb1_combo[] = {  SHT_N, KC_M, COMBO_END};
+const uint16_t PROGMEM rmb2_combo[] = {  CTL_E, KC_COMM, COMBO_END};
+const uint16_t PROGMEM rmb3_combo[] = {  ALT_I, KC_DOT, COMBO_END};
+const uint16_t PROGMEM rmb4_combo[] = {  GUI_O, KC_SLSH, COMBO_END};
+const uint16_t PROGMEM rtm4_combo[] = {  GUI_O, KC_QUOT, COMBO_END};
+
+// doubles
+const uint16_t PROGMEM pr_combo[] = { KC_H, SHT_N, COMBO_END};
+const uint16_t PROGMEM cbr_combo[] = { KC_K, KC_M, COMBO_END};
+const uint16_t PROGMEM br_combo[] = { KC_J, KC_L, COMBO_END};
+
+// ┌───────────────────────────────────────────────────────────┐
+// │ c o m b o s                                               │
+// └───────────────────────────────────────────────────────────┘
+combo_t key_combos[COMBO_COUNT] = {
+    COMBO(slash_nav_combo, KC_ENT),
+    COMBO(o_nav_combo, KC_ENT),
+    COMBO(rh_combo, MO(_ADJUST)),
+    COMBO(a_bksp_combo, KC_ENT),
+    COMBO(pr_combo, DBL_PRN),
+    COMBO(cbr_combo, DBL_CBR),
+    COMBO(br_combo, DBL_BRC),
+    COMBO(lmb4_combo, KC_TILD),
+    COMBO(lmb3_combo, KC_GRAVE),
+    COMBO(lmb2_combo, KC_UNDS),
+    COMBO(lmb1_combo, KC_MINUS),
+    COMBO(lmb0_combo, KC_PLUS),
+    COMBO(rmb0_combo, KC_PIPE),
+    COMBO(rmb1_combo, KC_EQUAL),
+    COMBO(rmb2_combo, LSFT(KC_SEMICOLON)),
+    COMBO(rmb3_combo, TD(SCLN_ENT)),
+    COMBO(rtm4_combo, KC_DQUO)
+};
 
 // ┌───────────────────────────────────────────────────────────┐
 // │ d e f i n e   t a p d a n c e                             │
@@ -155,15 +198,7 @@ void scln_ent_sent_reset(tap_dance_state_t *state, void *user_data) {
              unregister_code16(KC_ENT);
      }
 }
-// ┌───────────────────────────────────────────────────────────┐
-// │ c o m b o s                                               │
-// └───────────────────────────────────────────────────────────┘
-combo_t key_combos[COMBO_COUNT] = {
-    COMBO(slash_nav_combo, KC_ENT),
-    COMBO(o_nav_combo, KC_ENT),
-    COMBO(rh_combo, MO(_ADJUST)),
-    COMBO(a_bksp_combo, KC_ENT)
-};
+
 // ┌───────────────────────────────────────────────────────────┐
 // │ o v e r r i d e s                                         │
 // └───────────────────────────────────────────────────────────┘
@@ -332,7 +367,45 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           #endif // AUDIO_ENABLE
         }
         break;
-
+// ┌─────────────────────────────────────────────────┐
+// │ d o u b l e  s e p a r a t o r s                │
+// └─────────────────────────────────────────────────┘
+    case DBL_PRN:
+        if (record->event.pressed) {
+            if(!(get_mods() & MOD_MASK_SHIFT))
+                set_mods(MOD_MASK_SHIFT);
+            register_code(KC_9);
+            register_code(KC_0);
+            set_mods(mod_state);
+        } else {
+            unregister_code(KC_9);
+            unregister_code(KC_0);
+        }
+        // Do not let QMK process the keycode further
+        return false;
+    case DBL_BRC:
+        if (record->event.pressed) {
+            register_code(KC_LBRC);
+            register_code(KC_RBRC);
+        } else {
+            unregister_code(KC_LBRC);
+            unregister_code(KC_RBRC);
+        }
+        // Do not let QMK process the keycode further
+        return false;
+    case DBL_CBR:
+         if (record->event.pressed) {
+            if(!(get_mods() & MOD_MASK_SHIFT))
+                set_mods(MOD_MASK_SHIFT);
+            register_code(KC_LBRC);
+            register_code(KC_RBRC);
+            set_mods(mod_state);
+        } else {
+            unregister_code(KC_LBRC);
+            unregister_code(KC_RBRC);
+        }
+        // Do not let QMK process the keycode further
+        return false;
     }
 
     return true;
@@ -689,7 +762,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,                            KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
                 GUI_A,    ALT_R,     CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    GUI_O,
-            TD(Z_ENT),    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,          KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,
+            KC_Z,    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,          KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,
          MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
     ),
     [_MOUSE] = LAYOUT_yubitsume(
@@ -724,7 +797,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
             KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
             KC_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,                         KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, KC_BSLS,
             KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_PLUS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_EQL, RSFT(KC_SCLN) ,TD(SCLN_ENT), KC_SLSH,
-                                  _______,KC_LALT,  _______,    _______,   _______,  _______,  _______,  _______
+                                  KC_LALT,KC_LSFT,  _______,    _______,   _______,  _______,  _______,  _______
     ),
     [_NUMBERS] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
