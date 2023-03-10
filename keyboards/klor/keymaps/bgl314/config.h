@@ -26,18 +26,7 @@ for more options.
 #define SPLIT_MODS_ENABLE
 #define SPLIT_TRANSPORT_MIRROR
 
-// Auto Shift
-//#define NO_AUTO_SHIFT_ALPHA
-//#define AUTO_SHIFT_TIMEOUT TAPPING_TERM
-//#define AUTO_SHIFT_NO_SETUP
-//#undef LOCKING_SUPPORT_ENABLE
-//#undef LOCKING_RESYNC_ENABLE
-//#define NO_ACTION_TAPPING
-//#define NO_MUSIC_MODE
-
-
-
-#define COMBO_COUNT 17
+#define COMBO_COUNT 26
 
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
