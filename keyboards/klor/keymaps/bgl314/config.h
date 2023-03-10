@@ -1,34 +1,14 @@
 #pragma once
-
+// get my qmk-config folder and put it in the same directory as qmk_firmware
+#include "../qmk-config/common_config.h"
 /* The way how "handedness" is decided (which half is which),
 see https://docs.qmk.fm/#/feature_split_keyboard?id=setting-handedness
 for more options.
 */
-#define EE_HANDS
-//#define MASTER_LEFT
+//#define EE_HANDS
+#define MASTER_LEFT
 //#define MASTER_RIGHT
 
-
-//#define TAPPING_TERM 170
-#define TAPPING_TERM 170
-
-// Prevent normal rollover on alphas from accidentally triggering mods.
-#define IGNORE_MOD_TAP_INTERRUPT
-
-// Enable rapid switch from tap to hold, disables double tap hold auto-repeat.
-//#define TAPPING_FORCE_HOLD
-
-#define TAPPING_TOGGLE 4
-
-#define SPLIT_LAYER_STATE_ENABLE
-#define SPLIT_LED_STATE_ENABLE
-#define SPLIT_USB_DETECT
-#define SPLIT_MODS_ENABLE
-#define SPLIT_TRANSPORT_MIRROR
-
-#define COMBO_COUNT 26
-
-#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
 
 #ifdef HAPTIC_ENABLE
 #define SPLIT_HAPTIC_ENABLE
