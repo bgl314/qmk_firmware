@@ -16,8 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-//#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
-#define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+// get my qmk-config folder and put it in the same directory as qmk_firmware
+#include "../qmk-config/common_config.h"
+
 #define RGBLIGHT_LAYERS
 #define RGB_DI_PIN B7 // pin the DI on the ws2812 is hooked-up to
 #define RGBLIGHT_ANIMATIONS // run RGB animations
@@ -25,11 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_HUE_STEP 12 // units to step when in/decreasing hue
 #define RGBLIGHT_SAT_STEP 25 // units to step when in/decresing saturation
 #define RGBLIGHT_VAL_STEP 12 // units to step when in/decreasing value (brightness)
-#define TAPPING_TOGGLE 2
-#define TAPPING_TERM 170
 
-// Prevent normal rollover on alphas from accidentally triggering mods.
-#define IGNORE_MOD_TAP_INTERRUPT
 
 
 

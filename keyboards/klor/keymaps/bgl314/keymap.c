@@ -36,14 +36,59 @@
 #include "klor.h"
 #include "print.h"
 
+// ┌───────────────────────────────────────────────────────────┐
+// │ c a p s  w o r d                                          │
+// └───────────────────────────────────────────────────────────┘
+bool caps = false;
+void caps_word_set_user(bool active) {
+    if(active){
+         #ifdef HAPTIC_ENABLE
+           DRV_pulse(sharp_click);
+        #endif // HAPTIC_ENABLE
+    }else if(!caps){
+        #ifdef HAPTIC_ENABLE
+           DRV_pulse(soft_bump);
+        #endif // HAPTIC_ENABLE
+    }
+}
 
+// ┌───────────────────────────────────────────────────────────┐
+// │ l a y e r   s w i t c h i n g                             │
+// └───────────────────────────────────────────────────────────┘
+layer_state_t layer_state_set_user(layer_state_t state) {
+     //state = update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
+      #ifdef HAPTIC_ENABLE
+     switch (get_highest_layer(state)) {
+        case _REAPER:
+           DRV_pulse(transition_hum);
+            break;
+        case _GAMES:
+           DRV_pulse(transition_hum);
+            break;
+        default: //  for any other layers, or the default layer
+            //DRV_pulse(transition_hum);
+            break;
+    }
+    #endif // HAPTIC_ENABLE
+    #ifdef AUDIO_ENABLE
+        switch (get_highest_layer(state)) {
+            case _REAPER:
+            PLAY_SONG(mac_song);
+                break;
+            case _GAMES:
+            PLAY_SONG(mac_song);
+                break;
+            default: //  for any other layers, or the default layer
+                break;
+    }
+    #endif // AUDIO_ENABLE
+    return state;
+}
 
 
 #ifdef RGB_MATRIX_ENABLE
 #include "color.h"
 #endif
-
-
 #ifdef RGB_MATRIX_ENABLE
 
 enum rgb_matrix_effects priormode= RGB_MATRIX_TYPING_HEATMAP;
@@ -393,9 +438,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_COLEMAK] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,                            KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
-                GUI_A,    ALT_R,     CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    GUI_O,
+                KC_A,    ALT_R,     CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    KC_O,
             KC_Z,    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,          KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,
-         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
+         MT(MOD_LGUI,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
     ),
     [_MOUSE] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
