@@ -133,7 +133,13 @@ report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
 //     #ifdef CONSOLE_ENABLE
 //     uprintf("mouse col: %u, row: %u\n",mouse_report.h, mouse_report.v);
 // #endif
-    if (scrolling_mode) {
+    if (vscrolling_mode) {
+        // only vertical scrolling.
+        mouse_report.h = 0;//mouse_report.x;
+        mouse_report.v = mouse_report.y;
+        mouse_report.x = 0;
+        mouse_report.y = 0;
+    }else if (scrolling_mode) {
         mouse_report.h = mouse_report.x;
         mouse_report.v = mouse_report.y;
         mouse_report.x = 0;
@@ -444,8 +450,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_MOUSE] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-    _______,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
-    SCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,_______,                      _______,  _______,  _______,  _______,  _______,
+    SCROLL,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
+    VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,_______,                      _______,  _______,  _______,  _______,  _______,
     LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V), _______ ,  _______,   _______,  _______,  _______,  _______,  _______,  _______,
                         KC_RALT,  KC_RSFT,  _______,  _______,   _______,  _______,  _______,  _______
     ),
@@ -485,16 +491,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_NAV] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-           KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,                            KC_NO,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
+           KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,                            KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
            KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,                       QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
         LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,   KC_CAPS,   KC_NO,   KC_NO,    KC_NO,  KC_ENT,
                                   _______,  KC_TAB,_______ ,    _______,   _______,   _______, KC_NO, KC_NO
     ),
     [_ADJUST] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_F9, KC_F10,    KC_F11,   KC_F12, RGB_TOG ,                            RGB_TOG, AU_TOGG,   HF_TOGG,    TG(_REAPER), TG(_GAMES),
-            KC_F5, KC_F6,    KC_F7,   KC_F8,  RGB_MOD,                              KC_RALT,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,
-            KC_F1,   KC_F2,   KC_F3,   KC_F4,   RGB_RMOD,           KC_MUTE, KC_MPLY,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
+             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NUM_LOCK ,                      RGB_TOG, AU_TOGG,   HF_TOGG,    TG(_REAPER), TG(_GAMES),
+            KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_NO,                              RGB_MOD,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,
+            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_NO,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
                                  _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
     )
 
