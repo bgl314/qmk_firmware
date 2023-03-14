@@ -350,7 +350,7 @@ void render_layer_name(void) {
         } else {
           oled_write_P(aud_di, false);
         }
-    #endif // AUDIO ENABLE
+    #endif // AUDIO ENABL
 
      #ifdef HAPTIC_ENABLE // ─────────────── HAPTIC
         oled_write_P(hap_en, false);
@@ -479,7 +479,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
             KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
             KC_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,                         KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, KC_BSLS,
-            KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_PLUS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_EQL, RSFT(KC_SCLN) ,TD(SCLN_ENT), KC_SLSH,
+            KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_PLUS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_EQL, KC_LT ,KC_GT, KC_SLSH,
                                   KC_LALT,KC_LSFT,  _______,    _______,   _______,  _______,  _______,  _______
     ),
     [_NUMBERS] = LAYOUT_yubitsume(

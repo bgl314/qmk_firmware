@@ -71,7 +71,7 @@ _______, _______,  _______,  KC_SPC,_______,_______ ,                           
     _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
     _______,KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,       _______,    _______,KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,_______,
     _______,KC_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,     _______,    _______,KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, KC_BSLS,_______,
-    _______,KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_PLUS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_EQL, RSFT(KC_SCLN) ,TD(SCLN_ENT), KC_SLSH,_______,
+    _______,KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_PLUS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_EQL, KC_LT ,KC_GT, KC_SLSH,_______,
     _______,_______,_______,    KC_LALT,KC_LSFT,  _______,                    _______,  _______,  _______,_______,_______,_______
     ),
     [_NUMBERS] = LAYOUT_ortho_2x2u(
