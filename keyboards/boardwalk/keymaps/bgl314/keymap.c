@@ -93,9 +93,9 @@ _______, _______,  _______,  KC_SPC,_______,_______ ,                           
     [_ADJUST] = LAYOUT_ortho_2x2u(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
     _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
-    _______, KC_F9, KC_F10,    KC_F11,   KC_F12, RGB_TOG ,      _______,  _______,  RGB_TOG, AU_TOGG,   HF_TOGG,    TG(_REAPER), TG(_GAMES),_______,
-    _______,KC_F5, KC_F6,    KC_F7,   KC_F8,  RGB_MOD,          _______,  _______,  KC_RALT,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,_______,
-    _______,KC_F1,   KC_F2,   KC_F3,   KC_F4,   RGB_RMOD,           KC_MUTE, KC_MPLY,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
+    _______, KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NUM_LOCK ,      _______,  _______,  RGB_TOG, AU_TOGG,   HF_TOGG,    TG(_REAPER), TG(_GAMES),_______,
+    _______,KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_NO,          _______,  _______,  RGB_MOD,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,_______,
+    _______,KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_NO,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
     _______,_______,_______,    _______,   _______,  _______,     _______,   _______, _______,   _______,   _______,_______
     )
 
