@@ -465,7 +465,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_GAMES_ALT] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
     KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO,                       _______,  _______,  _______,  _______,  _______,
-    KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_NO,                          KC_H,     KC_N,     KC_E,     KC_I,     KC_O,
+    KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_BSPC,                          KC_H,     KC_N,     KC_E,     KC_I,     KC_O,
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_ESC,    _______,   _______,  _______,  _______,  _______,  _______,  _______,
                         _______, _______, _______,   _______,   _______,   _______,  _______, _______
     ),
