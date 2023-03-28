@@ -52,36 +52,53 @@ void caps_word_set_user(bool active) {
     }
 }
 
+bool wasAdjustLayer=false;
+bool wasReaperLayer=false;
+bool wasGameLayer=false;
+
 // ┌───────────────────────────────────────────────────────────┐
 // │ l a y e r   s w i t c h i n g                             │
 // └───────────────────────────────────────────────────────────┘
 layer_state_t layer_state_set_user(layer_state_t state) {
      //state = update_tri_layer_state(state, _SYMBOLS, _NUMBERS, _ADJUST);
-      #ifdef HAPTIC_ENABLE
-     switch (get_highest_layer(state)) {
-        case _REAPER:
-           DRV_pulse(transition_hum);
-            break;
-        case _GAMES:
-           DRV_pulse(transition_hum);
-            break;
-        default: //  for any other layers, or the default layer
-            //DRV_pulse(transition_hum);
-            break;
-    }
-    #endif // HAPTIC_ENABLE
-    #ifdef AUDIO_ENABLE
+     {
+        #ifdef HAPTIC_ENABLE
         switch (get_highest_layer(state)) {
             case _REAPER:
-            PLAY_SONG(mac_song);
-                break;
+            if(wasAdjustLayer )
+                DRV_pulse(transition_hum);
+            break;
+            case _COLEMAK:
+            if(wasReaperLayer || wasGameLayer)
+                DRV_pulse(transition_hum);
+            break;
             case _GAMES:
-            PLAY_SONG(mac_song);
-                break;
+            if(wasAdjustLayer)
+                DRV_pulse(transition_hum);
+            break;
             default: //  for any other layers, or the default layer
+                //DRV_pulse(transition_hum);
                 break;
-    }
-    #endif // AUDIO_ENABLE
+        }
+        #endif // HAPTIC_ENABLE
+        #ifdef AUDIO_ENABLE
+            switch (get_highest_layer(state)) {
+                case _REAPER:
+                if(wasAdjustLayer)
+                    PLAY_SONG(mac_song);
+                break;
+                case _GAMES:
+                if(wasAdjustLayer)
+                    PLAY_SONG(mac_song);
+                break;
+                default: //  for any other layers, or the default layer
+                    break;
+        }
+        #endif // AUDIO_ENABLE
+     }
+    wasAdjustLayer=layer_state_is(_ADJUST);
+    wasGameLayer=layer_state_is(_GAMES);
+    wasReaperLayer=layer_state_is(_REAPER);
     return state;
 }
 
@@ -285,6 +302,8 @@ void render_layer_name(void) {
     bool mouse = layer_state_is(_MOUSE);
     bool nav = layer_state_is(_NAV);
     bool qwerty= layer_state_is(_GAMES);
+    bool qwerty_alt= layer_state_is(_GAMES_ALT);
+    bool reaper= layer_state_is(_REAPER);
     bool adjust = layer_state_is(_ADJUST);
     bool capsword=is_caps_word_on();
 
@@ -299,7 +318,11 @@ void render_layer_name(void) {
         oled_write_P(PSTR(" ADJ "), led_state.caps_lock||capsword);
     } else if(nav){
         oled_write_P(PSTR(" NAV "), led_state.caps_lock||capsword);
-    } else if(qwerty){
+    } else if(reaper){
+        oled_write_P(PSTR("REAPER"), led_state.caps_lock||capsword);
+    } else if(qwerty_alt){
+        oled_write_P(PSTR("GMS_ALT"), led_state.caps_lock||capsword);
+    }  else if(qwerty){
         oled_write_P(PSTR("GAMES"), led_state.caps_lock||capsword);
     } else {
         oled_write_P(PSTR("COLMAK"), led_state.caps_lock||capsword);
@@ -475,7 +498,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
        _______,  _______, _______, TD(P_SPACE), _______,                            _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______,  _______, MT(MOD_LCTL,TD(S_ALT_S)), MT(MOD_LSFT,TD(T_TAKE)), _______,                         _______, _______, _______, _______, _______,
+     _______,  _______, TD(S_ALT_S), TD(T_TAKE), TD(D_DELETE),                       _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      _______,  _______, _______, _______, _______,   _______,                   _______, _______,  _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
@@ -505,7 +528,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_ADJUST] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO ,                      RGB_TOG, AU_TOGG,   HF_TOGG,    TG(_REAPER), TG(_GAMES),
+             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO ,                      RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    TG(_REAPER), TG(_GAMES),
             KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_NO,                              RGB_MOD,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,
             KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_NO,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
                                  _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
