@@ -119,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 _______,  _______, _______, TD(P_SPACE), _______, _______, _______, _______, _______, _______,
                 _______,  _______, TD(S_ALT_S), TD(T_TAKE), TD(D_DELETE),   _______, _______, _______, _______, _______,
-     _______,   _______, _______, _______, _______,   _______,     _______, _______,  _______, _______, _______, _______,
+     _______,   MT(MOD_LALT,KC_ESC), _______, _______, _______,   _______,     _______, _______,  _______, _______, _______, _______,
                                      _______,_______,_______ , _______ ,  _______ ,_______
     ),
     [_SYMBOLS] = LAYOUT(
@@ -140,7 +140,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,       KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
                 KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,    QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
-     _______,   LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO,      KC_CAPS,   KC_NO,   KC_NO,    KC_NO,  KC_ENT,_______,
+     _______,   LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO,      KC_CAPS,   KC_RGUI,   KC_NO,    KC_NO,  KC_ENT,_______,
                                   KC_ESC,  KC_TAB,_______ ,    _______, KC_NO, KC_NO
     ),
     [_ADJUST] = LAYOUT(
