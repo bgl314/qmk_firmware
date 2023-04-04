@@ -145,9 +145,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_ADJUST] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-                KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO ,      RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    TG(_REAPER), TG(_GAMES),
-                KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_NO,         RGB_MOD,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,
-    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_NO,       RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
+                KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO ,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
+                KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_VOLU,         KC_NO,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,
+    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_VOLD,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
                                  _______,   _______,    _______, _______,   _______,   _______
     )
 /*
