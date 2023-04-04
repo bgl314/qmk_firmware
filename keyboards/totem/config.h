@@ -18,8 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 //#include "config_common.h"
-//#define MASTER_LEFT
-#define MASTER_RIGHT
+#define MASTER_LEFT
+//#define MASTER_RIGHT
 
 /* USB Device descriptor parameter */
 /*#define VENDOR_ID       0x3A3C
@@ -40,7 +40,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define MATRIX_ROW_PINS { GP26, GP27, GP28, GP29 }
 // #define MATRIX_COL_PINS { GP6, GP7, GP3, GP4, GP2 }
 // rp2040 zero
+
+#define LEFTSIDE
+//#define RIGHTSIDE
+
+#ifdef LEFTSIDE
 #define MATRIX_ROW_PINS { GP0, GP1, GP2, GP3 }
+#endif
+#ifdef RIGHTSIDE // boge wire!
+#define MATRIX_ROW_PINS { GP7, GP1, GP2, GP3 }
+#endif
 #define MATRIX_COL_PINS { GP4, GP5, GP29, GP28, GP27 }
 #define DIODE_DIRECTION COL2ROW
 
@@ -66,6 +75,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 500U
 
+#ifdef POINTING_DEVICE_ENABLE
 /* Pointing device configuration. */
 #define SPI_DRIVER SPID1
 #define SPI_SCK_PIN GP10
@@ -92,4 +102,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define CIRQUE_PINNACLE_CURVED_OVERLAY
 #define POINTING_DEVICE_GESTURES_SCROLL_ENABLE // Circular scroll.
 #define CIRQUE_PINNACLE_POSITION_MODE CIRQUE_PINNACLE_RELATIVE_MODE
-
+#endif

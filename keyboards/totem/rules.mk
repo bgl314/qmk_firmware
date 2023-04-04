@@ -11,7 +11,7 @@ ALLOW_WARNINGS = yes
 LTO_ENABLE = no
 
 SPLIT_KEYBOARD = yes
-SWAP_HANDS_ENABLE = yes
+SWAP_HANDS_ENABLE = no
 
 # PIO serial/WS2812 drivers must be used on RP2040
 SERIAL_DRIVER = vendor
