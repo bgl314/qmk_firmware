@@ -1,0 +1,18 @@
+
+MOUSEKEY_ENABLE = no     # Mouse keys
+RGBLIGHT_ENABLE = no    # Enable WS2812 RGB underlight.
+BACKLIGHT_ENABLE= no
+RGB_MATRIX_ENABLE = yes
+VIA_ENABLE      = no    # Enable VIA
+OLED_ENABLE     = yes
+OLED_DRIVER     = SSD1306
+LTO_ENABLE      = yes
+TAP_DANCE_ENABLE = yes
+WPM_ENABLE = no
+CAPS_WORD_ENABLE = yes
+CONSOLE_ENABLE=no
+EXTRAFLAGS += -flto
+#DYNAMIC_TAPPING_TERM_ENABLE = yes
+
+
+

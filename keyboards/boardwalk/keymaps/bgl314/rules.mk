@@ -1,0 +1,18 @@
+
+
+
+RGBLIGHT_ENABLE=yes
+RGBLED_NUM = 14
+EXTRAFLAGS += -flto
+CONSOLE_ENABLE = no
+COMMAND_ENABLE = no
+
+# need the below in your own rules.mk
+TAP_DANCE_ENABLE = yes
+CAPS_WORD_ENABLE = yes
+COMBO_ENABLE = yes
+KEY_OVERRIDE_ENABLE = yes
+
+
+
+
