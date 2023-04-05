@@ -53,18 +53,11 @@ int retro_tapping_counter = 0;
 __attribute__((weak)) bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
     return false;
 }
+#endif
 #if (BILATERAL_COMBINATIONS + 0)
 #    include "quantum.h"
 #endif
 
-#ifdef IGNORE_MOD_TAP_INTERRUPT_PER_KEY
-__attribute__((weak)) bool get_ignore_mod_tap_interrupt(uint16_t keycode, keyrecord_t *record) { return false; }
-#endif
-#ifdef HOLD_ON_OTHER_KEY_PRESS_PER_KEY
-__attribute__((weak)) bool get_hold_on_other_key_press(uint16_t keycode, keyrecord_t *record) {
-    return false;
-}
-#endif
 
 #ifdef RETRO_TAPPING_PER_KEY
 __attribute__((weak)) bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
@@ -415,56 +408,6 @@ void register_mouse(uint8_t mouse_keycode, bool pressed) {
 #endif
 }
 
-/**
- * @brief handles all the messy mouse stuff
- *
- * Handles all the edgecases and special stuff that is needed for coexistense
- * of the multiple mouse subsystems.
- *
- * @param mouse_keycode[in] uint8_t mouse keycode
- * @param pressed[in] bool
- */
-
-void register_mouse(uint8_t mouse_keycode, bool pressed) {
-#ifdef MOUSEKEY_ENABLE
-    // if mousekeys is enabled, let it do the brunt of the work
-    if (pressed) {
-        mousekey_on(mouse_keycode);
-    } else {
-        mousekey_off(mouse_keycode);
-    }
-    // should mousekeys send report, or does something else handle this?
-    switch (mouse_keycode) {
-#    if defined(PS2_MOUSE_ENABLE) || defined(POINTING_DEVICE_ENABLE)
-        case KC_MS_BTN1 ... KC_MS_BTN8:
-            // let pointing device handle the buttons
-            // expand if/when it handles more of the code
-#        if defined(POINTING_DEVICE_ENABLE)
-            pointing_device_keycode_handler(mouse_keycode, pressed);
-#        endif
-            break;
-#    endif
-        default:
-            mousekey_send();
-            break;
-    }
-#elif defined(POINTING_DEVICE_ENABLE)
-    // if mousekeys isn't enabled, and pointing device is enabled, then
-    // let pointing device do all the heavy lifting, then
-    if (IS_MOUSE_KEYCODE(mouse_keycode)) {
-        pointing_device_keycode_handler(mouse_keycode, pressed);
-    }
-#endif
-
-#ifdef PS2_MOUSE_ENABLE
-    // make sure that ps2 mouse has button report synced
-    if (KC_MS_BTN1 <= mouse_keycode && mouse_keycode <= KC_MS_BTN3) {
-        uint8_t tmp_button_msk = MOUSE_BTN_MASK(mouse_keycode - KC_MS_BTN1);
-        tp_buttons             = pressed ? tp_buttons | tmp_button_msk : tp_buttons & ~tmp_button_msk;
-    }
-#endif
-}
-
 
 /** \brief Take an action and processes it.
  *
@@ -511,6 +454,12 @@ void process_action(keyrecord_t *record, action_t action) {
                     }
                     send_keyboard_report();
                 }
+#ifdef BILATERAL_COMBINATIONS
+                if (!(IS_MODIFIER_KEYCODE(action.key.code) || action.key.code == KC_NO)) {
+                    // regular keycode tap during mod-tap hold
+                    bilateral_combinations_tap(event);
+                }
+#endif
                 register_code(action.key.code);
             } else {
                 unregister_code(action.key.code);
@@ -523,6 +472,7 @@ void process_action(keyrecord_t *record, action_t action) {
                     send_keyboard_report();
                 }
             }
+
         } break;
         case ACT_LMODS_TAP:
         case ACT_RMODS_TAP: {
@@ -630,12 +580,16 @@ void process_action(keyrecord_t *record, action_t action) {
                                 // mod-tap tap
                                 bilateral_combinations_tap(event);
 #    endif
-ac_dprintf("MODS_TAP: Tap: register_code\n");
+                                ac_dprintf("MODS_TAP: Tap: register_code\n");
                                 register_code(action.key.code);
                             }
                         } else {
                             ac_dprintf("MODS_TAP: No tap: add_mods\n");
                             register_mods(mods);
+#    ifdef BILATERAL_COMBINATIONS
+                            // mod-tap hold
+                            bilateral_combinations_hold(action, event);
+#    endif
                         }
                     } else {
                         if (tap_count > 0) {
@@ -649,6 +603,10 @@ ac_dprintf("MODS_TAP: Tap: register_code\n");
                         } else {
                             ac_dprintf("MODS_TAP: No tap: add_mods\n");
                             unregister_mods(mods);
+#    ifdef BILATERAL_COMBINATIONS
+                            // mod-tap release
+                            bilateral_combinations_release(action.key.code);
+#    endif
                         }
                     }
                     break;
