@@ -54,3 +54,5 @@ for more options.
 
 #endif
 
+#define BILATERAL_COMBINATIONS 500
+#define BILATERAL_COMBINATIONS_EXCEPTION_ROW 3

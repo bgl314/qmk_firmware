@@ -321,6 +321,10 @@ static bool bilateral_combinations_left(keypos_t key) {
 }
 
 static void bilateral_combinations_hold(action_t action, keyevent_t event) {
+#   ifdef BILATERAL_COMBINATIONS_EXCEPTION_ROW
+        if(event.key.row == BILATERAL_COMBINATIONS_EXCEPTION_ROW || event.key.row == BILATERAL_COMBINATIONS_EXCEPTION_ROW + MATRIX_ROWS / 2)
+            return;
+#   endif
     dprint("BILATERAL_COMBINATIONS: hold\n");
     bilateral_combinations.active = true;
     bilateral_combinations.code = action.key.code;
@@ -349,6 +353,7 @@ static void bilateral_combinations_tap(keyevent_t event) {
                 return;
             }
 #    endif
+
             dprint("BILATERAL_COMBINATIONS: change\n");
             unregister_mods(bilateral_combinations.mods);
             tap_code(bilateral_combinations.tap);
