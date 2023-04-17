@@ -92,13 +92,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,    KC_J,      KC_L,      KC_U,     KC_Y,    KC_QUOT,
                 KC_A,    ALT_R,     CTL_S,     SHT_T,   KC_D,    KC_H,      SHT_N,     CTL_E,    ALT_I,   KC_O,
         KC_Z,   KC_Z,    KC_X,      KC_C,      KC_V,    KC_B,    KC_K,      KC_M,      KC_COMM,  KC_DOT,  KC_SLSH, KC_SLSH,
-    MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),OSM(MOD_RSFT) , LT(_SYMBOLS, KC_LGUI)
+    MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
     ),
     [_MOUSE] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 SCROLL,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,
-                VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,_______, _______,  _______,  _______,  _______,  _______,
-    _______,LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V),_______,_______,  _______,  _______,  _______,  _______,  _______,
+                VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP, _______,  _______,  _______,  _______,  _______,
+    _______,LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V),CPI_DN,_______,  _______,  _______,  _______,  _______,  _______,
                                   KC_LALT,  KC_LSFT,  KC_LCTL,  _______,  _______,  _______
     ),
     [_GAMES] = LAYOUT(
@@ -106,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
                 KC_A,     KC_R,     KC_S,     KC_T,     KC_D,     KC_H,     KC_N,     KC_E,     KC_I,     KC_O,
     _______,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,   _______, _______,
-                            KC_TAB, MO(_GAMES_ALT),   KC_SPC,       _______, _______, _______
+                            KC_TAB, MO(_GAMES_ALT),   KC_SPC,       _______, _______, KC_RGUI
     ),
     [_GAMES_ALT] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
