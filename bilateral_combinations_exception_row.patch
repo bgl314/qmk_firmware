@@ -1,0 +1,35 @@
+From 81fa69385946a57618779b29bb7d876ada1dc7d4 Mon Sep 17 00:00:00 2001
+From: bgl314 <bgl314@yahoo.com>
+Date: Mon, 17 Apr 2023 14:16:16 -0400
+Subject: [PATCH] latest
+
+---
+ quantum/action.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/quantum/action.c b/quantum/action.c
+index c83e009c41..399b786322 100644
+--- a/quantum/action.c
++++ b/quantum/action.c
+@@ -321,6 +321,10 @@ static bool bilateral_combinations_left(keypos_t key) {
+ }
+ 
+ static void bilateral_combinations_hold(action_t action, keyevent_t event) {
++#   ifdef BILATERAL_COMBINATIONS_EXCEPTION_ROW
++        if(event.key.row == BILATERAL_COMBINATIONS_EXCEPTION_ROW || event.key.row == BILATERAL_COMBINATIONS_EXCEPTION_ROW + MATRIX_ROWS / 2)
++            return;
++#   endif
+     dprint("BILATERAL_COMBINATIONS: hold\n");
+     bilateral_combinations.active = true;
+     bilateral_combinations.code = action.key.code;
+@@ -349,6 +353,7 @@ static void bilateral_combinations_tap(keyevent_t event) {
+                 return;
+             }
+ #    endif
++
+             dprint("BILATERAL_COMBINATIONS: change\n");
+             unregister_mods(bilateral_combinations.mods);
+             tap_code(bilateral_combinations.tap);
+-- 
+2.33.0
+
