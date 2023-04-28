@@ -99,7 +99,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 SCROLL,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,
                 VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP, _______,  _______,  _______,  _______,  _______,
     _______,LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V),CPI_DN,_______,  _______,  _______,  _______,  _______,  _______,
-                                  KC_LALT,  KC_LSFT,  MT(MOD_LCTL,TG(_MOUSE)),  _______,  _______,  _______
+                                  KC_LALT,  KC_LSFT,  _______,  _______,  _______,  _______
     ),
     [_GAMES] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷

@@ -19,7 +19,7 @@ MUSIC_ENABLE = yes
 # TRACKPAD
 POINTING_DEVICE_ENABLE = yes
 POINTING_DEVICE_DRIVER = cirque_pinnacle_i2c
-MOUSEKEY_ENABLE = no
+MOUSEKEY_ENABLE = yes
 
 # need the below in your own rules.mk
 TAP_DANCE_ENABLE = yes
