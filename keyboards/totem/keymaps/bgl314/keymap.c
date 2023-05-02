@@ -99,14 +99,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 SCROLL,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,
                 VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP, _______,  _______,  _______,  _______,  _______,
     _______,LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V),CPI_DN,_______,  _______,  _______,  _______,  _______,  _______,
-                                  KC_LALT,  KC_LSFT,  _______,  _______,  _______,  _______
+                                  KC_LALT,  KC_LSFT,  MT(MOD_LCTL,TG(_MOUSE)),  _______,  _______,  _______
     ),
     [_GAMES] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,  _______,
                 KC_A,     KC_R,     KC_S,     KC_T,     KC_D,     KC_H,     KC_N,     KC_E,     KC_I,     KC_O,
     _______,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,   _______, _______,
-                            KC_TAB, MO(_GAMES_ALT),   KC_SPC,       _______, _______, KC_RGUI
+                            MO(_GAMES_ALT),KC_TAB,    KC_SPC,       _______, _______, KC_RGUI
     ),
     [_GAMES_ALT] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -133,8 +133,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_PSLS,   KC_7,    KC_8,    KC_9,    KC_MINUS,  KC_MINUS,  KC_7,       KC_8,    KC_9,    KC_PSLS,
                 KC_PAST,   KC_4,    KC_5,  KC_6,    KC_PLUS,     KC_PLUS,   KC_4,       KC_5,    KC_6,    KC_PAST,
-    _______,    TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_SPC,     KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT),_______,
-                                  KC_0,    _______, KC_DEL,   KC_0, _______, _______
+    _______,    TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_0,     KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT),_______,
+                                  KC_SPC,    _______, KC_DEL,   KC_0, _______, _______
     ),
     [_NAV] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
