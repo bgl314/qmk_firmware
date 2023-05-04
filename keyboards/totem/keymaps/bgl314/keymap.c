@@ -62,8 +62,21 @@ void i2c_init(void) {
 }
 */
 #endif //POINTING_DEVICE_ENABLE
-
-
+layer_state_t prev;
+layer_state_t layer_state_set_user(layer_state_t state) {
+    switch (get_highest_layer(state)) {
+    case _GAMES:
+        if(prev != _NAV && prev!=_ADJUST && prev!=_SYMBOLS && prev!=_NUMBERS&& prev!=_MOUSE&& prev!=_GAMES&& prev!=_GAMES_ALT){
+            register_code16(KC_VOLU);
+            unregister_code16(KC_VOLU);
+        }
+        break;
+    default:
+        break;
+    }
+    prev=state;
+  return state;
+}
 
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -99,7 +112,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 SCROLL,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,
                 VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP, _______,  _______,  _______,  _______,  _______,
     _______,LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V),CPI_DN,_______,  _______,  _______,  _______,  _______,  _______,
-                                  KC_LALT,  KC_LSFT,  MT(MOD_LCTL,TG(_MOUSE)),  _______,  _______,  _______
+                                  KC_LALT,  KC_LSFT,  _______,  _______,  _______,  _______
     ),
     [_GAMES] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -145,9 +158,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_ADJUST] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-                KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO ,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
-                KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_VOLU,         KC_NO,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,
-    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_VOLD,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
+                KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
+                KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,         KC_NO,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
                                  _______,   _______,    _______, _______,   _______,   _______
     )
 /*

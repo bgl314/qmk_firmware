@@ -55,6 +55,7 @@ void caps_word_set_user(bool active) {
 bool wasAdjustLayer=false;
 bool wasReaperLayer=false;
 bool wasGameLayer=false;
+bool wasMouseLayer=false;
 
 // ┌───────────────────────────────────────────────────────────┐
 // │ l a y e r   s w i t c h i n g                             │
@@ -65,19 +66,15 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         #ifdef HAPTIC_ENABLE
         switch (get_highest_layer(state)) {
             case _REAPER:
-            if(wasAdjustLayer )
-                DRV_pulse(transition_hum);
-            break;
-            case _COLEMAK:
-            if(wasReaperLayer || wasGameLayer)
-                DRV_pulse(transition_hum);
-            break;
             case _GAMES:
             if(wasAdjustLayer)
-                DRV_pulse(transition_hum);
+                DRV_pulse(soft_bump);
+            break;
+            case _COLEMAK:
+            if(wasReaperLayer || wasGameLayer )
+                DRV_pulse(soft_bump);
             break;
             default: //  for any other layers, or the default layer
-                //DRV_pulse(transition_hum);
                 break;
         }
         #endif // HAPTIC_ENABLE
@@ -96,11 +93,14 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         }
         #endif // AUDIO_ENABLE
      }
-    wasAdjustLayer=layer_state_is(_ADJUST);
-    wasGameLayer=layer_state_is(_GAMES);
-    wasReaperLayer=layer_state_is(_REAPER);
+    wasAdjustLayer=layer_state_cmp(state,_ADJUST);
+    wasGameLayer=layer_state_cmp(state,_GAMES);
+    wasReaperLayer=layer_state_cmp(state,_REAPER);
+    wasMouseLayer=layer_state_cmp(state, _MOUSE);
     return state;
 }
+
+
 
 
 #ifdef RGB_MATRIX_ENABLE
@@ -123,13 +123,15 @@ bool led_update_user(led_t led_state) {
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (is_caps_word_on() || caps) {
         for (uint8_t i = led_min; i <= led_max; i++) {
-    //if (!(g_led_config.flags[i] & LED_FLAG_KEYLIGHT) && g_led_config.flags[i]!=LED_FLAG_UNDERGLOW) {
-                rgb_matrix_set_color(i, RGB_MAGENTA);
-     //       }else{
-                // rgb_matrix_set_color(i, 0,0,0);
-      //      }
+            rgb_matrix_set_color(i, RGB_MAGENTA);
         }
     }
+    // else
+    //  if (IS_LAYER_ON(_MOUSE)) {
+    //     for (uint8_t i = led_min; i <= led_max; i++) {
+    //         rgb_matrix_set_color(i, RGB_WHITE);
+    //     }
+    // }
     return true;
 }
 
@@ -473,10 +475,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_MOUSE] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-    SCROLL,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
-    VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP,                      _______,  _______,  _______,  _______,  _______,
-    LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V), CPI_DN ,  _______,   _______,  _______,  _______,  _______,  _______,  _______,
-                        KC_LALT,  KC_LSFT,  MT(MOD_LCTL,TG(_MOUSE)),  _______,   _______,  _______,  _______,  _______
+    SCROLL,  KC_NO,  KC_NO,  KC_NO,  KC_NO,                       KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+    VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP,                      KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+    LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V), CPI_DN ,  KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+                        KC_LALT,  KC_LSFT,  MT(MOD_LCTL,TG(_MOUSE)),  KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO
     ),
     [_GAMES] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -498,7 +500,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
        _______,  _______, _______, TD(P_SPACE), _______,                            _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______,  _______, TD(S_ALT_S), TD(T_TAKE), _______,                       _______, _______, _______, _______, _______,
+     _______,  _______, _______, TD(T_TAKE), _______,                       _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      _______,  _______, _______, _______, _______,   _______,                   _______, _______,  _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
@@ -516,8 +518,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
               KC_PSLS,KC_7,    KC_8,    KC_9,    KC_MINUS,                            KC_MINUS, KC_7,    KC_8,    KC_9,    KC_PSLS,
             KC_PAST,    KC_4,    KC_5,  KC_6,    KC_PLUS,                            KC_PLUS,    KC_4,    KC_5,  KC_6,    KC_PAST,
-            TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_SPC,    KC_MPLY,        KC_MPLY,  KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT),
-                                  KC_0,    _______, KC_DEL,   _______,   _______,  KC_0, _______, _______
+            TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_0,    KC_MPLY,        KC_MPLY,  KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT),
+                                KC_SPC,    _______, KC_DEL,   _______,   _______,  KC_0, _______, _______
     ),
     [_NAV] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -528,9 +530,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_ADJUST] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO ,                      RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    TG(_REAPER), TG(_GAMES),
-            KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_NO,                              RGB_MOD,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,
-            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_NO,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
+             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,                      RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    TG(_REAPER), TG(_GAMES),
+            KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,                              RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
                                  _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
     )
 
