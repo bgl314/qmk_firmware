@@ -16,7 +16,6 @@
 #include "totem.h"
 #include "print.h"
 // get my qmk-config folder and put it in the same directory as qmk_firmware
-#include "../qmk-config/passwords.h"
 #include "../qmk-config/common_keymap.h"
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -154,16 +153,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,       KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
                 KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,    QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
-     _______,   LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO,      KC_CAPS,   PWD_L,   PWD_S,    PWD_D,  KC_ENT,_______,
+     _______,   LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO,      KC_CAPS,   KC_NO,   KC_NO,    KC_NO,  KC_ENT,_______,
                                   KC_ESC,  KC_TAB,_______ ,    _______, KC_NO, KC_NO
     ),
+#ifdef HAS_PASSWORDS
     [_ADJUST] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
-                KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,         KC_NO,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
-    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
+                KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,         OSL(_PWDS),  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   OSL(_PWDS),_______,
+                                 _______,   _______,    _______, _______,   _______,   _______
+    ),
+    [_PWDS] = LAYOUT(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
+                KC_NO, KC_NO,    KC_NO,   KC_NO, PWD_G ,        KC_NO, PWD_L,   KC_NO,    KC_NO, KC_NO ,
+                KC_NO, KC_NO,    PWD_S,   KC_NO,  PWD_D,         _______,  PWD_N, KC_NO,  KC_NO,  KC_NO,
+    _______,    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,       KC_NO,KC_NO, KC_NO, KC_NO,   _______,_______,
                                  _______,   _______,    _______, _______,   _______,   _______
     )
+#else
+[_ADJUST] = LAYOUT(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
+                KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
+                KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,         KC_NO,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,_______,
+                                 _______,   _______,    _______, _______,   _______,   _______
+    )
+#endif
 /*
    ╺━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╸
 

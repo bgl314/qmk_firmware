@@ -1,4 +1,5 @@
 #pragma once
+//#define HAS_PASSWORDS
 // get my qmk-config folder and put it in the same directory as qmk_firmware
 #include "../qmk-config/common_config.h"
 /* The way how "handedness" is decided (which half is which),
@@ -16,13 +17,9 @@ for more options.
 
 
 #ifdef POINTING_DEVICE_ENABLE
-//#    define POINTING_DEVICE_ROTATION_90
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
-#define AUTO_MOUSE_TIME 300
-//#define POINTING_DEVICE_DEBUG
+#define AUTO_MOUSE_TIME 200
 #define SPLIT_POINTING_ENABLE
-//#    define POINTING_DEVICE_RIGHT
-//#    define POINTING_DEVICE_ROTATION_270
 // Pointing device is on the right split.
 #define POINTING_DEVICE_RIGHT
 

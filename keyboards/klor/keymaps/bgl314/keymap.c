@@ -126,6 +126,22 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             rgb_matrix_set_color(i, RGB_MAGENTA);
         }
     }
+#ifdef HAS_PASSWORDS
+    else if (get_highest_layer(layer_state) ==_PWDS) {
+        uint8_t layer = get_highest_layer(layer_state);
+
+        for (uint8_t row = 0; row < MATRIX_ROWS; ++row) {
+            for (uint8_t col = 0; col < MATRIX_COLS; ++col) {
+                uint8_t index = g_led_config.matrix_co[row][col];
+
+                if (index >= led_min && index < led_max && index != NO_LED &&
+                keymap_key_to_keycode(layer, (keypos_t){col,row}) > KC_TRNS) {
+                    rgb_matrix_set_color(index, RGB_GREEN);
+                }
+            }
+        }
+    }
+#endif
     // else
     //  if (IS_LAYER_ON(_MOUSE)) {
     //     for (uint8_t i = led_min; i <= led_max; i++) {
@@ -419,15 +435,17 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
        if(IS_LAYER_ON(_NAV)){
           if (clockwise) {
-              tap_code(KC_MNXT);
+             tap_code(KC_MPRV);
           } else {
-              tap_code(KC_MPRV);
+             tap_code(KC_MNXT);
+
           }
       }else {
             if (clockwise) {
-              tap_code(KC_VOLU);
+             tap_code(KC_VOLD);
           } else {
-              tap_code(KC_VOLD);
+             tap_code(KC_VOLU);
+
           }
       }
 
@@ -525,16 +543,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
            KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,                            KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
            KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,                       QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
-        LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,   KC_CAPS,   PWD_L,   PWD_S,    PWD_D,,  KC_ENT,
+        LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,   KC_CAPS,   KC_NO,   KC_NO,    KC_NO,  KC_ENT,
                                   KC_ESC,  KC_TAB,_______ ,    _______,   _______,   _______, KC_NO, KC_NO
-    ),
+    )
+#ifdef HAS_PASSWORDS
+    ,
     [_ADJUST] = LAYOUT_yubitsume(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,                      RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    TG(_REAPER), TG(_GAMES),
+             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,                      RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO, TG(_GAMES),
             KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,                              RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
-            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,
+            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   OSL(_PWDS),
+                                 _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
+    ),
+    [_PWDS] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+             KC_NO, KC_NO,    KC_NO,   KC_NO, PWD_G ,               KC_NO, PWD_L,   KC_NO,    KC_NO, KC_NO ,
+                KC_NO, KC_NO,    PWD_S,   KC_NO,  PWD_D,         _______,  PWD_N, KC_NO,  KC_NO,  KC_NO,
+        KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,  _______,   _______,     KC_NO,KC_NO, KC_NO, KC_NO,   _______,
                                  _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
     )
+#else
+ ,
+    [_ADJUST] = LAYOUT_yubitsume(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,                      RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO, TG(_GAMES),
+            KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,                              RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,
+                                 _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
+    )
+#endif
 
 };
 
