@@ -1,5 +1,5 @@
 #pragma once
-//#define HAS_PASSWORDS
+#define HAS_PASSWORDS
 // get my qmk-config folder and put it in the same directory as qmk_firmware
 #include "../qmk-config/common_config.h"
 /* The way how "handedness" is decided (which half is which),

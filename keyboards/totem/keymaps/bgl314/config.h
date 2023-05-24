@@ -1,6 +1,6 @@
 #pragma once
-
-//#define HAS_PASSWORDS
+// disable this define to build, or make your own qmk-config/passwords.h
+#define HAS_PASSWORDS
 
 #include "../qmk-config/common_config.h"
 

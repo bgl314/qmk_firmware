@@ -161,14 +161,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
                 KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,         OSL(_PWDS),  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
-    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   OSL(_PWDS),_______,
+    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,OSL(_PWDS),
                                  _______,   _______,    _______, _______,   _______,   _______
     ),
     [_PWDS] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_NO, KC_NO,    KC_NO,   KC_NO, PWD_G ,        KC_NO, PWD_L,   KC_NO,    KC_NO, KC_NO ,
-                KC_NO, KC_NO,    PWD_S,   KC_NO,  PWD_D,         _______,  PWD_N, KC_NO,  KC_NO,  KC_NO,
-    _______,    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,       KC_NO,KC_NO, KC_NO, KC_NO,   _______,_______,
+                KC_NO, KC_NO,    PWD_S,   KC_NO,  PWD_D,         KC_NO,  PWD_N, KC_NO,  KC_NO,  KC_NO,
+    _______,    KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,       KC_NO,KC_NO, KC_NO, KC_NO,   KC_NO,KC_NO,
                                  _______,   _______,    _______, _______,   _______,   _______
     )
 #else
