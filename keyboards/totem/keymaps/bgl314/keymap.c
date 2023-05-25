@@ -128,18 +128,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,    KC_F1,    KC_F2,   KC_F3,   KC_F4,   KC_ESC,      _______,  _______,  _______,  _______,  _______,  _______,
                                     _______, _______, _______,   _______,  _______, _______
     ),
-    [_REAPER] = LAYOUT(
-  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-                _______,  _______, _______, TD(P_SPACE), _______, _______, _______, _______, _______, _______,
-                _______,  _______, TD(S_ALT_S), TD(T_TAKE), _______,   _______, _______, _______, _______, _______,
-     _______,   _______, _______, _______, _______,   _______,     _______, _______,  _______, _______, _______, _______,
-                                     _______,_______,_______, _______ ,  _______ ,_______
-    ),
     [_SYMBOLS] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,     KC_CIRC,   KC_AMPR, KC_ASTR,   KC_LPRN, KC_RPRN,
-                KC_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,    KC_GT,     KC_RPRN,  KC_RCBR,  KC_RBRC, KC_BSLS,
-    _______,    KC_TILDE,  KC_PIPE, KC_UNDS, KC_MINUS,KC_PLUS,   KC_NO,     KC_EQL, KC_LT ,     KC_GT,   KC_SLSH,_______,
+                KC_TILDE, KC_GRV, KC_PIPE, KC_PLUS,    KC_EQL,    KC_LT,  KC_LPRN,  KC_LCBR,KC_LBRC, KC_BSLS,
+    _______,    KC_NO,  KC_NO, KC_UNDS, KC_MINUS,KC_NO ,   KC_NO,     KC_GT,  KC_RPRN, KC_RCBR ,KC_RBRC, _______,
                                   KC_LALT,KC_LSFT,  _______,     _______,  _______,  _______
     ),
     [_NUMBERS] = LAYOUT(
