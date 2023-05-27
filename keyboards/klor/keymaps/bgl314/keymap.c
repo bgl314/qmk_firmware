@@ -527,7 +527,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ,
     [_ADJUST] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-            KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                     RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO, TG(_GAMES),
+            KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                     RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
             KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                              RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
             KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   OSL(_PWDS),
                                  _______,   _______,    _______, _______,   _______,   _______
@@ -543,7 +543,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  ,
     [_ADJUST] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-            KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                       RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO, TG(_GAMES),
+            KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                       RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
             KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                                RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
             KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,             KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,
                                  _______,   _______,  _______,      _______,   _______,   _______
