@@ -131,8 +131,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_SYMBOLS] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,     KC_CIRC,   KC_AMPR, KC_ASTR,   KC_LPRN, KC_RPRN,
-                KC_TILDE, KC_GRV, KC_PIPE, KC_PLUS,    KC_EQL,    KC_LT,  KC_LPRN,  KC_LCBR,KC_LBRC, KC_BSLS,
-    _______,    KC_NO,  KC_NO, KC_UNDS, KC_MINUS,KC_NO ,   KC_NO,     KC_GT,  KC_RPRN, KC_RCBR ,KC_RBRC, _______,
+                KC_TILDE, KC_GRV, KC_PIPE, KC_PLUS,    KC_EQL,    KC_LT,  KC_LPRN,  KC_LCBR,KC_LBRC, KC_LT,
+    _______,    KC_BSLS,  KC_NO, KC_UNDS, KC_MINUS,KC_NO ,   KC_NO,     KC_GT,  KC_RPRN, KC_RCBR ,KC_RBRC, KC_GT,
                                   KC_LALT,KC_LSFT,  _______,     _______,  _______,  _______
     ),
     [_NUMBERS] = LAYOUT(
@@ -152,9 +152,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef HAS_PASSWORDS
     [_ADJUST] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-                KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
-                KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,         OSL(_PWDS),  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
-    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,OSL(_PWDS),
+                KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
+                KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,         OSL(_PWDS),  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+    _______,    KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,        KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,OSL(_PWDS),
                                  _______,   _______,    _______, _______,   _______,   _______
     ),
     [_PWDS] = LAYOUT(
@@ -167,9 +167,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #else
 [_ADJUST] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-                KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
-                KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,         KC_NO,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
-    _______,    KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,       KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,_______,
+                KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
+                KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,         KC_NO,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+    _______,    KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,        KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,_______,
                                  _______,   _______,    _______, _______,   _______,   _______
     )
 #endif

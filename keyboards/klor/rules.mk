@@ -8,7 +8,7 @@ BOOTLOADER = atmel-dfu
 #   change yes to no to disable
 #
 SPLIT_KEYBOARD = yes
-SWAP_HANDS_ENABLE = yes
+SWAP_HANDS_ENABLE = no
 
 OLED_ENABLE = yes
 OLED_DRIVER = SSD1306

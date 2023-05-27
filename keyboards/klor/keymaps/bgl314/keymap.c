@@ -53,7 +53,6 @@ void caps_word_set_user(bool active) {
 }
 
 bool wasAdjustLayer=false;
-bool wasReaperLayer=false;
 bool wasGameLayer=false;
 bool wasMouseLayer=false;
 
@@ -65,13 +64,12 @@ layer_state_t layer_state_set_user(layer_state_t state) {
      {
         #ifdef HAPTIC_ENABLE
         switch (get_highest_layer(state)) {
-            case _REAPER:
             case _GAMES:
             if(wasAdjustLayer)
                 DRV_pulse(soft_bump);
             break;
             case _COLEMAK:
-            if(wasReaperLayer || wasGameLayer )
+            if(wasGameLayer )
                 DRV_pulse(soft_bump);
             break;
             default: //  for any other layers, or the default layer
@@ -80,10 +78,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         #endif // HAPTIC_ENABLE
         #ifdef AUDIO_ENABLE
             switch (get_highest_layer(state)) {
-                case _REAPER:
-                if(wasAdjustLayer)
-                    PLAY_SONG(mac_song);
-                break;
                 case _GAMES:
                 if(wasAdjustLayer)
                     PLAY_SONG(mac_song);
@@ -95,7 +89,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
      }
     wasAdjustLayer=layer_state_cmp(state,_ADJUST);
     wasGameLayer=layer_state_cmp(state,_GAMES);
-    wasReaperLayer=layer_state_cmp(state,_REAPER);
     wasMouseLayer=layer_state_cmp(state, _MOUSE);
     return state;
 }
@@ -321,7 +314,6 @@ void render_layer_name(void) {
     bool nav = layer_state_is(_NAV);
     bool qwerty= layer_state_is(_GAMES);
     bool qwerty_alt= layer_state_is(_GAMES_ALT);
-    bool reaper= layer_state_is(_REAPER);
     bool adjust = layer_state_is(_ADJUST);
     bool capsword=is_caps_word_on();
 
@@ -336,9 +328,7 @@ void render_layer_name(void) {
         oled_write_P(PSTR(" ADJ "), led_state.caps_lock||capsword);
     } else if(nav){
         oled_write_P(PSTR(" NAV "), led_state.caps_lock||capsword);
-    } else if(reaper){
-        oled_write_P(PSTR("REAPER"), led_state.caps_lock||capsword);
-    } else if(qwerty_alt){
+    }  else if(qwerty_alt){
         oled_write_P(PSTR("GMS_ALT"), led_state.caps_lock||capsword);
     }  else if(qwerty){
         oled_write_P(PSTR("GAMES"), led_state.caps_lock||capsword);
@@ -484,79 +474,79 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                  │  CTRL   │  LOWER  │  SPACE  │   ALT   ││ CMD/WIN │  ENTER  │  RAISE  │  BSPCE  │
                                  └─────────┴─────────┴─────────┴─────────┘└─────────┴─────────┴─────────┴─────────┘ */
 
-    [_COLEMAK] = LAYOUT_yubitsume(
+    [_COLEMAK] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,                            KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
                 KC_A,    ALT_R,     CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    KC_O,
             KC_Z,    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,          KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,
-         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),   KC_NO,    KC_NO,  LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
+         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),     LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
     ),
-    [_MOUSE] = LAYOUT_yubitsume(
+    [_MOUSE] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
     SCROLL,  KC_NO,  KC_NO,  KC_NO,  KC_NO,                       KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
     VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP,                      KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
     LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V), CPI_DN ,  KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
-                        KC_LALT,  KC_LSFT,  MT(MOD_LCTL,TG(_MOUSE)),  KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO
+                        KC_LALT,  KC_LSFT,  MT(MOD_LCTL,TG(_MOUSE)),    KC_NO,  KC_NO,  KC_NO
     ),
-    [_GAMES] = LAYOUT_yubitsume(
+    [_GAMES] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
     _______,  _______,  _______,  _______,  _______,                       _______,  _______,  _______,  _______,  _______,
     KC_A,     KC_R,     KC_S,     KC_T,     KC_D,                          KC_H,     KC_N,     KC_E,     KC_I,     KC_O,
     _______,  _______,  _______,  _______,  _______,    _______,   _______,  _______,  _______,  _______,  _______,  _______,
-                        MO(_GAMES_ALT),KC_TAB,    KC_SPC,   _______,   _______,  _______, _______, _______
+                        MO(_GAMES_ALT),KC_TAB,    KC_SPC,     _______, _______, _______
     ),
-    [_GAMES_ALT] = LAYOUT_yubitsume(
+    [_GAMES_ALT] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
     KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NO,                       _______,  _______,  _______,  _______,  _______,
     KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_BSPC,                          KC_H,     KC_N,     KC_E,     KC_I,     KC_O,
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_ESC,    _______,   _______,  _______,  _______,  _______,  _______,  _______,
-                        _______, _______, _______,   _______,   _______,   _______,  _______, _______
+                        _______, _______, _______,      _______,  _______, _______
     ),
-    [_SYMBOLS] = LAYOUT_yubitsume(
+    [_SYMBOLS] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-            KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
-            KC_TILDE, KC_GRV, KC_PIPE, KC_PLUS,    KC_EQL,                         KC_LT,  KC_LPRN,  KC_LCBR,KC_LBRC, KC_BSLS,
-            _______,  _______, KC_UNDS, KC_MINUS,KC_NO ,   KC_MUTE,   KC_MPLY,  KC_GT,  KC_RPRN, KC_RCBR ,KC_RBRC, _______,
-                                  KC_LALT,KC_LSFT,  _______,    _______,   _______,  _______,  _______,  _______
+            KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                           KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
+            KC_TILDE, KC_GRV, KC_PIPE, KC_PLUS,    KC_EQL,                         KC_NO,  KC_LPRN,  KC_LCBR,KC_LBRC, KC_LT,
+            KC_BSLS,  KC_NO, KC_UNDS, KC_MINUS,KC_NO ,   KC_MUTE,         KC_MPLY,  KC_NO,  KC_RPRN, KC_RCBR ,KC_RBRC, KC_GT,
+                                  KC_LALT,KC_LSFT,  _______,      _______,  _______,  _______
     ),
-    [_NUMBERS] = LAYOUT_yubitsume(
+    [_NUMBERS] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
               KC_PSLS,KC_7,    KC_8,    KC_9,    KC_MINUS,                            KC_MINUS, KC_7,    KC_8,    KC_9,    KC_PSLS,
             KC_PAST,    KC_4,    KC_5,  KC_6,    KC_PLUS,                            KC_PLUS,    KC_4,    KC_5,  KC_6,    KC_PAST,
             TD(DOT_ENT), KC_1,  KC_2,   KC_3,   KC_0,    KC_MPLY,        KC_MPLY,  KC_EQL,   KC_1,     KC_2,     KC_3,   TD(DOT_ENT),
-                                KC_SPC,    _______, KC_DEL,   _______,   _______,  KC_0, _______, _______
+                                KC_SPC,    _______, KC_DEL,     KC_0, _______, _______
     ),
-    [_NAV] = LAYOUT_yubitsume(
+    [_NAV] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
            KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,                            KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
            KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,                       QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
         LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,   KC_CAPS,   KC_NO,   KC_NO,    KC_NO,  KC_ENT,
-                                  KC_ESC,  KC_TAB,_______ ,    _______,   _______,   _______, KC_NO, KC_NO
+                                  KC_ESC,  KC_TAB,_______ ,       _______, KC_NO, KC_NO
     )
 #ifdef HAS_PASSWORDS
     ,
-    [_ADJUST] = LAYOUT_yubitsume(
+    [_ADJUST] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,                      RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO, TG(_GAMES),
-            KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,                              RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
-            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   OSL(_PWDS),
-                                 _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
+            KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                     RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO, TG(_GAMES),
+            KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                              RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+            KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   OSL(_PWDS),
+                                 _______,   _______,    _______, _______,   _______,   _______
     ),
-    [_PWDS] = LAYOUT_yubitsume(
+    [_PWDS] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
              KC_NO, KC_NO,    KC_NO,   KC_NO, PWD_G ,               KC_NO, PWD_L,   KC_NO,    KC_NO, KC_NO ,
                 KC_NO, KC_NO,    PWD_S,   KC_NO,  PWD_D,         _______,  PWD_N, KC_NO,  KC_NO,  KC_NO,
         KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,  _______,   _______,     KC_NO,KC_NO, KC_NO, KC_NO,   _______,
-                                 _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
+                                 _______,   _______,     _______, _______,   _______,   _______
     )
 #else
  ,
-    [_ADJUST] = LAYOUT_yubitsume(
+    [_ADJUST] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-             KC_F9, KC_F10,    KC_F11,   KC_F12, KC_MNXT ,                      RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO, TG(_GAMES),
-            KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_MPLY,                              RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
-            KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_MSTP,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,
-                                 _______,   _______,  _______,     _______,   _______, _______,   _______,   _______
+            KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                       RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO, TG(_GAMES),
+            KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                                RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+            KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,             KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,
+                                 _______,   _______,  _______,      _______,   _______,   _______
     )
 #endif
 
