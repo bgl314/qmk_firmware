@@ -206,7 +206,7 @@ void keyboard_post_init_user(void) {
 
   #if RGB_MATRIX_ENABLE
     rgblight_enable_noeeprom();
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_TYPING_HEATMAP);
+    //rgb_matrix_mode_noeeprom(RGB_MATRIX_TYPING_HEATMAP);
     //rgblight_sethsv_noeeprom(35, 255, 255); // set default RGB color to yellow
   #endif //RGB_MATRIX_ENABLE
   //debug_enable=true;
@@ -348,6 +348,9 @@ void render_layer_name(void) {
     oled_set_cursor(0, 3);
     if(mod_state & MOD_MASK_ALT)
         oled_write("alt", false);
+    oled_set_cursor(0, 4);
+    if(mod_state & MOD_MASK_GUI)
+        oled_write("gui", false);
 
     led_t led_usb_state = host_keyboard_led_state();
 
@@ -528,7 +531,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_ADJUST] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
             KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                     RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
-            KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                              RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+            KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                              RGB_MOD,  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
             KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   OSL(_PWDS),
                                  _______,   _______,    _______, _______,   _______,   _______
     ),
@@ -544,7 +547,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_ADJUST] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
             KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                       RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
-            KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                                RGB_MOD,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_RGUI,
+            KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                                RGB_MOD,  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
             KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,             KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,
                                  _______,   _______,  _______,      _______,   _______,   _______
     )
