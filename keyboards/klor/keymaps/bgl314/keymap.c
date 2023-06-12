@@ -30,11 +30,14 @@
     void oled_request_wakeup(void);
 #endif
 // get my qmk-config folder and put it in the same directory as qmk_firmware
+
 #include "../qmk-config/common_keymap.h"
 #include <stdio.h>
 #include <string.h>
 #include "klor.h"
 #include "print.h"
+
+
 
 // ┌───────────────────────────────────────────────────────────┐
 // │ c a p s  w o r d                                          │
@@ -55,6 +58,8 @@ void caps_word_set_user(bool active) {
 bool wasAdjustLayer=false;
 bool wasGameLayer=false;
 bool wasMouseLayer=false;
+
+
 
 // ┌───────────────────────────────────────────────────────────┐
 // │ l a y e r   s w i t c h i n g                             │
@@ -87,9 +92,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         }
         #endif // AUDIO_ENABLE
      }
+
+
+
     wasAdjustLayer=layer_state_cmp(state,_ADJUST);
     wasGameLayer=layer_state_cmp(state,_GAMES);
     wasMouseLayer=layer_state_cmp(state, _MOUSE);
+
     return state;
 }
 
@@ -152,29 +161,16 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 // ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
 #ifdef POINTING_DEVICE_ENABLE
 
+
+
 void pointing_device_init_user(void) {
     set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
     set_auto_mouse_enable(true);  // always required before the auto mouse feature will work
 }
 
-report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-//     #ifdef CONSOLE_ENABLE
-//     uprintf("mouse col: %u, row: %u\n",mouse_report.h, mouse_report.v);
-// #endif
-    if (vscrolling_mode) {
-        // only vertical scrolling.
-        mouse_report.h = 0;//mouse_report.x;
-        mouse_report.v = mouse_report.y;
-        mouse_report.x = 0;
-        mouse_report.y = 0;
-    }else if (scrolling_mode) {
-        mouse_report.h = mouse_report.x;
-        mouse_report.v = mouse_report.y;
-        mouse_report.x = 0;
-        mouse_report.y = 0;
-    }
-    return mouse_report;
-}
+
+
+
 /*
 void i2c_init(void) {
     static bool is_initialised = false;
@@ -337,21 +333,22 @@ void render_layer_name(void) {
     }
 
     oled_set_cursor(0, 1);
+
     uint8_t mod_state = get_mods();
     if(mod_state & MOD_MASK_SHIFT)
         oled_write("shift", false);
 
-    oled_set_cursor(0, 2);
+    oled_set_cursor(6, 1);
     if(mod_state & MOD_MASK_CTRL)
         oled_write("ctrl", false);
-
-    oled_set_cursor(0, 3);
+    oled_set_cursor(0, 2);
     if(mod_state & MOD_MASK_ALT)
         oled_write("alt", false);
-    oled_set_cursor(0, 4);
+    oled_set_cursor(4, 2);
     if(mod_state & MOD_MASK_GUI)
         oled_write("gui", false);
 
+    oled_set_cursor(0, 3);
     led_t led_usb_state = host_keyboard_led_state();
 
     if (led_usb_state.num_lock) {
@@ -404,8 +401,9 @@ bool oled_task_kb(void) {
             return false;
     }
    // if (is_keyboard_master()) {
-        draw_bongo();
+draw_bongo();
         render_layer_name();
+
     //}else{
     //}
 
@@ -486,8 +484,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_MOUSE] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-    SCROLL,  KC_NO,  KC_NO,  KC_NO,  KC_NO,                       KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
-    VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP,                      KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+    KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,                       KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+    SCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP,                      KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
     LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V), CPI_DN ,  KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
                         KC_LALT,  KC_LSFT,  MT(MOD_LCTL,TG(_MOUSE)),    KC_NO,  KC_NO,  KC_NO
     ),

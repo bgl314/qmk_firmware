@@ -15,6 +15,10 @@
 #include <stdio.h>
 #include "totem.h"
 #include "print.h"
+
+#ifdef POINTING_DEVICE_ENABLE
+report_mouse_t check_cpi_on_mouse_report(report_mouse_t mouse_report);
+#endif
 // get my qmk-config folder and put it in the same directory as qmk_firmware
 #include "../qmk-config/common_keymap.h"
 
@@ -29,38 +33,6 @@ void pointing_device_init_user(void) {
     set_auto_mouse_enable(true);  // always required before the auto mouse feature will work
 }
 
-report_mouse_t pointing_device_task_user(report_mouse_t mouse_report) {
-//     #ifdef CONSOLE_ENABLE
-//     uprintf("mouse col: %u, row: %u\n",mouse_report.h, mouse_report.v);
-// #endif
-    if (vscrolling_mode) {
-        // only vertical scrolling.
-        mouse_report.h = 0;//mouse_report.x;
-        mouse_report.v = mouse_report.y;
-        mouse_report.x = 0;
-        mouse_report.y = 0;
-    }else if (scrolling_mode) {
-        mouse_report.h = mouse_report.x;
-        mouse_report.v = mouse_report.y;
-        mouse_report.x = 0;
-        mouse_report.y = 0;
-    }
-    return mouse_report;
-}
-/*
-void i2c_init(void) {
-    static bool is_initialised = false;
-    if (!is_initialised) {
-        is_initialised = true;
-        // Try releasing special pins for a short time
-        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_INPUT);
-        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_INPUT);
-        chThdSleepMilliseconds(10);
-        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
-        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
-    }
-}
-*/
 #endif //POINTING_DEVICE_ENABLE
 layer_state_t prev;
 layer_state_t layer_state_set_user(layer_state_t state) {
