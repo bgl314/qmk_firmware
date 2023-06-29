@@ -285,45 +285,45 @@ void dbl_gt_sent_reset(qk_tap_dance_state_t *state, void *user_data) {
      }
 }
 // Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
-qk_tap_dance_action_t tap_dance_actions[] = {
-    [Q_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_ESC),
-     [DOT_ENT]= ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_ENT),
-    [SLASH_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_ENT),
-     [Z_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_ENT),
-    [D_DELETE] = ACTION_TAP_DANCE_DOUBLE(KC_D, KC_DEL),
-    [P_SPACE] = ACTION_TAP_DANCE_DOUBLE(KC_P, KC_SPACE),
-    [S_ALT_S] = ACTION_TAP_DANCE_DOUBLE(KC_S, LALT(KC_S)),
-    [T_TAKE] = ACTION_TAP_DANCE_DOUBLE(KC_T, LALT(LSFT(KC_T))),
-    [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset),
-    [DBL_PAREN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_paren_sent_finished, dbl_paren_sent_reset),
-    [DBL_BRACKET] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_bracket_sent_finished, dbl_bracket_sent_reset),
-    [DBL_BRACE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_brace_sent_finished, dbl_brace_sent_reset),
-    [DBL_GT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_gt_sent_finished, dbl_gt_sent_reset)
-};
+// qk_tap_dance_action_t tap_dance_actions[] = {
+//     [Q_ESC] = ACTION_TAP_DANCE_DOUBLE(KC_Q, KC_ESC),
+//      [DOT_ENT]= ACTION_TAP_DANCE_DOUBLE(KC_DOT, KC_ENT),
+//     [SLASH_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_SLASH, KC_ENT),
+//      [Z_ENT] = ACTION_TAP_DANCE_DOUBLE(KC_Z, KC_ENT),
+//     [D_DELETE] = ACTION_TAP_DANCE_DOUBLE(KC_D, KC_DEL),
+//     [P_SPACE] = ACTION_TAP_DANCE_DOUBLE(KC_P, KC_SPACE),
+//     [S_ALT_S] = ACTION_TAP_DANCE_DOUBLE(KC_S, LALT(KC_S)),
+//     [T_TAKE] = ACTION_TAP_DANCE_DOUBLE(KC_T, LALT(LSFT(KC_T))),
+//     [SCLN_ENT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, scln_ent_sent_finished, scln_ent_sent_reset),
+//     [DBL_PAREN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_paren_sent_finished, dbl_paren_sent_reset),
+//     [DBL_BRACKET] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_bracket_sent_finished, dbl_bracket_sent_reset),
+//     [DBL_BRACE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_brace_sent_finished, dbl_brace_sent_reset),
+//     [DBL_GT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dbl_gt_sent_finished, dbl_gt_sent_reset)
+// };
 
-bool caps_word_press_user(uint16_t keycode) {
-    switch (keycode) {
-        // Keycodes that continue Caps Word, with shift applied.
-        case KC_A ... KC_Z:
-        case KC_MINS:
-            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-            return true;
+// bool caps_word_press_user(uint16_t keycode) {
+//     switch (keycode) {
+//         // Keycodes that continue Caps Word, with shift applied.
+//         case KC_A ... KC_Z:
+//         case KC_MINS:
+//             add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+//             return true;
 
-        // Keycodes that continue Caps Word, without shifting.
-        case KC_1 ... KC_0:
-        case KC_BSPC:
-        case KC_DEL:
-        case KC_UNDS:
-            return true;
-        case TD(Q_ESC):
-        case TD(Z_ENT):
-            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
-            return true;
+//         // Keycodes that continue Caps Word, without shifting.
+//         case KC_1 ... KC_0:
+//         case KC_BSPC:
+//         case KC_DEL:
+//         case KC_UNDS:
+//             return true;
+//         case TD(Q_ESC):
+//         case TD(Z_ENT):
+//             add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+//             return true;
 
-        default:
-            return false;  // Deactivate Caps Word.
-    }
-}
+//         default:
+//             return false;  // Deactivate Caps Word.
+//     }
+// }
 
 
 #ifdef OLED_ENABLE

@@ -16,39 +16,12 @@
 #include "totem.h"
 #include "print.h"
 
-#ifdef POINTING_DEVICE_ENABLE
-report_mouse_t check_cpi_on_mouse_report(report_mouse_t mouse_report);
-#endif
+
 // get my qmk-config folder and put it in the same directory as qmk_firmware
 #include "../qmk-config/common_keymap.h"
 
-// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-// │ T R A C K P A D                                                                                                                            │
-// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
-#ifdef POINTING_DEVICE_ENABLE
 
-void pointing_device_init_user(void) {
-    set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
-    set_auto_mouse_enable(true);  // always required before the auto mouse feature will work
-}
 
-#endif //POINTING_DEVICE_ENABLE
-layer_state_t prev;
-layer_state_t layer_state_set_user(layer_state_t state) {
-    switch (get_highest_layer(state)) {
-    case _GAMES:
-        if(prev != _NAV && prev!=_ADJUST && prev!=_SYMBOLS && prev!=_NUMBERS&& prev!=_MOUSE&& prev!=_GAMES&& prev!=_GAMES_ALT){
-            register_code16(KC_VOLU);
-            unregister_code16(KC_VOLU);
-        }
-        break;
-    default:
-        break;
-    }
-    prev=state;
-  return state;
-}
 
 
 // ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -76,15 +49,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,    KC_J,      KC_L,      KC_U,     KC_Y,    KC_QUOT,
                 KC_A,    ALT_R,     CTL_S,     SHT_T,   KC_D,    KC_H,      SHT_N,     CTL_E,    ALT_I,   KC_O,
-        KC_Z,   KC_Z,    KC_X,      KC_C,      KC_V,    KC_B,    KC_K,      KC_M,      KC_COMM,  KC_DOT,  KC_SLSH, KC_SLSH,
+        KC_Z,   KC_Z,    KC_X,      KC_C,      KC_V,    KC_B,    KC_K,      KC_M,      KC_COMM,  KC_DOT,  KC_SLSH, KC_BSLS,
     MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
     ),
     [_MOUSE] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-                SCROLL,  _______,  _______,  _______,  _______,   _______,  _______,  _______,  _______,  _______,
-                VSCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP, _______,  _______,  _______,  _______,  _______,
-    _______,LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V),CPI_DN,_______,  _______,  _______,  _______,  _______,  _______,
-                                  KC_LALT,  KC_LSFT,  _______,  _______,  _______,  _______
+                KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+                SCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP, KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+    _______,LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V),CPI_DN,KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
+                                  KC_LALT,  KC_LSFT,  _______,  KC_NO,  KC_NO,  KC_NO
     ),
     [_GAMES] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -103,8 +76,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_SYMBOLS] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,     KC_CIRC,   KC_AMPR, KC_ASTR,   KC_LPRN, KC_RPRN,
-                KC_TILDE, KC_GRV, KC_PIPE, KC_PLUS,    KC_EQL,    KC_LT,  KC_LPRN,  KC_LCBR,KC_LBRC, KC_LT,
-    _______,    KC_BSLS,  KC_NO, KC_UNDS, KC_MINUS,KC_NO ,   KC_NO,     KC_GT,  KC_RPRN, KC_RCBR ,KC_RBRC, KC_GT,
+                KC_TILDE, KC_GRV, KC_PIPE, KC_PLUS,  KC_EQL,    KC_LT,   SHT_LPRN,  CTL_LCBR,ALT_LBRC, KC_GT,
+    _______,    KC_BSLS,  KC_NO, KC_UNDS, KC_MINUS,KC_NO ,          KC_NO,   KC_RPRN, KC_RCBR ,KC_RBRC, KC_BSLS,_______,
                                   KC_LALT,KC_LSFT,  _______,     _______,  _______,  _______
     ),
     [_NUMBERS] = LAYOUT(
@@ -116,17 +89,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_NAV] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-                KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,       KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
+                KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,       KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  SCLN_RET,
                 KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,    QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
-     _______,   LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO,      KC_CAPS,   KC_NO,   KC_NO,    KC_NO,  KC_ENT,_______,
-                                  KC_ESC,  KC_TAB,_______ ,    _______, KC_NO, KC_NO
+     _______,   LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO,      KC_CAPS,   TD(TD_PAREN),  TD(TD_CBRC),    TD(TD_BKT),  TD(TD_GTLT),_______,
+                                  _______, MT(MOD_LSFT, KC_TAB) ,_______ ,    _______, KC_NO, KC_NO
     ),
 #ifdef HAS_PASSWORDS
     [_ADJUST] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-                KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,      KC_NO, KC_NO,   KC_NO,    TG(_REAPER), TG(_GAMES),
+                KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,      KC_NO, KC_NO,   KC_NO,    KC_NO, TG(_GAMES),
                 KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,         OSL(_PWDS),  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
-    _______,    KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,        KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,OSL(_PWDS),
+    _______,    KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,        KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   OSL(_PWDS),OSL(_PWDS),
                                  _______,   _______,    _______, _______,   _______,   _______
     ),
     [_PWDS] = LAYOUT(
