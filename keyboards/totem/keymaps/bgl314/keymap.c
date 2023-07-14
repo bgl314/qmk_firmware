@@ -50,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,    KC_J,      KC_L,      KC_U,     KC_Y,    KC_QUOT,
                 KC_A,    ALT_R,     CTL_S,     SHT_T,   KC_D,    KC_H,      SHT_N,     CTL_E,    ALT_I,   KC_O,
         KC_Z,   KC_Z,    KC_X,      KC_C,      KC_V,    KC_B,    KC_K,      KC_M,      KC_COMM,  KC_DOT,  KC_SLSH, KC_BSLS,
-    MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
+    MT(MOD_LGUI,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
     ),
     [_MOUSE] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷

@@ -155,37 +155,6 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
 #endif
 
-// ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-// │ T R A C K P A D                                                                                                                            │
-// └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
-// ▝▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▘
-#ifdef POINTING_DEVICE_ENABLE
-
-
-
-void pointing_device_init_user(void) {
-    set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
-    set_auto_mouse_enable(true);  // always required before the auto mouse feature will work
-}
-
-
-
-
-/*
-void i2c_init(void) {
-    static bool is_initialised = false;
-    if (!is_initialised) {
-        is_initialised = true;
-        // Try releasing special pins for a short time
-        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_INPUT);
-        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_INPUT);
-        chThdSleepMilliseconds(10);
-        palSetLineMode(I2C1_SCL_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
-        palSetLineMode(I2C1_SDA_PIN, PAL_MODE_ALTERNATE_I2C | PAL_RP_PAD_SLEWFAST | PAL_RP_PAD_DRIVE4);
-    }
-}
-*/
-#endif //POINTING_DEVICE_ENABLE
 
 
 
@@ -480,7 +449,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                 KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,                            KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
                 KC_A,    ALT_R,     CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    KC_O,
             KC_Z,    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,          KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,
-         MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),     LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
+         MT(MOD_LGUI,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),     LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
     ),
     [_MOUSE] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -521,7 +490,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
            KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,                            KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
            KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,                       QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
-        LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,   KC_CAPS,   KC_NO,   KC_NO,    KC_NO,  KC_ENT,
+        LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,  KC_CAPS,   TD(TD_PAREN),  TD(TD_CBRC),    TD(TD_BKT),  TD(TD_GTLT),
                                   KC_ESC,  KC_TAB,_______ ,       _______, KC_NO, KC_NO
     )
 #ifdef HAS_PASSWORDS
