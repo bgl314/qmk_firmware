@@ -42,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_NO,  KC_Q,    KC_W,     KC_F,    KC_P,    KC_G,      KC_NO,      KC_NO,   KC_J,      KC_L,    KC_U,      KC_Y,       KC_QUOT,KC_NO,
         KC_NO,  KC_A,   ALT_R,    CTL_S,   SHT_T,   KC_D,      KC_NO,      KC_NO,   KC_H,      SHT_N,   CTL_E,     ALT_I,      KC_O,  KC_NO,
         KC_NO,  KC_Z,    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,       KC_NO,   KC_K,      KC_M,    KC_COMM,   KC_DOT,     KC_SLSH,KC_NO,
-    KC_NO,KC_NO,KC_NO, MT(MOD_LALT,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS),KC_NO,KC_NO,  KC_NO
+    KC_NO,KC_NO,KC_NO, MT(MOD_LGUI,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC), LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS),KC_NO,KC_NO,  KC_NO
     ),
 
     [_GAMES] = LAYOUT_ortho_2x2u(
@@ -51,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
     _______,    KC_A,     KC_R,     KC_S,     KC_T,     KC_D,    _______,   _______,   KC_H,     KC_N,     KC_E,     KC_I,     KC_O,   _______,
     _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
-    _______,  _______,  _______,KC_TAB, MO(_GAMES_ALT),   KC_SPC,                  _______,   _______,   KC_RGUI,  _______, _______,_______
+    _______,  _______,  _______, MO(_GAMES_ALT),KC_TAB,    KC_SPC,                   _______,   _______,   KC_RGUI,  _______, _______,_______
     ),
     [_GAMES_ALT] = LAYOUT_ortho_2x2u(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -61,25 +61,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______,  KC_F1,    KC_F2,   KC_F3,   KC_F4,   KC_ESC,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
     _______,  _______,  _______,KC_TAB, MO(_GAMES_ALT),   KC_SPC,                  _______,   _______,   _______,  _______, _______,_______
     ),
-    [_REAPER] = LAYOUT_ortho_2x2u(
-  //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
-    _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______, _______,  _______, _______,  _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-    _______,  _______,  _______, _______, TD(P_SPACE), _______, _______,    _______,  _______, _______, _______, _______, _______, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-    _______,  _______, TD(S_ALT_S), TD(T_TAKE), _______,  _______,_______,    _______,  _______, _______, _______, _______, _______, _______,
-  //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-    _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
-  //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-_______, _______,  _______,  _______,_______,_______ ,                             _______ ,_______,  _______,_______, _______,  _______
-                                // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-    ),
+
     [_SYMBOLS] = LAYOUT_ortho_2x2u(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
     _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
     _______,KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,       _______,    _______,KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,_______,
-    _______,KC_GRV,  KC_LBRC, KC_LCBR, KC_LPRN,    KC_LT,     _______,    _______,KC_GT,  KC_RPRN,  KC_RCBR,KC_RBRC, KC_BSLS,_______,
-    _______,KC_TILDE,  KC_PIPE  , KC_UNDS, KC_MINUS,KC_PLUS ,   KC_MUTE,   KC_MPLY,  KC_NO,  KC_EQL, KC_LT ,KC_GT, KC_SLSH,_______,
+    _______,KC_TILDE, KC_GRV, KC_PIPE, KC_PLUS,  KC_EQL,     _______,    _______,KC_LT,   SHT_LPRN,  CTL_LCBR,ALT_LBRC, KC_GT,_______,
+    _______,KC_BSLS,  KC_NO, KC_UNDS, KC_MINUS,KC_NO ,   KC_MUTE,   KC_MPLY,   KC_NO,   KC_RPRN, KC_RCBR ,KC_RBRC, KC_BSLS,_______,
     _______,_______,_______,    KC_LALT,KC_LSFT,  _______,                    _______,  _______,  _______,_______,_______,_______
     ),
     [_NUMBERS] = LAYOUT_ortho_2x2u(
@@ -93,19 +81,40 @@ _______, _______,  _______,  _______,_______,_______ ,                          
     [_NAV] = LAYOUT_ortho_2x2u(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
     _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
-    _______,KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,_______,  _______,          KC_NO,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,_______,
+    _______,KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,_______,  _______,          KC_NO,KC_PSCR,  KC_INS,    KC_NO,  SCLN_RET,_______,
     _______,KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,_______,  _______,        QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,_______,
-    _______,LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,   KC_CAPS,   KC_NO,   KC_NO,    KC_NO,  KC_ENT,_______,
+    _______,LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,  KC_CAPS,   TD(TD_PAREN),  TD(TD_CBRC),    TD(TD_BKT),  TD(TD_GTLT),_______,
     _______,_______,_______,        KC_ESC,  KC_TAB,_______ ,       _______, KC_NO, KC_NO,_______,_______,_______
     ),
+
+
+    #ifdef HAS_PASSWORDS
     [_ADJUST] = LAYOUT_ortho_2x2u(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
     _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
-    _______, KC_F9, KC_F10,    KC_F11,   KC_F12, KC_NUM_LOCK ,      _______,  _______,  RGB_TOG, _______,   _______,    TG(_REAPER), TG(_GAMES),_______,
-    _______,KC_F5, KC_F6,    KC_F7,   KC_F8,  KC_VOLU,          _______,  _______,  RGB_MOD,  SHT_MPLY, CTL_MSTP, ALT_MPRV,  GUI_MNXT,_______,
-    _______,KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_VOLD,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
+    _______, KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,      _______,  _______,  RGB_TOG, _______,   _______,    KC_NO, TG(_GAMES),_______,
+    _______,KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,          _______,  _______,  RGB_MOD,  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),_______,
+    _______,KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
+    _______,_______,_______,    _______,   _______,  _______,     _______,   _______, _______,   _______,   _______,_______
+    ),
+    [_PWDS] = LAYOUT_ortho_2x2u(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
+    _______,  KC_NO, KC_NO,    KC_NO,   KC_NO, PWD_G ,      _______,  _______,   KC_NO, PWD_L,   KC_NO,    KC_NO, KC_NO ,_______,
+    _______, KC_NO, KC_NO,    PWD_S,   KC_NO,  PWD_D,           _______,  _______,  KC_NO,  PWD_N, KC_NO,  KC_NO,  KC_NO,_______,
+    _______, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,          KC_MUTE, KC_MPLY,    KC_NO,KC_NO, KC_NO, KC_NO,   KC_NO,KC_NO,   _______,_______,
     _______,_______,_______,    _______,   _______,  _______,     _______,   _______, _______,   _______,   _______,_______
     )
+#else
+ [_ADJUST] = LAYOUT_ortho_2x2u(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+    _______,  _______,  _______,  _______,  _______,  _______,  _______,    _______,  _______,  _______,  _______,  _______, _______,  _______,
+    _______, KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,      _______,  _______,  RGB_TOG, _______,   _______,    KC_NO, TG(_GAMES),_______,
+    _______,KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,          _______,  _______,  RGB_MOD,  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),_______,
+    _______,KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   _______,_______,
+    _______,_______,_______,    _______,   _______,  _______,     _______,   _______, _______,   _______,   _______,_______
+    )
+#endif
 
 };
 
@@ -130,9 +139,6 @@ const rgblight_segment_t PROGMEM my_number_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t PROGMEM my_adjust_layer[] = RGBLIGHT_LAYER_SEGMENTS(
     {0, 14, HSV_CYAN}
 );
-const rgblight_segment_t PROGMEM my_reaper_layer[] = RGBLIGHT_LAYER_SEGMENTS(
-    {0, 14, HSV_ORANGE}
-);
 
 const rgblight_segment_t PROGMEM my_nav_layer[] = RGBLIGHT_LAYER_SEGMENTS(
    {0, 14, HSV_MAGENTA}       // Light 4 LEDs, starting with LED 6
@@ -146,7 +152,6 @@ const rgblight_segment_t PROGMEM my_symbol_layer[] = RGBLIGHT_LAYER_SEGMENTS(
 const rgblight_segment_t* const PROGMEM my_rgb_layers[] = RGBLIGHT_LAYERS_LIST(
     my_default_layer,
     my_games_layer,
-    my_reaper_layer,
     my_capslock_layer, // mouse layer
     my_symbol_layer,
     my_number_layer,
@@ -166,7 +171,6 @@ void caps_word_set_user(bool active) {
     } else {
         rgblight_set_layer_state(_COLEMAK, layer_state_is( _COLEMAK));
         rgblight_set_layer_state(_GAMES, layer_state_is( _GAMES));
-        rgblight_set_layer_state(_REAPER, layer_state_is( _REAPER));
         rgblight_set_layer_state(_SYMBOLS, layer_state_is( _SYMBOLS));
         rgblight_set_layer_state(_NUMBERS, layer_state_is( _NUMBERS));
         rgblight_set_layer_state(_NAV, layer_state_is( _NAV));
@@ -181,7 +185,6 @@ bool led_update_user(led_t led_state) {
     } else {
         rgblight_set_layer_state(_COLEMAK, layer_state_is( _COLEMAK));
         rgblight_set_layer_state(_GAMES, layer_state_is( _GAMES));
-        rgblight_set_layer_state(_REAPER, layer_state_is( _REAPER));
         rgblight_set_layer_state(_SYMBOLS, layer_state_is( _SYMBOLS));
         rgblight_set_layer_state(_NUMBERS, layer_state_is( _NUMBERS));
         rgblight_set_layer_state(_NAV, layer_state_is( _NAV));
@@ -197,7 +200,6 @@ layer_state_t default_layer_state_set_user(layer_state_t state) {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     rgblight_set_layer_state(_COLEMAK, layer_state_is( _COLEMAK));
-    rgblight_set_layer_state(_REAPER, layer_state_is( _REAPER));
     rgblight_set_layer_state(_SYMBOLS, layer_state_is( _SYMBOLS));
     rgblight_set_layer_state(_NUMBERS, layer_state_is( _NUMBERS));
     rgblight_set_layer_state(_NAV, layer_state_is( _NAV));
