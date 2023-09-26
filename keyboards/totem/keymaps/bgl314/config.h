@@ -3,6 +3,7 @@
 #define HAS_PASSWORDS
 
 #include "../qmk-config/common_config.h"
+#define MASTER_RIGHT
 
 #define BILATERAL_COMBINATIONS 250
 #define BILATERAL_COMBINATIONS_EXCEPTION_ROW 3
@@ -16,9 +17,7 @@
 #define AUTO_MOUSE_TIME 300
 #define SPLIT_POINTING_ENABLE
 #define POINTING_DEVICE_RIGHT
-
 #define POINTING_DEVICE_TASK_THROTTLE_MS 10
-
 
 // Configure for the Cirque model used on the Dilemma.
 #define CIRQUE_PINNACLE_DIAMETER_MM 35
