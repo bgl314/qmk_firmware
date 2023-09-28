@@ -46,11 +46,11 @@ bool caps = false;
 void caps_word_set_user(bool active) {
     if(active){
          #ifdef HAPTIC_ENABLE
-           DRV_pulse(sharp_click);
+           DRV_pulse(4);
         #endif // HAPTIC_ENABLE
     }else if(!caps){
         #ifdef HAPTIC_ENABLE
-           DRV_pulse(soft_bump);
+           DRV_pulse(7);
         #endif // HAPTIC_ENABLE
     }
 }
@@ -71,11 +71,11 @@ layer_state_t layer_state_set_user(layer_state_t state) {
         switch (get_highest_layer(state)) {
             case _GAMES:
             if(wasAdjustLayer)
-                DRV_pulse(soft_bump);
+                DRV_pulse(7);
             break;
             case _COLEMAK:
             if(wasGameLayer )
-                DRV_pulse(soft_bump);
+                DRV_pulse(7);
             break;
             default: //  for any other layers, or the default layer
                 break;
@@ -170,9 +170,9 @@ void keyboard_post_init_user(void) {
   #endif //HAPTIC ENABLE
 
   #if RGB_MATRIX_ENABLE
-    rgblight_enable_noeeprom();
+    //rgblight_enable_noeeprom();
     //rgb_matrix_mode_noeeprom(RGB_MATRIX_TYPING_HEATMAP);
-    //rgblight_sethsv_noeeprom(35, 255, 255); // set default RGB color to yellow
+    //rgblight_sethsv_noeeprom(127, 127, 255); // set default RGB color to yellow
   #endif //RGB_MATRIX_ENABLE
   //debug_enable=true;
   //debug_mouse=true;
@@ -456,7 +456,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,                       KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
     SCROLL,KC_MS_BTN2,KC_MS_BTN3,KC_MS_BTN1,CPI_UP,                      KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
     LCTL(KC_Z),LCTL(KC_X), LCTL(KC_C) ,LCTL(KC_V), CPI_DN ,  KC_NO,   KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,  KC_NO,
-                        KC_LALT,  KC_LSFT,  MT(MOD_LCTL,TG(_MOUSE)),    KC_NO,  KC_NO,  KC_NO
+                        KC_LALT,  KC_LSFT,  _______,    KC_NO,  KC_NO,  KC_NO
     ),
     [_GAMES] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
@@ -488,7 +488,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [_NAV] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-           KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,                            KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  KC_NO,
+           KC_PGUP  , KC_HOME, KC_UP,KC_END,  KC_NO ,                            KC_NUM_LOCK,KC_PSCR,  KC_INS,    KC_NO,  KC_BSLS,
            KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT,   KC_DEL,                       QK_CAPS_WORD_TOGGLE,  KC_RSFT, KC_RCTL,  KC_RALT,  KC_ESC,
         LCTL(KC_Z),LCTL(KC_X),LCTL(KC_C),LCTL(KC_V), KC_NO, KC_MUTE,   KC_MPLY,  KC_CAPS,   TD(TD_PAREN),  TD(TD_CBRC),    TD(TD_BKT),  TD(TD_GTLT),
                                   KC_ESC,  KC_TAB,_______ ,       _______, KC_NO, KC_NO
@@ -497,9 +497,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ,
     [_ADJUST] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-            KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                     RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
-            KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                              RGB_MOD,  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
-            KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   OSL(_PWDS),
+            RGB_TOG , KC_F7, KC_F8, KC_F9,   KC_F10,                                RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
+            RGB_MOD,KC_F4,KC_F5, KC_F6,       KC_F11,                              OSL(_PWDS),  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
+            RGB_RMOD, KC_F1,   KC_F2,   KC_F3,   KC_F12,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   MO(_ADJUST_ALT),
                                  _______,   _______,    _______, _______,   _______,   _______
     ),
     [_PWDS] = LAYOUT_saegewerk(
@@ -513,13 +513,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  ,
     [_ADJUST] = LAYOUT_saegewerk(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
-            KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,                       RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
-            KC_MPLY,KC_F4,KC_F5, KC_F6,       KC_F11,                                RGB_MOD,  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
-            KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,             KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,
+            RGB_TOG , KC_F7, KC_F8, KC_F9,   KC_F10,                                RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
+            RGB_MOD,KC_F4,KC_F5, KC_F6,       KC_F11,                                OSL(_PWDS),  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
+            RGB_RMOD, KC_F1,   KC_F2,   KC_F3,   KC_F12,             KC_MUTE, KC_MPLY,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   MO(_ADJUST_ALT),
                                  _______,   _______,  _______,      _______,   _______,   _______
     )
 #endif
-
+ ,
+     [_ADJUST_ALT] = LAYOUT_saegewerk(
+ //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
+    _______, KC_NO,    KC_NO,   KC_NO, KC_NO,                       _______,  _______,  _______,  _______,  _______,
+    _______, RGB_HUI,    RGB_SAI,   RGB_VAI,  QK_CLEAR_EEPROM,                          _______,     _______,     _______,     _______,     _______,
+    _______, RGB_HUD,   RGB_SAD,   RGB_VAD,   _______,    _______,   _______,  _______,  _______,  _______,  _______,  _______,
+                        _______, _______, _______,      _______,  _______, _______
+    ),
 };
 
 
