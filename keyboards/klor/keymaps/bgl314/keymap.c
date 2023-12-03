@@ -393,21 +393,14 @@ draw_bongo();
 
 bool encoder_update_user(uint8_t index, bool clockwise) {
     if (index == 0) {
-       if(IS_LAYER_ON(_NAV)){
-          if (clockwise) {
-             tap_code(KC_MPRV);
-          } else {
-             tap_code(KC_MNXT);
+        if (clockwise) {
+            tap_code(KC_VOLU);
+        } else {
+            tap_code(KC_VOLD);
+        }
 
-          }
-      }else {
-            if (clockwise) {
-             tap_code(KC_VOLD);
-          } else {
-             tap_code(KC_VOLU);
 
-          }
-      }
+
 
 // ┌───────────────────────────────────────────────────────────┐
 // │ e n c o d e r  R                                          │
@@ -448,7 +441,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
                 KC_Q,    KC_W,      KC_F,      KC_P,    KC_G,                            KC_J,    KC_L,    KC_U,    KC_Y,    KC_QUOT,
                 KC_A,    ALT_R,     CTL_S,    SHT_T,    KC_D,                            KC_H,    SHT_N,    CTL_E,    ALT_I,    KC_O,
-            KC_Z,    KC_X,   KC_C,    KC_V,    KC_B,       KC_NO,   KC_NO,          KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,
+            KC_Z,    KC_X,   KC_C,    KC_V,    KC_B,       KC_MUTE,             KC_NO,   KC_K,    KC_M,    KC_COMM, KC_DOT, KC_SLSH,
          MT(MOD_LGUI,KC_ESC),LT(_NUMBERS, KC_TAB),MT(MOD_LCTL,KC_BSPC),     LT(_NAV,KC_SPC),OSM(MOD_RSFT) , MO(_SYMBOLS)
     ),
     [_MOUSE] = LAYOUT_saegewerk(
@@ -499,7 +492,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
             RGB_TOG , KC_F7, KC_F8, KC_F9,   KC_F10,                                RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
             RGB_MOD,KC_F4,KC_F5, KC_F6,       KC_F11,                              OSL(_PWDS),  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
-            RGB_RMOD, KC_F1,   KC_F2,   KC_F3,   KC_F12,           KC_MUTE, KC_MPLY,    RGB_RMOD,KC_VOLU, KC_VOLD, KC_MUTE,   MO(_ADJUST_ALT),
+            RGB_RMOD, KC_F1,   KC_F2,   KC_F3,   KC_F12,           KC_MUTE, KC_MPLY,    KC_MPRV,KC_VOLD, KC_VOLU, KC_MNXT,   MO(_ADJUST_ALT),
                                  _______,   _______,    _______, _______,   _______,   _______
     ),
     [_PWDS] = LAYOUT_saegewerk(
@@ -515,7 +508,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
             RGB_TOG , KC_F7, KC_F8, KC_F9,   KC_F10,                                RGB_TOG, AU_TOGG,   QK_HAPTIC_TOGGLE,    KC_NO , TG(_GAMES),
             RGB_MOD,KC_F4,KC_F5, KC_F6,       KC_F11,                                OSL(_PWDS),  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
-            RGB_RMOD, KC_F1,   KC_F2,   KC_F3,   KC_F12,             KC_MUTE, KC_MPLY,    KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   MO(_ADJUST_ALT),
+            RGB_RMOD, KC_F1,   KC_F2,   KC_F3,   KC_F12,  KC_MUTE, KC_NO,           KC_MPRV, KC_VOLD,KC_VOLU, KC_MNXT,   MO(_ADJUST_ALT),
                                  _______,   _______,  _______,      _______,   _______,   _______
     )
 #endif
