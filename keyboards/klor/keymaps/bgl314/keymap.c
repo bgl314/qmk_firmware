@@ -20,8 +20,6 @@
 
 #include QMK_KEYBOARD_H
 #ifdef HAPTIC_ENABLE
-#include <stdio.h>
-#include <string.h>
 #include "drivers/haptic/DRV2605L.h"
 #endif //HAPTIC ENABLE
 #ifdef AUDIO_ENABLE
@@ -33,11 +31,11 @@
 #endif
 // get my qmk-config folder and put it in the same directory as qmk_firmware
 
-
-
+#include "../qmk-config/common_keymap.h"
+#include <stdio.h>
+#include <string.h>
 #include "klor.h"
 #include "print.h"
-#include "../qmk-config/common_keymap.h"
 
 
 
