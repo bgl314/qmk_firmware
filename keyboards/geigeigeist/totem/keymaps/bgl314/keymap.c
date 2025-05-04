@@ -119,7 +119,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #else
 [_ADJUST] = LAYOUT(
  //╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷
-                KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,         KC_NO, KC_NO,   TG(_COLEMAK), TG(_GAMES_QWE), TG(_GAMES),
+                KC_MNXT , KC_F7, KC_F8, KC_F9,   KC_F10,         KC_NO, KC_NO,   TO(_COLEMAK), TG(_GAMES_QWE), TG(_GAMES),
                 KC_MPLY,  KC_F4, KC_F5, KC_F6,   KC_F11,         KC_NO,  OSM(MOD_RSFT), OSM(MOD_RCTL),  OSM(MOD_RALT),  OSM(MOD_RGUI),
     _______,    KC_MSTP, KC_F1,   KC_F2,   KC_F3,   KC_F12,      KC_NO,KC_VOLU, KC_VOLD, KC_MUTE,   KC_NO,_______,
                                 KC_LALT,  KC_LSFT,  KC_LCTL, _______,   _______,   _______

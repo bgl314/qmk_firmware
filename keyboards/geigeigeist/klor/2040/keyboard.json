@@ -19,9 +19,9 @@
         "haptic": true,
         "mousekey": true,
         "oled": true,
-        "pointing_device": false,
+        "pointing_device": true,
         "rgb_matrix": true,
-        "audio": false
+        "audio": true
     },
     "haptic": {
         "driver": "drv2605l"
@@ -117,6 +117,7 @@
     "layouts": {
         "LAYOUT": {
             "layout": [
+                
                 {"label": "L01", "matrix": [0, 1], "x": 1, "y": 0},
                 {"label": "L02", "matrix": [0, 2], "x": 2, "y": 0},
                 {"label": "L03", "matrix": [0, 3], "x": 3, "y": 0},
