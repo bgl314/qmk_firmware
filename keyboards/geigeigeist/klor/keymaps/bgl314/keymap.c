@@ -277,8 +277,9 @@ void render_layer_name(void) {
     bool symbol = layer_state_is(_SYMBOLS) & !layer_state_is(_ADJUST);
     bool mouse = layer_state_is(_MOUSE);
     bool nav = layer_state_is(_NAV);
-    bool qwerty= layer_state_is(_GAMES);
-    bool qwerty_alt= layer_state_is(_GAMES_ALT);
+    bool games= layer_state_is(_GAMES);
+    bool games_qwe= layer_state_is(_GAMES_QWE);
+    bool games_alt= layer_state_is(_GAMES_ALT);
     bool adjust = layer_state_is(_ADJUST);
     bool capsword=is_caps_word_on();
 
@@ -293,10 +294,12 @@ void render_layer_name(void) {
         oled_write_P(PSTR(" ADJ "), led_state.caps_lock||capsword);
     } else if(nav){
         oled_write_P(PSTR(" NAV "), led_state.caps_lock||capsword);
-    }  else if(qwerty_alt){
+    }  else if(games_alt){
         oled_write_P(PSTR("GMS_ALT"), led_state.caps_lock||capsword);
-    }  else if(qwerty){
+    }  else if(games){
         oled_write_P(PSTR("GAMES"), led_state.caps_lock||capsword);
+    }else if(games_qwe){
+        oled_write_P(PSTR("GMS_QWE"), led_state.caps_lock||capsword);
     } else {
         oled_write_P(PSTR("COLMAK"), led_state.caps_lock||capsword);
     }
@@ -461,7 +464,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [_GAMES_QWE] = LAYOUT(
 //╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷╷         ╷         ╷         ╷         ╷         ╷         ╷         ╷
             KC_Q,     KC_W,      KC_E,    KC_R,     KC_T,                       KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,
-    _______,KC_A,     KC_R,     KC_S,     KC_T,     KC_D,                          KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,_______,
+    _______,KC_A,     KC_S,      KC_D,    KC_F,     KC_G,                         KC_A,     KC_S,      KC_D,    KC_F,     KC_G,_______,
     _______,  KC_Z,    KC_X,       KC_C,    KC_V,     KC_B,   _______,  _______,  KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH, _______,
                       MO(_GAMES_ALT),KC_TAB,    KC_SPC,  _______,   _______, _______, _______, KC_RGUI
     ),

@@ -88,13 +88,6 @@
     },
     "split": {
         "enabled": true,
-        "encoder": {
-            "right": {
-                "rotary": [
-                    {"pin_a": "F4", "pin_b": "F5"}
-                ]
-            }
-        },
         "serial": {
             "pin": "D2"
         },
